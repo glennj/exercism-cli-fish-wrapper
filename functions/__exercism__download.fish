@@ -9,6 +9,7 @@ function __exercism__download
     switch $PWD
         case '*/users/*'
             # to avoid executing track-specific blocks
+            # for mentored solutions
             true
         case '*/nim/*'
             set dir (basename $PWD)

@@ -1,6 +1,57 @@
 # An `exercism` wrapper for fish
 
-This provides additional subcommands that I find useful, including:
+This provides additional subcommands that I find useful to improve my experience working locally.
+
+## A typical workflow
+
+```sh
+(~)$ cd (exercism workspace)
+(~/s/e/exercism)$ cd wren             # working on the wren track
+(~/s/e/e/wren)$ exercism missing      # I've _almost_ finished it
+clock
+(~/s/e/e/wren)$ exercism download --track=wren --exercise=clock 
+(~/s/e/e/w/clock)$ #...edit/test...
+(~/s/e/e/w/clock)$ exercism submit
+(~/s/e/e/w/clock)$ exercism open      # see how it looks online
+(~/s/e/e/w/clock)$ exercism publish   # Done!
+```
+Now, what does Exercism know about this exercise?
+```sh
+(~/s/e/e/w/clock)$ exercism metadada
+{
+  "solution": {
+    "uuid": "73af9a29bd774aca8f6ed4f0446d231b",
+    "private_url": "https://exercism.org/tracks/wren/exercises/clock",
+    "public_url": "https://exercism.org/tracks/wren/exercises/clock/solutions/glennj",
+    "status": "published",
+    "mentoring_status": "none",
+    "published_iteration_head_tests_status": "passed",
+    "has_notifications": false,
+    "num_views": 0,
+    "num_stars": 0,
+    "num_comments": 0,
+    "num_iterations": 3,
+    "num_loc": 0,
+    "is_out_of_date": false,
+    "published_at": "2022-07-16T15:58:05Z",
+    "completed_at": "2022-07-16T15:58:05Z",
+    "updated_at": "2022-07-16T15:58:06Z",
+    "last_iterated_at": "2022-07-16T15:57:55Z",
+    "exercise": {
+      "slug": "clock",
+      "title": "Clock",
+      "icon_url": "https://dg8krxphbh767.cloudfront.net/exercises/clock.svg"
+    },
+    "track": {
+      "slug": "wren",
+      "title": "Wren",
+      "icon_url": "https://dg8krxphbh767.cloudfront.net/tracks/wren.svg"
+    }
+  }
+}
+```
+
+## Subcommands
 
 1. override or augment existing `exercism` subcommands:
 
@@ -54,6 +105,7 @@ end
 if not contains $exercism_wrapper_home/completions $fish_complete_path
     set fish_complete_path $exercism_wrapper_home/completions $fish_complete_path
 end
+set -e exercism_wrapper_home
 ```
 
 ## API calls

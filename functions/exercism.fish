@@ -1,31 +1,31 @@
 function exercism
     switch $argv[1]
         case download
-            __exercism__download $argv
-        case missing
-            __exercism__missing $argv
+            __exercism__download $argv[2..]
         case submit
-            __exercism__submit $argv
+            __exercism__submit $argv[2..]
+        case missing
+            __exercism__missing
         case refresh
-            __exercism__refresh $argv
+            __exercism__refresh
         case publish
-            __exercism__publish $argv
+            __exercism__publish
         case enable_comments
-            __exercism__enable_comments $argv
+            __exercism__enable_comments
         case metadata
-            __exercism__metadata $argv
-        case sync-status
-            __exercism__sync_status $argv
-        case iterations open
-            __exercism__open $argv
+            __exercism__metadata
         case sync
-            __exercism__sync $argv
+            __exercism__sync
+        case sync-status
+            __exercism__sync_status
+        case iterations open
+            __exercism__open
         case mentoring-queue
-            __exercism__mentoring_queue $argv
+            __exercism__mentoring_queue
         case test-all
-            __exercism__test_all $argv
+            __exercism__test_all
         case cleanup
-            __exercism__cleanup $argv
+            __exercism__cleanup
         case '*'
             command exercism $argv
     end
