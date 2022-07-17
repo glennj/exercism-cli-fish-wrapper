@@ -27,6 +27,10 @@ function __exercism__cleanup
             end
         case nim
             find . -mindepth 2 -type f -executable -name test_\* -print -delete
+        case wren
+            find . -mindepth 2 -maxdepth 2 \
+                   -name wren_modules -type d \
+                   -print -exec rm -rf '{}' ';'
         case '*'
             echo "don't know how to cleanup the $track track"
     end

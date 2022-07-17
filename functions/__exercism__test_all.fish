@@ -74,6 +74,14 @@ function __exercism__test_all
                     end
                 case tcl
                     RUN_ALL=1 tclsh *.test
+                case wren
+                    set spec (basename $PWD).spec.wren
+                    $_sed -i 's/skip.test/do.test/' $spec
+                    wrenc package.wren install
+                    wrenc $spec
+                case '*'
+                    echo "Don't know how to test the $track track."
+                    return 2
             end
         end # of `begin`
         or set errs $errs $e
