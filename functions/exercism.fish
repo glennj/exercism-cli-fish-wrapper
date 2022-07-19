@@ -9,16 +9,18 @@ function exercism
         case refresh
             __exercism__refresh
         case publish
-            __exercism__publish
+            __exercism__publish $argv[2..]
         case enable_comments
             __exercism__enable_comments
         case metadata
-            __exercism__metadata
+            __exercism__metadata $argv[2..]
         case sync
             __exercism__sync
         case sync-status
             __exercism__sync_status
-        case iterations open
+        case iterations
+            __exercism__iterations $argv[2..]
+        case open
             __exercism__open
         case mentoring-queue
             __exercism__mentoring_queue

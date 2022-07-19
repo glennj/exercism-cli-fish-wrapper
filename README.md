@@ -9,7 +9,7 @@ This provides additional subcommands that I find useful to improve my experience
 (~/s/e/exercism)$ cd wren             # working on the wren track
 (~/s/e/e/wren)$ exercism missing      # I've _almost_ finished it
 clock
-(~/s/e/e/wren)$ exercism download --track=wren --exercise=clock 
+(~/s/e/e/wren)$ exercism download --track=wren --exercise=clock
 (~/s/e/e/w/clock)$ #...edit/test...
 (~/s/e/e/w/clock)$ exercism submit
 (~/s/e/e/w/clock)$ exercism open      # see how it looks online
@@ -66,6 +66,7 @@ Now, what does Exercism know about this exercise?
 
     * `publish`
         - mark the exercise as complete, and enables comments on the public solution
+        - option `--no-comment` prevents enabling comments
     * `refresh`
         - re-download the current solution (based on $PWD)
 
@@ -82,7 +83,7 @@ Now, what does Exercism know about this exercise?
     * `missing`
         - show track exercises that are not currently downloaded
     * `cleanup`
-        - cleanup build artifacts from track exercises 
+        - cleanup build artifacts from track exercises
         - useful to remove huge node_modules subdirectories (unless you use pnpm)
         - not all tracks supported
 
@@ -90,6 +91,13 @@ Now, what does Exercism know about this exercise?
 
     * `metadata`
         - a dump of the exercism backend's data about an exercise
+        - option `-i` to also dump iteration data
+    * `iterations`
+        - list the iterations for a solution
+        - option `-p|--publish` allows specifying which iteration(s) are published
+            - bare `-p` publishes all iterations
+            - option `-p3` (or `--publish=3`) publishes the 3rd one
+            - [no space allowed between `-p` and the iteration][optional-arg]
     * `mentoring-queue`
         - show your current mentoring queue, sorted by age
 
@@ -110,12 +118,17 @@ set -e exercism_wrapper_home
 
 ## API calls
 
-I have no special knowledge of the Exercism API. 
+I have no special knowledge of the Exercism API.
 The enpoints were found just by reading https://github.com/exercism/website/blob/main/config/routes.rb
 
 ## Tools used herein
 
 - curl
-- [jq](https://stedolan.github.io/jq/)
-- [miller](https://miller.readthedocs.io/en/latest/)
+- [jq][jq]
+- [miller][miller]
     - to print the mentoring queue with pretty boxes.
+
+
+[jq]: https://stedolan.github.io/jq/
+[miller]: https://miller.readthedocs.io/en/latest/
+[optional-arg]: https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
