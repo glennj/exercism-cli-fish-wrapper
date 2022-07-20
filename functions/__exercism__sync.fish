@@ -12,7 +12,7 @@ function __exercism__sync
     or return 1
 
     if set -q _flag_help
-        echo help
+        echo "See: https://github.com/glennj/exercism-cli-fish-wrapper/blob/main/README.md#subcommands-to-feed-my-obsession-at-keeping-up-to-date-solutions"
         return
     end
 

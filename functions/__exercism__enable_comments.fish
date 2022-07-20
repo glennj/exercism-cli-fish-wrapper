@@ -19,11 +19,11 @@
 
 function __exercism__enable_comments
     __exercism__has_metadata; or return 1
-    set endpoint (
+    set uri (
         printf \
           '/tracks/%s/exercises/%s/community_solutions/%s/comments/enable' \
           (jq -r '"\(.track)\n\(.exercise)\n\(.handle)"' .exercism/metadata.json)
     )
-    __exercism__api_call -X PATCH $endpoint >/dev/null
+    __exercism__api_call -X PATCH $uri >/dev/null
     and echo "Comments enabled."
 end

@@ -28,7 +28,7 @@ function __exercism__test_all
             and exercism sync
             and exercism refresh
             and switch $track
-                case bash
+                case bash awk
                     bats
                 case elixir
                     mix test --exclude slow --include pending
