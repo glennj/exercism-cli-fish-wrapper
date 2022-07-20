@@ -53,53 +53,60 @@ Now, what does Exercism know about this exercise?
 
 ## Subcommands
 
-1. override or augment existing `exercism` subcommands:
+### override or augment existing `exercism` subcommands:
 
-    * `download`
-        - after downloading, cd to the solution directory
-    * `submit`
-        - with no arguments, uploads the solution file from .exercism/config.json
-    * `open`
-        - open your solution's iterations page in a browser
+* `download`
+    - after downloading, cd to the solution directory
+* `submit`
+    - with no arguments, uploads the solution file from .exercism/config.json
+* `open`
+    - open your solution's iterations page in a browser
 
-2. additional subcommand for interacting with the website
+### additional subcommand for interacting with the website
 
-    * `publish`
-        - mark the exercise as complete, and enables comments on the public solution
-        - option `--no-comment` prevents enabling comments
-    * `refresh`
-        - re-download the current solution (based on $PWD)
+* `publish`
+    - mark the exercise as complete, and enables comments on the public solution
+    - option `--no-comment` prevents enabling comments
+* `refresh`
+    - re-download the current solution (based on $PWD)
+    - I use this mainly to refresh the .exercism/ directory
+    - option `--all` to refresh all track solutions.
 
-3. subcommands to feed my obsession at keeping up-to-date solutions
+### subcommands to feed my obsession at keeping up-to-date solutions
 
-    * `sync-status`
-        - show which exercises in a track are out-of-date
-    * `sync`
-        - updates the exercise on the website
-        - you must `exercism refresh` to download changes
-    * `test-all`
-        - run test suite for all downloaded exercise in a track
-        - not all tracks currently supported
-    * `missing`
-        - show track exercises that are not currently downloaded
-    * `cleanup`
-        - cleanup build artifacts from track exercises
-        - useful to remove huge node_modules subdirectories (unless you use pnpm)
-        - not all tracks supported
+* `sync`
+    - updates the exercise
+        - this is like clicking "See what's changed" in the "This
+            exercise has been updated..." banner, then clicking the
+            "Update exercise" button
+    - requires the presence of the.exercism/ directory: you may need to `exercism refresh` first
+    - options:
+        - `--status` to display current sync status
+        - `--update` to perform the sync
+        - `--all` to consider all exercises in the track
+* `test-all`
+    - run test suite for all downloaded exercise in a track
+    - not all tracks currently supported
+* `missing`
+    - show track exercises that are not currently downloaded
+* `cleanup`
+    - cleanup build artifacts from track exercises
+    - useful to remove huge node_modules subdirectories (unless you use pnpm)
+    - not all tracks supported
 
-4. informational subcommands
+### informational subcommands
 
-    * `metadata`
-        - a dump of the exercism backend's data about an exercise
-        - option `-i` to also dump iteration data
-    * `iterations`
-        - list the iterations for a solution
-        - option `-p|--publish` allows specifying which iteration(s) are published
-            - bare `-p` publishes all iterations
-            - option `-p3` (or `--publish=3`) publishes the 3rd one
-            - [no space allowed between `-p` and the iteration][optional-arg]
-    * `mentoring-queue`
-        - show your current mentoring queue, sorted by age
+* `metadata`
+    - a dump of the exercism backend's data about an exercise
+    - option `-i` to also dump iteration data
+* `iterations`
+    - list the iterations for a solution
+    - option `-p|--publish` allows specifying which iteration(s) are published
+        - bare `-p` publishes all iterations
+        - option `-p3` (or `--publish=3`) publishes the 3rd one
+        - [no space allowed between `-p` and the iteration][optional-arg]
+* `mentoring-queue`
+    - show your current mentoring queue, sorted by age
 
 ## fish setup
 
@@ -126,7 +133,7 @@ The enpoints were found just by reading https://github.com/exercism/website/blob
 - curl
 - [jq][jq]
 - [miller][miller]
-    - to print the mentoring queue with pretty boxes.
+    - to print tables with pretty boxes.
 
 
 [jq]: https://stedolan.github.io/jq/

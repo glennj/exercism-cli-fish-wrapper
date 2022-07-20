@@ -17,7 +17,6 @@ function __exercism__iterations
         test (count $_flag_publish) -eq 0; and set _flag_publish ""
         set uuid (jq -r '.id' .exercism/metadata.json)
         set uri "/solutions/$uuid/published_iteration?published_iteration_idx=$_flag_publish"
-        echo $uri
         __exercism__api_call -X PATCH $uri > /dev/null
     end
 
