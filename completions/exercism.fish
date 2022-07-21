@@ -16,7 +16,7 @@ end
 complete -f -c exercism -n "__fish_use_subcommand" -a "cleanup" -d "Clean up build artifacts (some tracks)"
 complete -f -c exercism -n "__fish_use_subcommand" -a "enable-comments" -d "Enable comments for this exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "iterations" -d "Open the exercise's iterations in the browser"
-complete -f -c exercism -n "__fish_use_subcommand" -a "mentoring-queue" -d "List my mentoring queue"
+complete -f -c exercism -n "__fish_use_subcommand" -a "mentoring" -d "Mentoring info"
 complete -f -c exercism -n "__fish_use_subcommand" -a "metadata" -d "Show the metadata of the exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "missing" -d "List track exercises not downloaded"
 complete -f -c exercism -n "__fish_use_subcommand" -a "open" -d "Open the exercise's iterations in the browser"
@@ -34,3 +34,12 @@ complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s a -l all -d "sy
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s h -l help -d "help"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s s -l status -d "display sync status"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s u -l update -d "perform sync"
+
+# mentoring sub-subcommands
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a queue -d "List my queue"
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a inbox -d "List my inbox"
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -s c -l count -d "just show counts"
+complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l inbox -d "list inbox discussions"
+complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l student -d "list awaiting student discussions"
+complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l finished -d "list finished discussions"
+complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s o -l order -r -a "recent oldest student exercise" -k -d "sort order"
