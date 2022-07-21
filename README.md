@@ -73,22 +73,29 @@ All gloriously tab-completed.
     - re-download the current solution (based on $PWD)
     - I use this mainly to refresh the .exercism/ directory
     - option `--all` to refresh all track solutions.
+* `iterations`
+    - list the iterations for a solution
+    - option `-p|--publish` allows specifying which iteration(s) are published
+        - bare `-p` publishes all iterations
+        - option `-p3` (or `--publish=3`) publishes the 3rd one
+        - [no space allowed between `-p` and the iteration][optional-arg]
+* `metadata`
+    - a dump of the exercism backend's data about an exercise
+    - option `-i` to also dump iteration data
 
 ### subcommands to feed my obsession at keeping up-to-date solutions
 
 * `sync`
     - updates the exercise
-        - this is like clicking "See what's changed" in the "This
-            exercise has been updated..." banner, then clicking the
-            "Update exercise" button
-    - requires the presence of the.exercism/ directory: you may need to `exercism refresh` first
+        - this is like clicking "See what's changed" in the "This exercise has been updated..." banner, then clicking the "Update exercise" button
+    - requires the presence of the .exercism/ directory: you may need to `exercism refresh` first
     - options:
         - `--status` to display current sync status
         - `--update` to perform the sync
         - `--all` to consider all exercises in the track
 * `test-all`
     - run test suite for all downloaded exercise in a track
-    - not all tracks currently supported
+    - only some tracks currently supported (the ones I've joined)
 * `missing`
     - show track exercises that are not currently downloaded
 * `cleanup`
@@ -112,18 +119,6 @@ This subcommand is itself subdivided.
         - `-o|--order` specifies the sort order: recent, oldest, student, exercise
         - `-c|--count` shows only the count by status
     - the exercism API paginates the results: I fetch a maximum of 5 pages
-
-### informational subcommands
-
-* `metadata`
-    - a dump of the exercism backend's data about an exercise
-    - option `-i` to also dump iteration data
-* `iterations`
-    - list the iterations for a solution
-    - option `-p|--publish` allows specifying which iteration(s) are published
-        - bare `-p` publishes all iterations
-        - option `-p3` (or `--publish=3`) publishes the 3rd one
-        - [no space allowed between `-p` and the iteration][optional-arg]
 
 ## fish setup
 
