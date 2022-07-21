@@ -137,12 +137,15 @@ set -e exercism_wrapper_home
 
 ## Tools used herein
 
+- [exercism][exercism] of course!
 - curl
 - [jq][jq]
 - [miller][miller]
     - to print tables with pretty boxes.
+- specific commands for testing on your track (in `test-all`)
 
 
+[exercism]: https://exercism.org/docs/using/solving-exercises/working-locally
 [jq]: https://stedolan.github.io/jq/
 [miller]: https://miller.readthedocs.io/en/latest/
 [optional-arg]: https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
