@@ -13,6 +13,12 @@ function __exercism__mentoring_inbox
         'h/help' 'inbox' 'student' 'finished' 'o/order=' 'c/count' -- $argv
     or return 1
 
+    if set -q _flag_help
+        echo "See: https://github.com/glennj/exercism-cli-fish-wrapper/blob/main/README.md#mentoring-sub--and-sub-subcommands"
+
+return
+    end
+
     set num 0
     set -q _flag_inbox; and set num (math $num + 1)
     set -q _flag_student; and set num (math $num + 1)

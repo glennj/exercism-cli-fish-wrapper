@@ -53,6 +53,8 @@ Now, what does Exercism know about this exercise?
 
 ## Subcommands
 
+All gloriously tab-completed.
+
 ### override or augment existing `exercism` subcommands:
 
 * `download`
@@ -62,7 +64,7 @@ Now, what does Exercism know about this exercise?
 * `open`
     - open your solution's iterations page in a browser
 
-### additional subcommand for interacting with the website
+### additional subcommand for interacting with solutions
 
 * `publish`
     - mark the exercise as complete, and enables comments on the public solution
@@ -94,6 +96,23 @@ Now, what does Exercism know about this exercise?
     - useful to remove huge node_modules subdirectories (unless you use pnpm)
     - not all tracks supported
 
+### mentoring sub- and sub-subcommands
+
+This subcommand is itself subdivided.
+
+* `mentoring queue`
+    - show your current mentoring queue, sorted by age
+    - option `-c|--count` shows only the count of requests by track
+* `mentoring inbox`
+    - list the discussions in your mentoring workspace
+    - options:
+        - `--inbox` shows the discussions awaiting you, the mentor
+        - `--student` shows discussions awaiting them
+        - `--finished` shows finished discussions
+        - `-o|--order` specifies the sort order: recent, oldest, student, exercise
+        - `-c|--count` shows only the count by status
+    - the exercism API paginates the results: I fetch a maximum of 5 pages
+
 ### informational subcommands
 
 * `metadata`
@@ -105,8 +124,6 @@ Now, what does Exercism know about this exercise?
         - bare `-p` publishes all iterations
         - option `-p3` (or `--publish=3`) publishes the 3rd one
         - [no space allowed between `-p` and the iteration][optional-arg]
-* `mentoring-queue`
-    - show your current mentoring queue, sorted by age
 
 ## fish setup
 
@@ -122,11 +139,6 @@ if not contains $exercism_wrapper_home/completions $fish_complete_path
 end
 set -e exercism_wrapper_home
 ```
-
-## API calls
-
-I have no special knowledge of the Exercism API.
-The enpoints were found just by reading https://github.com/exercism/website/blob/main/config/routes.rb
 
 ## Tools used herein
 
