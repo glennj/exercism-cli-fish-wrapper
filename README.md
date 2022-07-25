@@ -79,6 +79,9 @@ All gloriously tab-completed.
         - bare `-p` publishes all iterations
         - option `-p3` (or `--publish=3`) publishes the 3rd one
         - [no space allowed between `-p` and the iteration][optional-arg]
+* `test-run`
+    - show the data about the test run of the last iteration.
+    - only applies to iterations submitted from the web editor.
 * `metadata`
     - a dump of the exercism backend's data about an exercise
     - option `-i` to also dump iteration data
@@ -118,7 +121,11 @@ This subcommand is itself subdivided.
         - `--finished` shows finished discussions
         - `-o|--order` specifies the sort order: recent, oldest, student, exercise
         - `-c|--count` shows only the count by status
-    - the exercism API paginates the results: I fetch a maximum of 5 pages
+        - `-p|--pages` max number of pages to fetch (default 5)
+* `mentoring discussion`
+    - display the posts of the discussion
+    - option `-u|--uuid` is mandatory
+        - this uuid is listed in the `inbox` output
 
 ## fish setup
 
@@ -143,9 +150,15 @@ set -e exercism_wrapper_home
 - [miller][miller]
     - to print tables with pretty boxes.
 - specific commands for testing on your track (in `test-all`)
+- for `mentoring discussions` rendering of posts:
+    - ruby
+    - [colorize][colorize] gem
+    - [html-to-text][html-to-text]
 
 
 [exercism]: https://exercism.org/docs/using/solving-exercises/working-locally
 [jq]: https://stedolan.github.io/jq/
 [miller]: https://miller.readthedocs.io/en/latest/
 [optional-arg]: https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
+[colorize]: https://github.com/fazibear/colorize
+[html-to-text]: https://github.com/html-to-text/node-html-to-text

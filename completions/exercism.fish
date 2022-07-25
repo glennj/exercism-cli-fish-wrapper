@@ -23,7 +23,9 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "open" -d "Open the exerci
 complete -f -c exercism -n "__fish_use_subcommand" -a "publish" -d "Mark as complete and enable comments"
 complete -f -c exercism -n "__fish_use_subcommand" -a "refresh" -d "Re-downloads a submitted exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "sync" -d "Sync an exercise so it is up-to-date"
+complete -f -c exercism -n "__fish_use_subcommand" -a "switch" -d "Switch user.json"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test-all" -d "Refresh and retest every exercise for a track"
+complete -f -c exercism -n "__fish_use_subcommand" -a "test-run" -d "Dump results of most recent test run"
 
 # and subcommand options
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s p -l publish -d "specify which iterations to publish"
@@ -38,8 +40,12 @@ complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s u -l update -d 
 # mentoring sub-subcommands
 complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a queue -d "List my queue"
 complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a inbox -d "List my inbox"
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a discussion -d "show the discussion posts"
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a overview -d "inbox and queue"
 complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -s c -l count -d "just show counts"
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l inbox -d "list inbox discussions"
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l student -d "list awaiting student discussions"
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l finished -d "list finished discussions"
+complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s p -l pages -d "how many pages to fetch"
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s o -l order -r -a "recent oldest student exercise" -k -d "sort order"
+complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -s u -l uuid -d "the discussion id"

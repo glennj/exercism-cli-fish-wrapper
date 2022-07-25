@@ -10,16 +10,24 @@ function exercism
         case publish;         __exercism__publish $argv[2..]
         case refresh;         __exercism__refresh $argv[2..]
         case submit;          __exercism__submit $argv[2..]
+        case 'switch';        __exercism__switch_user $argv[2..]
         case sync;            __exercism__sync $argv[2..]
         case test-all;        __exercism__test_all
+        case test-run;        __exercism__test_run
         case mentoring
             switch $argv[2]
                 case queue;   __exercism__mentoring_queue $argv[3..]
                 case inbox;   __exercism__mentoring_inbox $argv[3..]
+                case discussion
+                    __exercism__mentoring_discussion $argv[3..]
+                case overview
+                    __exercism__mentoring_inbox
+                    __exercism__mentoring_queue
                 case '*'
-                    echo 'exercism mentoring [queue|inbox]' >&2
+                    echo 'unknown subcommand' >&2
                     return 1
             end
-        case '*';             command exercism $argv
+        case '*'
+            command exercism $argv
     end
 end
