@@ -81,7 +81,6 @@ All gloriously tab-completed.
         - [no space allowed between `-p` and the iteration][optional-arg]
 * `test-run`
     - show the data about the test run of the last iteration.
-    - only applies to iterations submitted from the web editor.
 * `metadata`
     - a dump of the exercism backend's data about an exercise
     - option `-i` to also dump iteration data
