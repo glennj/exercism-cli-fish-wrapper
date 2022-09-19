@@ -10,10 +10,11 @@ function exercism
         case publish;         __exercism__publish $argv[2..]
         case refresh;         __exercism__refresh $argv[2..]
         case submit;          __exercism__submit $argv[2..]
-        case 'switch';        __exercism__switch_user $argv[2..]
+        case switch;          __exercism__switch_user $argv[2..]
         case sync;            __exercism__sync $argv[2..]
         case test-all;        __exercism__test_all
         case test-run;        __exercism__test_run
+        case tracks;          __exercism__tracks
         case mentoring
             switch $argv[2]
                 case queue;   __exercism__mentoring_queue $argv[3..]

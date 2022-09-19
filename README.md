@@ -104,6 +104,8 @@ All gloriously tab-completed.
     - cleanup build artifacts from track exercises
     - useful to remove huge node_modules subdirectories (unless you use pnpm)
     - not all tracks supported
+* `tracks`
+    - list all Exercism tracks, and your progress through each.
 
 ### mentoring sub- and sub-subcommands
 
