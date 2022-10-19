@@ -21,8 +21,8 @@ function __exercism__refresh
     test (count $utils) -gt 0; and rm $utils
 
     set dirs (string split / $PWD)
-    echo exercism download --track=$dirs[-2] --exercise=$dirs[-1]
-    exercism download --track=$dirs[-2] --exercise=$dirs[-1]
+    echo exercism download --force --track=$dirs[-2] --exercise=$dirs[-1]
+    exercism download --force --track=$dirs[-2] --exercise=$dirs[-1]
     or return 1
 
     if test (count $utils) -gt 0

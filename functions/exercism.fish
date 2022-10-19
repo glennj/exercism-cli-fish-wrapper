@@ -1,5 +1,6 @@
 function exercism
     switch $argv[1]
+        case help;            __exercism__help
         case cleanup;         __exercism__cleanup
         case download;        __exercism__download $argv[2..]
         case enable_comments; __exercism__enable_comments

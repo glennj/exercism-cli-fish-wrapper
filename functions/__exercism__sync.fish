@@ -55,8 +55,9 @@ function __exercism__sync
         else
             set uuid (jq -r .id ./.exercism/metadata.json)
             set updated (__exercism__api_call -X PATCH "/solutions/$uuid/sync")
+            set out_of_date (echo $updated | jq -r .solution.is_out_of_date)""
 
-            if test "false" = (echo $updated | jq -r .solution.is_out_of_date)
+            if test $out_of_date = "false"
                 echo $updated | jq -r '"\(.solution.track.slug) \"\(.solution.exercise.title)\" has been updated"'
             else
                 echo "Could not sync the exercise?" >&2

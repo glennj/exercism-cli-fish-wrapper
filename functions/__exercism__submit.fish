@@ -2,7 +2,8 @@
 # - selects the solution file if no args given
 
 function __exercism__submit
-    # TODO validate $PWD
+    __exercism__has_metadata; or return 1
+
     if test (count $argv) -eq 0
         set argv (jq -r '.files.solution[]' .exercism/config.json)
     end

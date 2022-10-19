@@ -150,7 +150,7 @@ set -e exercism_wrapper_home
 - [jq][jq]
 - [miller][miller]
     - to print tables with pretty boxes.
-- specific commands for testing on your track (in `test-all`)
+- specific commands for testing on your track (see the [`test-all`][test-all] function)
 - for `mentoring discussions` rendering of posts:
     - ruby
     - [colorize][colorize] gem
@@ -163,3 +163,4 @@ set -e exercism_wrapper_home
 [optional-arg]: https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
 [colorize]: https://github.com/fazibear/colorize
 [html-to-text]: https://github.com/html-to-text/node-html-to-text
+[test-all]: ./blob/main/functions/__exercism__test_all.fish

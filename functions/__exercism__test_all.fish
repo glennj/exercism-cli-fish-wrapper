@@ -26,7 +26,8 @@ function __exercism__test_all
         end
         begin
             cd $root/$e
-            and exercism sync
+            test -d ./.exercism; or exercism refresh
+            and exercism sync --update
             and exercism refresh
             and switch $track
                 case bash awk
