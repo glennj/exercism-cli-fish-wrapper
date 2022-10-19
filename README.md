@@ -163,4 +163,4 @@ set -e exercism_wrapper_home
 [optional-arg]: https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
 [colorize]: https://github.com/fazibear/colorize
 [html-to-text]: https://github.com/html-to-text/node-html-to-text
-[test-all]: ./blob/main/functions/__exercism__test_all.fish
+[test-all]: ./functions/__exercism__test_all.fish
