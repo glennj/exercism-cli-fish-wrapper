@@ -46,6 +46,10 @@ function __exercism__mentoring_inbox
             return 1
     end
 
+    # remember the uuids for the next `exercism mentoring discussion` call
+    set -g __exercism_mentoring_discussion_uuids
+    set -g __exercism_mentoring_discussion_topics
+
     set current 1
     while true
         set uri "/mentoring/discussions?status=$box&order=$order"
@@ -82,27 +86,38 @@ function __exercism__mentoring_inbox
                     else                        "\($d / (365 * 86400) * 12 | floor) months"
                     end;
 
-                .results[] |
-                [
-                    .track.title,
-                    .exercise.title,
-                    .student.handle,
-                    (.updated_at | fromdateiso8601 | duration),
-                    .uuid,
-                    .is_finished,
-                    .is_unread
-                ] | @csv
+                .results
+                | to_entries[]
+                | [
+                    .key + 1,
+                    .value.track.title,
+                    .value.exercise.title,
+                    .value.student.handle,
+                    (.value.updated_at | fromdateiso8601 | duration),
+                    .value.uuid,
+                    .value.is_finished,
+                    .value.is_unread
+                  ]
+                | @csv
             '
         end
         test $current -ge $max; and break
         set current (math $current + 1)
     end \
+    | while read line
+        set uuid (string split -f 6 , $line | string trim -c '"')
+        set title (string split -f 3 , $line | string trim -c '"')
+        set track (string split -f 2 , $line | string trim -c '"')
+        set __exercism_mentoring_discussion_uuids $__exercism_mentoring_discussion_uuids $uuid
+        set __exercism_mentoring_discussion_topics $__exercism_mentoring_discussion_topics "$title on $track"
+        echo $line
+      end \
     | begin
         if set -q _flag_count; or set -q _flag_dump
             cat
         else
             mlr --c2p --barred --implicit-csv-header \
-                label "Track,Exercise,Student,Posted,UUID,finished,unread" \
+                label "Num,Track,Exercise,Student,Posted,UUID,finished,unread" \
                 then put 'end {if (NR == 0) {print "No discussions '$box'"}}'
         end
     end

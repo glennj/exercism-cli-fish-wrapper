@@ -3,16 +3,30 @@
 #
 # option:
 #   -u --uuid   the discussion uuid (required)
+#   -i --index  the index of the discussion from the most recent
+#               `exercism mentoring inbox` call
 #
 # Using `html-to-text` to render post as text
 # https://www.npmjs.com/package/html-to-text
 
 function __exercism__mentoring_discussion
     argparse --name="exercism mentoring discussion" \
-        'u/uuid=' 'dump' -- $argv
+        'u/uuid=' 'i/index=' 'dump' -- $argv
     or return 1
 
-    if not set -q _flag_uuid
+    if set -q _flag_index
+        if not set -q __exercism_mentoring_discussion_uuids
+            echo "call `exercism mentoring inbox` first" >&2
+            return 1
+        end
+        if test $_flag_index -gt (count $__exercism_mentoring_discussion_uuids)
+            echo "no such uuid index" >&2
+            set -S __exercism_mentoring_discussion_uuids >&2
+            return 1
+        end
+        set _flag_uuid $__exercism_mentoring_discussion_uuids[$_flag_index]
+        echo $__exercism_mentoring_discussion_topics[$_flag_index]
+    else if not set -q _flag_uuid
         echo "missing --uuid flag" >&2
         return 1
     end

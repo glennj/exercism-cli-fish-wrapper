@@ -125,8 +125,10 @@ This subcommand is itself subdivided.
         - `-p|--pages` max number of pages to fetch (default 5)
 * `mentoring discussion`
     - display the posts of the discussion
-    - option `-u|--uuid` is mandatory
-        - this uuid is listed in the `inbox` output
+    - it is necessary to call `mentoring inbox` first
+    - options: one of these is required:
+        - `-u|--uuid` to provide a uuid from the `inbox` output
+        - `-i|--index` to provide an index number
 
 ## fish setup
 
