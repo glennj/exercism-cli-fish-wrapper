@@ -24,6 +24,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "publish" -d "Mark as comp
 complete -f -c exercism -n "__fish_use_subcommand" -a "refresh" -d "Re-downloads a submitted exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "sync" -d "Sync an exercise so it is up-to-date"
 complete -f -c exercism -n "__fish_use_subcommand" -a "switch" -d "Switch user.json"
+complete -f -c exercism -n "__fish_use_subcommand" -a "test" -d "Run the test suite for the current exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test-all" -d "Refresh and retest every exercise for a track"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test-run" -d "Dump results of most recent test run"
 complete -f -c exercism -n "__fish_use_subcommand" -a "tracks" -d "List all Exercism tracks"

@@ -64,8 +64,11 @@ All gloriously tab-completed.
 * `open`
     - open your solution's iterations page in a browser
 
-### additional subcommand for interacting with solutions
+### additional subcommands for interacting with solutions
 
+* `test`
+    - run test suite for this exercise
+    - only some tracks currently supported (the ones I've joined)
 * `publish`
     - mark the exercise as complete, and enables comments on the public solution
     - option `--no-comment` prevents enabling comments

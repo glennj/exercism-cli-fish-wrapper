@@ -13,6 +13,7 @@ function exercism
         case submit;          __exercism__submit $argv[2..]
         case switch;          __exercism__switch_user $argv[2..]
         case sync;            __exercism__sync $argv[2..]
+        case test;            __exercism__test
         case test-all;        __exercism__test_all
         case test-run;        __exercism__test_run
         case tracks;          __exercism__tracks
