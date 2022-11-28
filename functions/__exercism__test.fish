@@ -18,7 +18,8 @@ function __exercism__test
 
     switch $track
         case bash awk jq
-            bats
+            find . -maxdepth 1 -mindepth 1 \( -name \*_test.sh -o -name \*.bats \) \
+            | xargs env BATS_RUN_SKIPPED=true bats --pretty
         case common-lisp
             sbcl --load "$slug-test" \
                  --eval "(let () ($slug-test:run-tests) (exit))"
