@@ -79,6 +79,7 @@ All gloriously tab-completed.
 * `iterations`
     - list the iterations for a solution
     - option `-p|--publish` allows specifying which iteration(s) are published
+        _ **TODO** broken, needs debugging
         - bare `-p` publishes all iterations
         - option `-p3` (or `--publish=3`) publishes the 3rd one
         - [no space allowed between `-p` and the iteration][optional-arg]
