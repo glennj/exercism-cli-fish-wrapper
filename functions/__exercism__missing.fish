@@ -31,7 +31,7 @@ function __exercism__missing
     if test (count $results) -eq 0
         echo "All $track exercises are present!"
     else
-        printf '%s\n' $results \
+        string join \n $results \
         | mlr --c2p --implicit-csv-header \
             label Type,Exercise,Difficulty,Link
     end
