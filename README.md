@@ -78,11 +78,17 @@ All gloriously tab-completed.
     - option `--all` to refresh all track solutions.
 * `iterations`
     - list the iterations for a solution
-    - option `-p|--publish` allows specifying which iteration(s) are published
-        _ **TODO** broken, needs debugging
-        - bare `-p` publishes all iterations
-        - option `-p3` (or `--publish=3`) publishes the 3rd one
-        - [no space allowed between `-p` and the iteration][optional-arg]
+        - option `-p|--publish` allows specifying which iteration(s) are published
+            - bare `-p` publishes all iterations
+            - option `-p3` (or `--publish=3`) publishes the 3rd one
+            - [no space allowed between `-p` and the iteration][optional-arg]
+    - in the track root
+        - option `-a|--all` enables operations for all exercises
+        - option `-p|--publish` publishes all iterations for all exercises
+            - there is a sleep in the loop to avoid getting rate limited, so this can be slow.
+        - without `-p`
+            - option `-v|--verbose` will list iteration for each exercise
+            - without `-v`, could the number of unpublished iterations for each exercise.
 * `test-run`
     - show the data about the test run of the last iteration.
 * `metadata`
