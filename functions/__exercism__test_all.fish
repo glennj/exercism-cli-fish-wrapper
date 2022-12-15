@@ -14,7 +14,8 @@ function __exercism__test_all
     else
         set -S except
     end
-    read -P "hit Enter to proceed; or Ctrl-C to abort: "
+    read -P "hit Enter to proceed; or enter 'q' to abort: " ans
+    test $ans = "q"; and return
 
     set _sed sed
     # Homebrew on MacOS installs GNU sed as "gsed"
