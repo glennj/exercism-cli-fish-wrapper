@@ -16,7 +16,7 @@ function exercism
         case test;            __exercism__test
         case test-all;        __exercism__test_all
         case test-run;        __exercism__test_run
-        case tracks;          __exercism__tracks
+        case tracks;          __exercism__tracks $argv[2..]
         case mentoring
             switch $argv[2]
                 case queue;   __exercism__mentoring_queue $argv[3..]

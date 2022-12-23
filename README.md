@@ -116,6 +116,7 @@ All gloriously tab-completed.
     - not all tracks supported
 * `tracks`
     - list all Exercism tracks, and your progress through each.
+    - option `-j|--joined` to limit the output to only tracks you've joined.
 
 ### mentoring sub- and sub-subcommands
 
