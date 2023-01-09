@@ -6,6 +6,6 @@ function __exercism__test__wren -a slug
     type -q gsed; and set _sed gsed
 
     $_sed -i 's/skip.test/do.test/' $spec
-    wrenc package.wren install
-    wrenc $spec
+    __echo_and_execute wrenc package.wren install
+    __echo_and_execute wrenc $spec
 end

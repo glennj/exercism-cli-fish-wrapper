@@ -20,3 +20,8 @@ function __exercism__test
 
     $func $slug
 end
+
+function __echo_and_execute
+    string join -- " " $argv
+    env $argv
+end

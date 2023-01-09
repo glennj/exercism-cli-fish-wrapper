@@ -1,3 +1,3 @@
 function __exercism__test__elixir
-    mix test --exclude slow --include pending
+    __echo_and_execute mix test --exclude slow --include pending
 end

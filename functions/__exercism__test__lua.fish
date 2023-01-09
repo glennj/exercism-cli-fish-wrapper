@@ -1,3 +1,3 @@
 function __exercism__test__lua
-    busted .
+    __echo_and_execute busted .
 end
