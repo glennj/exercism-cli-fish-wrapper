@@ -1,4 +1,6 @@
 function __exercism__test__wren -a slug
+    argparse t/track= -- $argv
+    __exercism__test__validate_runner $_flag_track wrenc; or return 1
     set spec $slug.spec.wren
 
     set _sed sed

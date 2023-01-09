@@ -1,4 +1,7 @@
 function __exercism__test__bash
+    argparse t/track= -- $argv
+    __exercism__test__validate_runner $_flag_t bats; or return 3
+
     # test all .bats files
     set -lx BATS_RUN_SKIPPED true
     find . -maxdepth 1 -mindepth 1 \

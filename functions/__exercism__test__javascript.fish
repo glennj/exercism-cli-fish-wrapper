@@ -1,4 +1,6 @@
 function __exercism__test__javascript
+    argparse t/track= -- $argv
+    __exercism__test__validate_runner $_flag_track pnpm; or return 1
     set _sed sed
     # Homebrew on MacOS installs GNU sed as "gsed"
     type -q gsed; and set _sed gsed
