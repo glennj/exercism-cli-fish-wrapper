@@ -15,17 +15,30 @@ function __exercism__mentoring_discussion
     or return 1
 
     if set -q _flag_index
-        if not set -q __exercism_mentoring_discussion_uuids
+        if not set -q __exercism_mentoring_discussions
             echo "call `exercism mentoring inbox` first" >&2
             return 1
         end
-        if test $_flag_index -gt (count $__exercism_mentoring_discussion_uuids)
+        if test $_flag_index -gt (count $__exercism_mentoring_discussions)
             echo "no such uuid index" >&2
-            set -S __exercism_mentoring_discussion_uuids >&2
+            set -S __exercism_mentoring_discussions >&2
             return 1
         end
-        set _flag_uuid $__exercism_mentoring_discussion_uuids[$_flag_index]
-        echo $__exercism_mentoring_discussion_topics[$_flag_index]
+        echo $__exercism_mentoring_discussions[$_flag_index] \
+        | read -d\v _flag_uuid exercise track_title student
+        echo $exercise on $track_title by $student
+        set track (
+            # not all track slugs are just the title lower-cased
+            __exercism__api_call /tracks \
+            | jq --arg title $track_title -r '
+                .tracks[] | select(.title == $title) | .slug
+              '
+        )
+        set uri "/mentoring/students/$student?track_slug=$track"
+        set json (__exercism__api_call $uri)
+        echo
+        echo $json | jq -r '.student.track_objectives' | fold -s | sed 's/^/    /'
+        echo
     else if not set -q _flag_uuid
         echo "missing --uuid flag" >&2
         return 1

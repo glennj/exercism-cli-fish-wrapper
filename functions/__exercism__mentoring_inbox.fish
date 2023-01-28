@@ -28,7 +28,7 @@ function __exercism__mentoring_inbox
     set -q _flag_student; and set num (math $num + 1)
     set -q _flag_finished; and set num (math $num + 1)
     if test $num -gt 1
-        echo "Specify only one of --inbox --student --box=" >&2
+        echo "Specify only one of {--inbox, --student, --finished}" >&2
         return 1
     end
 
@@ -47,8 +47,7 @@ function __exercism__mentoring_inbox
     end
 
     # remember the uuids for the next `exercism mentoring discussion` call
-    set -g __exercism_mentoring_discussion_uuids
-    set -g __exercism_mentoring_discussion_topics
+    set -g __exercism_mentoring_discussions
 
     set current 1
     while true
@@ -108,10 +107,13 @@ function __exercism__mentoring_inbox
         set uuid (string split -f 6 , $line | string trim -c '"')
         set title (string split -f 3 , $line | string trim -c '"')
         set track (string split -f 2 , $line | string trim -c '"')
-        set __exercism_mentoring_discussion_uuids $__exercism_mentoring_discussion_uuids $uuid
-        set __exercism_mentoring_discussion_topics $__exercism_mentoring_discussion_topics "$title on $track"
+        set student (string split -f 4 , $line | string trim -c '"')
+        set __exercism_mentoring_discussions $__exercism_mentoring_discussions (
+            string join \v $uuid $title $track $student
+        )
         echo $line
       end \
+    | awk -F, -v OFS=, '{$1 = NR} 1' \
     | begin
         if set -q _flag_count; or set -q _flag_dump
             cat
