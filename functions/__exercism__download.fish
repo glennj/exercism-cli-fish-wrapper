@@ -3,8 +3,13 @@
 # - perform any track-specific tasks
 
 function __exercism__download
-    set out (command exercism download $argv); or return 1
+    set out (command exercism download $argv 2>&1)
+    set rc $status
     printf "%s\n" $out
+    if test $rc -ne 0
+        set out (string match -r -g "directory '(.+?)' already exists" $out)
+        or return 1
+    end
     if test -d $out[-1]
         cd $out[-1]
         switch $PWD
