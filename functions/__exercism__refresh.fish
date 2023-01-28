@@ -1,10 +1,20 @@
-# re-download the current exercise
-# - does not rely on presence of .exercism/config.json
-# - if you're in the wrong dir, `exercism download` will error
-
 function __exercism__refresh
-    argparse --name='exercism refresh' 'all' -- $argv
+    set help 'Usage: exercism refresh [options]
+
+Re-download the current solution.
+
+Options
+    --all   Refresh all track solutions.
+
+This is based on your current directory, since there may be no metadata.'
+
+    argparse --name='exercism refresh' 'h/help' 'all' -- $argv
     or return 1
+
+    if set -q _flag_help
+        echo $help
+        return
+    end
 
     if set -q _flag_all
         __exercism__in_track_root; or return 1

@@ -1,6 +1,17 @@
-# show all exercises in this track that have not been downloaded
 
 function __exercism__missing
+    set help 'Usage: exercism missing
+
+Show all exercises in this track that have not been downloaded.'
+
+    argparse --name="exercism dev" --stop-nonopt 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo $help
+        return
+    end
+
     __exercism__in_track_root; or return 1
     set track (basename $PWD)
 

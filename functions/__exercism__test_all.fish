@@ -1,7 +1,18 @@
-# test every downloaded exercise in the track
-# - writes a "report" into the track's parent directory
 
 function __exercism__test_all
+    set help 'Usage: exercism test-all
+
+Test every downloaded exercise in the track.
+Writes a "report" into the track\'s parent directory.'
+
+    argparse --name="exercism test-all" --stop-nonopt 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help; or test (count $argv) -eq 0
+        echo $help
+        return
+    end
+
     __exercism__in_track_root; or return 1
     set root $PWD
     set track (basename $root)

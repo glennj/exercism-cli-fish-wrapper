@@ -4,6 +4,24 @@
 #   before I found `pnpm`
 
 function __exercism__cleanup
+    set help 'Usage: exercism cleanup
+
+From the root of a track directory, recursively remove build artifacts.
+
+Implemented for
+- javascript, typescript
+- java, groovy, kotlin
+- nim
+- wren'
+
+    argparse --name="exercism cleanup" --stop-nonopt 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo $help
+        return
+    end
+
     __exercism__in_track_root; or return 1
     set root $PWD
     set track (basename $root)

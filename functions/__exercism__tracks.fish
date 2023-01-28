@@ -2,11 +2,23 @@
 # - https://exercism.org/journey 
 
 function __exercism__tracks
-    argparse --name="exercism tracks" 'j/joined' -- $argv
+    set help 'Usage: exercism tracks [options]
+
+List your progress through exercism\'s tracks.
+
+Options
+    -a|--all    Show all tracks; default is tracks you\'ve joined.'
+
+    argparse --name="exercism tracks" 'h/help' 'a/all' -- $argv
     or return 1
-    set -q _flag_joined
-      and set show_all false
-      or  set show_all true
+
+    if set -q _flag_help
+        echo $help
+        return
+    end
+
+    set show_all false
+    set -q _flag_all; and set show_all true
 
     __exercism__api_call "/tracks" \
     | jq -r --argjson show_all $show_all '

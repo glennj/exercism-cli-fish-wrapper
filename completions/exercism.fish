@@ -17,6 +17,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "cleanup" -d "Clean up bui
 complete -f -c exercism -n "__fish_use_subcommand" -a "dev" -d "Track development commands"
 complete -f -c exercism -n "__fish_use_subcommand" -a "enable-comments" -d "Enable comments for this exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "iterations" -d "Open the exercise's iterations in the browser"
+complete -f -c exercism -n "__fish_use_subcommand" -a "last-test-run" -d "Dump results of most recent test run"
 complete -f -c exercism -n "__fish_use_subcommand" -a "mentoring" -d "Mentoring info"
 complete -f -c exercism -n "__fish_use_subcommand" -a "metadata" -d "Show the metadata of the exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "missing" -d "List track exercises not downloaded"
@@ -27,7 +28,6 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "sync" -d "Sync an exercis
 complete -f -c exercism -n "__fish_use_subcommand" -a "switch" -d "Switch user.json"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test" -d "Run the test suite for the current exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test-all" -d "Refresh and retest every exercise for a track"
-complete -f -c exercism -n "__fish_use_subcommand" -a "test-run" -d "Dump results of most recent test run"
 complete -f -c exercism -n "__fish_use_subcommand" -a "tracks" -d "List all Exercism tracks"
 
 # and subcommand options

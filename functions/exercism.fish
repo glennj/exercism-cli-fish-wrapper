@@ -1,42 +1,12 @@
 function exercism
     switch $argv[1]
-        case help;            __exercism__help
-        case cleanup;         __exercism__cleanup
-        case download;        __exercism__download $argv[2..]
-        case enable_comments; __exercism__enable_comments
-        case iterations;      __exercism__iterations $argv[2..]
-        case metadata;        __exercism__metadata $argv[2..]
-        case missing;         __exercism__missing
-        case open;            __exercism__open
-        case publish;         __exercism__publish $argv[2..]
-        case refresh;         __exercism__refresh $argv[2..]
-        case submit;          __exercism__submit $argv[2..]
-        case switch;          __exercism__switch_user $argv[2..]
-        case sync;            __exercism__sync $argv[2..]
-        case test;            __exercism__test
-        case test-all;        __exercism__test_all
-        case test-run;        __exercism__test_run
-        case tracks;          __exercism__tracks $argv[2..]
-        case mentoring
-            switch $argv[2]
-                case queue;   __exercism__mentoring_queue $argv[3..]
-                case inbox;   __exercism__mentoring_inbox $argv[3..]
-                case discussion
-                    __exercism__mentoring_discussion $argv[3..]
-                case overview
-                    __exercism__mentoring_inbox
-                    __exercism__mentoring_queue
-                case '*'
-                    echo 'unknown subcommand' >&2
-                    return 1
-            end
-        case dev
-            switch $argv[2]
-                case unimplemented; __exercism__dev__unimplemented $argv[3..]
-                case '*'
-                    echo 'unknown subcommand' >&2
-                    return 1
-            end
+        case  cleanup dev download enable-comments \
+              help iterations last-test-run mentoring \
+              metadata missing open publish \
+              refresh submit switch sync \
+              test test-all tracks
+            set func "__exercism__"(string replace --all -- - _ $argv[1])
+            $func $argv[2..]
         case '*'
             command exercism $argv
     end

@@ -71,29 +71,15 @@ All gloriously tab-completed.
     - only some tracks currently supported (the ones I've joined)
 * `publish`
     - mark the exercise as complete, and enables comments on the public solution
-    - option `--no-comment` prevents enabling comments
 * `refresh`
     - re-download the current solution (based on $PWD)
     - I use this mainly to refresh the .exercism/ directory
-    - option `--all` to refresh all track solutions.
 * `iterations`
-    - list the iterations for a solution
-        - option `-p|--publish` allows specifying which iteration(s) are published
-            - bare `-p` publishes all iterations
-            - option `-p3` (or `--publish=3`) publishes the 3rd one
-            - [no space allowed between `-p` and the iteration][optional-arg] (this is a fish requirement)
-    - in the track root
-        - option `-a|--all` enables operations for all exercises
-        - option `-p|--publish` publishes all iterations for all exercises
-            - there is a sleep in the loop to avoid getting rate limited, so this can be slow.
-        - without `-p`
-            - option `-v|--verbose` will list iteration for each exercise
-            - without `-v`, count the number of unpublished iterations for each exercise.
-* `test-run`
+    - list the iterations for one or all solutions in a track
+* `last-test-run`
     - show the data about the test run of the last iteration.
 * `metadata`
     - a dump of the exercism backend's data about an exercise
-    - option `-i` to also dump iteration data
 
 ### subcommands to feed my obsession at keeping up-to-date solutions
 
@@ -101,10 +87,6 @@ All gloriously tab-completed.
     - updates the exercise
         - this is like clicking "See what's changed" in the "This exercise has been updated..." banner, then clicking the "Update exercise" button
     - requires the presence of the .exercism/ directory: you may need to `exercism refresh` first
-    - options:
-        - `--status` to display current sync status
-        - `--update` to perform the sync
-        - `--all` to consider all exercises in the track
 * `test-all`
     - run test suite for all downloaded exercise in a track
     - only some tracks currently supported (the ones I've joined)
@@ -116,7 +98,6 @@ All gloriously tab-completed.
     - not all tracks supported
 * `tracks`
     - list all Exercism tracks, and your progress through each.
-    - option `-j|--joined` to limit the output to only tracks you've joined.
 
 ### mentoring sub- and sub-subcommands
 
@@ -124,22 +105,11 @@ This subcommand is itself subdivided.
 
 * `mentoring queue`
     - show your current mentoring queue, sorted by age
-    - option `-c|--count` shows only the count of requests by track
 * `mentoring inbox`
     - list the discussions in your mentoring workspace
-    - options:
-        - `--inbox` shows the discussions awaiting you, the mentor
-        - `--student` shows discussions awaiting them
-        - `--finished` shows finished discussions
-        - `-o|--order` specifies the sort order: recent, oldest, student, exercise
-        - `-c|--count` shows only the count by status
-        - `-p|--pages` max number of pages to fetch (default 5)
 * `mentoring discussion`
     - display the posts of the discussion
     - it is necessary to call `mentoring inbox` first
-    - options: one of these is required:
-        - `-u|--uuid` to provide a uuid from the `inbox` output
-        - `-i|--index` to provide an index number
 
 ### track development
 

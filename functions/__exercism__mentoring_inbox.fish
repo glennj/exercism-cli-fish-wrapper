@@ -1,23 +1,31 @@
 # List my mentoring workspace
 # - https://exercism.org/mentoring/inbox
-#
-# option:
-#   --inbox     get "Inbox" discussions
-#   --student   get "Awaiting student" discussions
-#   --finished  get "Finished" discussions
-#   -o --order  sort the discussions
-#               one of ["recent", "oldest", "student", "exercise"]
-#   --max=n     return a max number of pages of discussions:
-#               example: most recently ended discussion
-#                 --finished --order=recent --num=1
 
 function __exercism__mentoring_inbox
+    set help 'Usage: exercism mentoring inbox [options]
+
+List your exercism workspace.
+
+Options
+    --inbox         Get "Inbox" discussions (default).
+    --student       Get "Awaiting student" discussions.
+    --finished      Get "Finished" discussions.
+    -c|--count      Only show the counts by workspace.
+    -o<choice>|--order=choice
+                    Sort the discussions.
+                    - one of ["recent", "oldest", "student", "exercise"]
+    -p<n>--pages=<n> 
+                    Return a max number of pages of discussions.
+
+Example: most recently ended discussion
+  --finished --order=recent --num=1'
+
     argparse --name="exercism mentoring inbox" \
         'h/help' 'inbox' 'student' 'finished' 'o/order=' 'c/count' 'p/pages=' 'dump' -- $argv
     or return 1
 
     if set -q _flag_help
-        echo "See: https://github.com/glennj/exercism-cli-fish-wrapper/blob/main/README.md#mentoring-sub--and-sub-subcommands"
+        echo $help
         return
     end
 
@@ -35,6 +43,7 @@ function __exercism__mentoring_inbox
     set box awaiting_mentor
     set -q _flag_student; and set box awaiting_student
     set -q _flag_finished; and set box finished
+    set box awaiting_mentor
 
     set order recent
     switch "$_flag_order"

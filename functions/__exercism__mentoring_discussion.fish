@@ -1,50 +1,79 @@
 # List a mentoring discussion
 # - https://exercism.org/mentoring/discussions/UUID
 #
-# option:
-#   -u --uuid   the discussion uuid (required)
-#   -i --index  the index of the discussion from the most recent
-#               `exercism mentoring inbox` call
-#
 # Using `html-to-text` to render post as text
 # https://www.npmjs.com/package/html-to-text
 
 function __exercism__mentoring_discussion
+    set help 'Usage: exercism mentoring discussion [options] <id>
+
+Display the posts of a mentoring discussion.
+
+The required argument <id> is either
+- the UUID of a discussion, or
+- the index number of the discussion from the most recent `exercism mentoring inbox` call
+
+Options:
+    --dump      Display the raw JSON response only.'
+
     argparse --name="exercism mentoring discussion" \
-        'u/uuid=' 'i/index=' 'dump' -- $argv
+        'dump' -- $argv
     or return 1
 
-    if set -q _flag_index
-        if not set -q __exercism_mentoring_discussions
-            echo "call `exercism mentoring inbox` first" >&2
-            return 1
-        end
-        if test $_flag_index -gt (count $__exercism_mentoring_discussions)
-            echo "no such uuid index" >&2
-            set -S __exercism_mentoring_discussions >&2
-            return 1
-        end
-        echo $__exercism_mentoring_discussions[$_flag_index] \
-        | read -d\v _flag_uuid exercise track_title student
-        echo $exercise on $track_title by $student
+    if test (count $argv) -eq 0
+        echo $help
+        return 1
+    end
+
+    function __exercism__mentoring_student_objective
+        echo $argv[1] on $argv[2] by $argv[3]
         set track (
             # not all track slugs are just the title lower-cased
             __exercism__api_call /tracks \
-            | jq --arg title $track_title -r '
+            | jq --arg title $argv[2] -r '
                 .tracks[] | select(.title == $title) | .slug
               '
         )
-        set uri "/mentoring/students/$student?track_slug=$track"
+        set uri "/mentoring/students/$argv[3]?track_slug=$track"
         set json (__exercism__api_call $uri)
         echo
         echo $json | jq -r '.student.track_objectives' | fold -s | sed 's/^/    /'
         echo
-    else if not set -q _flag_uuid
-        echo "missing --uuid flag" >&2
+    end
+
+    if string match -q --regex '^[[:xdigit:]]{32}$' $argv[1]
+        set uuid $argv[1]
+        for disc in $__exercism_mentoring_discussions
+            echo $disc | read -d\v _uuid exercise track_title student
+            if test $_uuid = $argv[1]
+                break
+            end
+            set -e exercise track_title student
+        end
+    else if string match -q --regex '^[[:digit:]]+$' $argv[1]
+        if not set -q __exercism_mentoring_discussions
+            echo "call `exercism mentoring inbox` first" >&2
+            return 1
+        end
+        if test $argv[1] -gt (count $__exercism_mentoring_discussions)
+            echo "no such uuid index" >&2
+            set -S __exercism_mentoring_discussions >&2
+            return 1
+        end
+        echo $__exercism_mentoring_discussions[$argv[1]] \
+        | read -d\v uuid exercise track_title student
+    end
+
+    if not set -q uuid
+        echo $help
         return 1
     end
 
-    set uri "/mentoring/discussions/$_flag_uuid"
+    if set -q exercise
+        __exercism__mentoring_student_objective $exercise $track_title $student
+    end
+
+    set uri "/mentoring/discussions/$uuid"
     set json (__exercism__api_call "$uri/posts")
     if set -q _flag_dump
         echo $json | jq .

@@ -1,9 +1,16 @@
-# Dump the solution's most recent test run
-#
-# options:
-#   n/a
+function __exercism__last_test_run
+    set help 'Usage: exercism last-test-run
 
-function __exercism__test_run
+Dump the solution\'s most recent test run.'
+
+    argparse --name="exercism last-test-run" 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo $help
+        return
+    end
+
     __exercism__has_metadata; or return 1
     set uri (
         exercism metadata -i \

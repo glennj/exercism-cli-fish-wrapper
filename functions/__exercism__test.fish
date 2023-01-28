@@ -6,6 +6,23 @@
 #   n/a
 
 function __exercism__test
+    set help 'Usage: exercism test
+
+Run the tests for this exercise.'
+
+    argparse --name="exercism test" 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo $help
+        echo
+        echo 'Implemented for these tracks:'
+        for file in (status dirname)/__exercism__test__*.fish
+            string match -g --regex '__test__(.+)\.fish' $file
+        end | paste - - - - | column -t | sed 's/^/    /'
+        return
+    end
+
     __exercism__has_metadata; or return 1
 
     set info (jq -r '.track, .exercise' .exercism/metadata.json)

@@ -1,15 +1,24 @@
-# Info about a solution's iterations
-#
-# options:
-#   -p --publish         : publish all iterations of this solution
-#   -pidx --publish=idx  : publish a specific iteration index
-#                          - short option requires no space
-#                          - long option requires equal sign
-#                          - see https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
-
 function __exercism__iterations
-    argparse --name="exercism iterations" 'p/publish=?' 'a/all' 'v/verbose' -- $argv
+    set help 'Usage: exercism iterations [options]
+
+Information about a solution\'s iterations.
+
+Options
+    -p|--publish         Publish all iterations of this solution
+    -pidx|--publish=idx  Publish a specific iteration index
+                         - short option requires no space
+                         - long option requires equal sign
+                         - see https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
+    -a|--all             
+    -v|--verbose         Extra verbosity.'
+
+    argparse --name="exercism iterations" 'h/help' 'p/publish=?' 'a/all' 'v/verbose' -- $argv
     or return 1
+
+    if set -q _flag_help
+        echo $help
+        return
+    end
 
     if __exercism__in_track_root 2>/dev/null
         if not set -q _flag_all

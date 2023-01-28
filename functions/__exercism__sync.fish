@@ -1,9 +1,16 @@
-# Sync: update an out-of-date solution.
-# - on the website, this is clicking "See what's changed" in the 
-#   "This exercise has been updated..." banner, then clicking the
-#   "Update exercise" button
-
 function __exercism__sync
+    set help 'Usage: exercism sync [options]
+
+Updates an out-of-date solution.
+This is like, on the website, clicking "See what\'s changed" in the 
+"This exercise has been updated..." banner, then clicking the
+"Update exercise" button
+
+Options
+    --status    Display the current sync status of an exercise.
+    --update    Perform the sync.
+    --all       Consider all the exercises in the track.'
+
     set opts 'h/help' \
              's/status' \
              'u/update' \
@@ -12,7 +19,7 @@ function __exercism__sync
     or return 1
 
     if set -q _flag_help
-        echo "See: https://github.com/glennj/exercism-cli-fish-wrapper/blob/main/README.md#subcommands-to-feed-my-obsession-at-keeping-up-to-date-solutions"
+        echo $help
         return
     end
 

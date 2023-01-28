@@ -2,17 +2,29 @@
 # - https://exercism.org/mentoring/queue
 
 function __exercism__mentoring_queue
+    set help 'Usage: exercism mentoring queue [-c|--count]
+
+Display your mentoring queue.
+
+Options
+    -c|--count  List the counts of mentoring requests by track.'
+
     argparse --name='exercism mentoring queue' \
-        'c/count' -- $argv
+        'c/count' 'h/help' -- $argv
     or return 1
 
-    set tracks (__exercism__api_call /mentoring/tracks/mentored)
+    if set -q _flag_help
+        echo $help
+        return
+    end
+
+    set tracks_mentored (__exercism__api_call /mentoring/tracks/mentored)
     if set -q _flag_count
-        echo $tracks \
+        echo $tracks_mentored \
         | jq -r '.tracks[] | [.slug, .num_solutions_queued] | @csv' \
         | mlr --c2p --barred --implicit-csv-header label Track,Count
     else
-        set slugs (echo $tracks | jq -r '.tracks[] | .slug')
+        set slugs (echo $tracks_mentored | jq -r '.tracks[] | .slug')
         echo "Queued on your tracks: "(string join ", " $slugs)
 
         __exercism__api_call "/mentoring/requests" \
