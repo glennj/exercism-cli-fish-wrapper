@@ -4,7 +4,7 @@
 # Using `html-to-text` to render post as text
 # https://www.npmjs.com/package/html-to-text
 
-function __exercism__mentoring_discussion
+function __exercism__mentoring__discussion
     set help 'Usage: exercism mentoring discussion [options] <id>
 
 Display the posts of a mentoring discussion.

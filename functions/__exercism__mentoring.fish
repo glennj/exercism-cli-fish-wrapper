@@ -18,13 +18,13 @@ Mentoring subcommands.
 
     switch $argv[1]
         case help;    echo $help
-        case queue;   __exercism__mentoring_queue $argv[2..]
-        case inbox;   __exercism__mentoring_inbox $argv[2..]
+        case queue;   __exercism__mentoring__queue $argv[2..]
+        case inbox;   __exercism__mentoring__inbox $argv[2..]
         case discussion
-            __exercism__mentoring_discussion $argv[2..]
+            __exercism__mentoring__discussion $argv[2..]
         case overview
-            __exercism__mentoring_inbox
-            __exercism__mentoring_queue
+            __exercism__mentoring__inbox
+            __exercism__mentoring__queue
         case '*'
             echo 'unknown subcommand' >&2
             return 1

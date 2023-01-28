@@ -1,7 +1,7 @@
 # List my mentoring workspace
 # - https://exercism.org/mentoring/inbox
 
-function __exercism__mentoring_inbox
+function __exercism__mentoring__inbox
     set help 'Usage: exercism mentoring inbox [options]
 
 List your exercism workspace.

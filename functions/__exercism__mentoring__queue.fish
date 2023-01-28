@@ -1,7 +1,7 @@
 # List my current mentoring queue
 # - https://exercism.org/mentoring/queue
 
-function __exercism__mentoring_queue
+function __exercism__mentoring__queue
     set help 'Usage: exercism mentoring queue [-c|--count]
 
 Display your mentoring queue.
