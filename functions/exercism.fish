@@ -30,6 +30,13 @@ function exercism
                     echo 'unknown subcommand' >&2
                     return 1
             end
+        case dev
+            switch $argv[2]
+                case unimplemented; __exercism__dev__unimplemented $argv[3..]
+                case '*'
+                    echo 'unknown subcommand' >&2
+                    return 1
+            end
         case '*'
             command exercism $argv
     end

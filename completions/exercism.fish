@@ -14,6 +14,7 @@ end
 
 # Now, add the additional subcommands for completion
 complete -f -c exercism -n "__fish_use_subcommand" -a "cleanup" -d "Clean up build artifacts (some tracks)"
+complete -f -c exercism -n "__fish_use_subcommand" -a "dev" -d "Track development commands"
 complete -f -c exercism -n "__fish_use_subcommand" -a "enable-comments" -d "Enable comments for this exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "iterations" -d "Open the exercise's iterations in the browser"
 complete -f -c exercism -n "__fish_use_subcommand" -a "mentoring" -d "Mentoring info"
@@ -51,3 +52,6 @@ complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l finished -d "l
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s p -l pages -d "how many pages to fetch"
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s o -l order -r -a "recent oldest student exercise" -k -d "sort order"
 complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -s u -l uuid -d "the discussion id"
+
+# dev sub-subcommands
+complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a unimplemented -d "List unimplemented exercises"

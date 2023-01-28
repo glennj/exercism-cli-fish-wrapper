@@ -141,6 +141,11 @@ This subcommand is itself subdivided.
         - `-u|--uuid` to provide a uuid from the `inbox` output
         - `-i|--index` to provide an index number
 
+### track development
+
+* `dev unimplemented`
+    - lists unimplemented, foregone or deprecated exercises.
+
 ## fish setup
 
 Add to `~/.config/fish/config.fish`:
