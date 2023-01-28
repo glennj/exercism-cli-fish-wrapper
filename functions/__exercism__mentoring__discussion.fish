@@ -43,24 +43,25 @@ Options:
 
     if string match -q --regex '^[[:xdigit:]]{32}$' $argv[1]
         set uuid $argv[1]
-        for disc in $__exercism_mentoring_discussions
+        for disc in $__EXERCISM__MENTORING_DISCUSSIONS
             echo $disc | read -d\v _uuid exercise track_title student
-            if test $_uuid = $argv[1]
+            if test $_uuid = $uuid
                 break
             end
             set -e exercise track_title student
         end
     else if string match -q --regex '^[[:digit:]]+$' $argv[1]
-        if not set -q __exercism_mentoring_discussions
+        if not set -q __EXERCISM__MENTORING_DISCUSSIONS
+           or test (count $__EXERCISM__MENTORING_DISCUSSIONS) -eq 0
+                echo "call `exercism mentoring inbox` first" >&2
+                return 1
+        end
+        if test $argv[1] -gt (count $__EXERCISM__MENTORING_DISCUSSIONS)
+            echo "invalid index" >&2
             echo "call `exercism mentoring inbox` first" >&2
             return 1
         end
-        if test $argv[1] -gt (count $__exercism_mentoring_discussions)
-            echo "no such uuid index" >&2
-            set -S __exercism_mentoring_discussions >&2
-            return 1
-        end
-        echo $__exercism_mentoring_discussions[$argv[1]] \
+        echo $__EXERCISM__MENTORING_DISCUSSIONS[$argv[1]] \
         | read -d\v uuid exercise track_title student
     end
 

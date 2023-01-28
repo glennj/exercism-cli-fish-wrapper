@@ -56,7 +56,7 @@ Example: most recently ended discussion
     end
 
     # remember the uuids for the next `exercism mentoring discussion` call
-    set -g __exercism_mentoring_discussions
+    set -g __EXERCISM__MENTORING_DISCUSSIONS
 
     set current 1
     while true
@@ -117,7 +117,7 @@ Example: most recently ended discussion
         set title (string split -f 3 , $line | string trim -c '"')
         set track (string split -f 2 , $line | string trim -c '"')
         set student (string split -f 4 , $line | string trim -c '"')
-        set __exercism_mentoring_discussions $__exercism_mentoring_discussions (
+        set __EXERCISM__MENTORING_DISCUSSIONS $__EXERCISM__MENTORING_DISCUSSIONS (
             string join \v $uuid $title $track $student
         )
         echo $line
