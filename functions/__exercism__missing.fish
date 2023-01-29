@@ -4,7 +4,7 @@ function __exercism__missing
 
 Show all exercises in this track that have not been downloaded.'
 
-    argparse --name="exercism missing" --stop-nonopt 'h/help' -- $argv
+    argparse --name="exercism missing" 'h/help' -- $argv
     or return 1
 
     if set -q _flag_help

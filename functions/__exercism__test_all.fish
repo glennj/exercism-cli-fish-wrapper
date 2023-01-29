@@ -5,7 +5,7 @@ function __exercism__test_all
 Test every downloaded exercise in the track.
 Writes a "report" into the track\'s parent directory.'
 
-    argparse --name="exercism test-all" --stop-nonopt 'h/help' -- $argv
+    argparse --name="exercism test-all" 'h/help' -- $argv
     or return 1
 
     if set -q _flag_help; or test (count $argv) -eq 0

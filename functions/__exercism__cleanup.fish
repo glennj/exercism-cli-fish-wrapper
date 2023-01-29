@@ -14,7 +14,7 @@ Implemented for
 - nim
 - wren'
 
-    argparse --name="exercism cleanup" --stop-nonopt 'h/help' -- $argv
+    argparse --name="exercism cleanup" 'h/help' -- $argv
     or return 1
 
     if set -q _flag_help
