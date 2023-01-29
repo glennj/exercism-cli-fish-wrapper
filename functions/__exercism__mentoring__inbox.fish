@@ -43,7 +43,6 @@ Example: most recently ended discussion
     set box awaiting_mentor
     set -q _flag_student; and set box awaiting_student
     set -q _flag_finished; and set box finished
-    set box awaiting_mentor
 
     set order recent
     switch "$_flag_order"
