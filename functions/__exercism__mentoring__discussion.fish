@@ -14,13 +14,15 @@ The required argument <id> is either
 - the index number of the discussion from the most recent `exercism mentoring inbox` call
 
 Options:
-    --dump      Display the raw JSON response only.'
+    --end          End the discussion.
+    --post <msg>   Add a new post to the discussion
+    --dump         Display the raw JSON response only.'
 
     argparse --name="exercism mentoring discussion" \
-        'dump' -- $argv
+        'h/help' 'dump' 'end' 'post=' -- $argv
     or return 1
 
-    if test (count $argv) -eq 0
+    if set -q _flag_help; or test (count $argv) -eq 0
         echo $help
         return 1
     end
@@ -70,6 +72,21 @@ Options:
         return 1
     end
 
+    if set -q _flag_post
+        set uri "/mentoring/discussions/$uuid/posts"
+        set data (jq -nc --arg content $_flag_post '$ARGS.named')
+        echo "Posting '$data' to '$uri'"
+        #read -p "__exercism__prompt_yn 'Is this OK'" ans
+        set ans (__exercism__prompt_yn 'Is this OK')
+        switch (string trim (string lower $ans))
+            case 'y*'
+                #__exercism__api_call --verbose -X POST -H 'Content-Type: application/json' --data $data $uri
+                set response (__exercism__api_call --verbose -X POST -H 'Content-Type: application/json' --data $data $uri)
+                exercism mentoring discussion $uuid
+        end
+        return
+    end
+
     if set -q exercise
         __exercism__mentoring_student_objective $exercise $track_title $student
     end
@@ -116,4 +133,14 @@ Options:
           end
         end
       '
+
+    if set -q _flag_end
+        #read -p '__exercism__prompt_yn "You\'re ending the discussion. Are you sure"' ans
+        set ans (__exercism__prompt_yn "You\'re ending the discussion. Are you sure")
+        switch (string trim (string lower $ans))
+            case 'y*'
+                echo OK ending...
+                set json (__exercism__api_call -X PATCH "$uri/finish")
+        end
+    end
 end

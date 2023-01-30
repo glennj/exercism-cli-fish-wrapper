@@ -110,6 +110,7 @@ This subcommand is itself subdivided.
 * `mentoring discussion`
     - display the posts of the discussion
     - it is necessary to call `mentoring inbox` first
+    - options exist to post to the thread, and to end the discussion.
 
 ### track development
 
