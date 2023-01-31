@@ -5,7 +5,7 @@ Mentoring subcommands.
 
   queue       Show your mentoring queue
   inbox       List your mentoring workspace.
-  overview    Both of the above actions.
+  overview    Your notifications, queue and inbox.
   discussion  Display the posts of a mentoring session.'
 
     argparse --name="exercism mentoring" --stop-nonopt 'h/help' -- $argv
@@ -23,8 +23,9 @@ Mentoring subcommands.
         case discussion
             __exercism__mentoring__discussion $argv[2..]
         case overview
-            __exercism__mentoring__inbox
+            __exercism__notifications
             __exercism__mentoring__queue
+            __exercism__mentoring__inbox
         case '*'
             echo 'unknown subcommand' >&2
             return 1

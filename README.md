@@ -98,6 +98,8 @@ All gloriously tab-completed.
     - not all tracks supported
 * `tracks`
     - list all Exercism tracks, and your progress through each.
+* `notifications
+    - list recent notifications
 
 ### mentoring sub- and sub-subcommands
 
@@ -111,8 +113,8 @@ This subcommand is itself subdivided.
     - display the posts of the discussion
     - it is necessary to call `mentoring inbox` first
     - options exist to post to the thread, and to end the discussion.
-* `notifications
-    - list recent notifications
+* `mentoring overview`
+    - display your unread notifications, mentoring queue and inbox.
 
 ### track development
 
