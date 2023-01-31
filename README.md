@@ -111,6 +111,8 @@ This subcommand is itself subdivided.
     - display the posts of the discussion
     - it is necessary to call `mentoring inbox` first
     - options exist to post to the thread, and to end the discussion.
+* `notifications
+    - list recent notifications
 
 ### track development
 
