@@ -22,6 +22,6 @@ Option
     and printf 'Solution published to\n\n    %s\n\n' (echo $json | jq -r .solution.public_url)
     and begin
         not set -q _flag_no_comment
-        and exercism enable_comments
+        and exercism enable-comments
     end
 end
