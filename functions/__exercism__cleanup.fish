@@ -49,6 +49,10 @@ Implemented for
             find . -mindepth 2 -maxdepth 2 \
                    -name wren_modules -type d \
                    -print -exec rm -rf '{}' ';'
+        case fsharp
+            find . -mindepth 2 -maxdepth 2 \
+                   \( -name bin -o -name obj \) -type d \
+                   -print -exec rm -rf '{}' ';'
         case '*'
             echo "don't know how to cleanup the $track track"
     end
