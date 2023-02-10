@@ -36,7 +36,7 @@ Options:
                 .tracks[] | select(.title == $title) | .slug
               '
         )
-        set uri "/mentoring/students/$argv[3]?track_slug=$track"
+        set uri "mentoring/students/$argv[3]?track_slug=$track"
         set json (__exercism__api_call $uri)
         echo
         echo $json | jq -r '.student.track_objectives' | fold -s | sed 's/^/    /'
@@ -73,7 +73,7 @@ Options:
     end
 
     if set -q _flag_post
-        set uri "/mentoring/discussions/$uuid/posts"
+        set uri "mentoring/discussions/$uuid/posts"
         set data (jq -nc --arg content $_flag_post '$ARGS.named')
         echo "Posting '$data' to '$uri'"
         #read -p "__exercism__prompt_yn 'Is this OK'" ans
@@ -81,7 +81,8 @@ Options:
         switch (string trim (string lower $ans))
             case 'y*'
                 #__exercism__api_call --verbose -X POST -H 'Content-Type: application/json' --data $data $uri
-                set response (__exercism__api_call --verbose -X POST -H 'Content-Type: application/json' --data $data $uri)
+                set response (__exercism__api_call -X POST -H 'Content-Type: application/json' --data $data $uri)
+                echo
                 exercism mentoring discussion $uuid
         end
         return
@@ -91,7 +92,7 @@ Options:
         __exercism__mentoring_student_objective $exercise $track_title $student
     end
 
-    set uri "/mentoring/discussions/$uuid"
+    set uri "mentoring/discussions/$uuid"
     set json (__exercism__api_call "$uri/posts")
     if set -q _flag_dump
         echo $json | jq .
@@ -99,6 +100,12 @@ Options:
     end
 
     echo "https://exercism.org$uri"
+
+    set errmsg (echo $json | jq -r '.error.message // ""')
+    if test -n $errmsg
+        echo $errmsg >&2
+        return 1
+    end
 
     # Clearly, ruby can do what I'm using jq for here,
     # but I've already got that `duration` function, so ...

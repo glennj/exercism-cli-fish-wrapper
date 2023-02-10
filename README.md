@@ -98,8 +98,13 @@ All gloriously tab-completed.
     - not all tracks supported
 * `tracks`
     - list all Exercism tracks, and your progress through each.
-* `notifications
+
+### commands related to your activity on exercism
+
+* `notifications`
     - list recent notifications
+* `reputation`
+    - recently awarded reputation
 
 ### mentoring sub- and sub-subcommands
 

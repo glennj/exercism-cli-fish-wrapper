@@ -21,19 +21,23 @@ Additional commands for interacting with solutions
   last-test-run         Data about the most recent test run.
   metadata              Dump exercism\'s data.
 
-Subcommands for keeping up-to-date solutions
+Commands for keeping up-to-date solutions
   sync                  Update the exercises for upstream changes.
   test-all              Test all downloaded exercises for a track.
   missing               List exercises not downloaded for a track.
   cleanup               Cleanup build artifacts.
   tracks                List exercism tracks and your progress.
 
+Commands relating to your profile and activity
+  notifications         List recent exercism notifications.
+  reputation            Show your recent awards of reputation.
+
 Mentoring subcommands
   mentoring queue       Show your mentoring queue.
   mentoring inbox       List your mentoring workspace.
   mentoring discussion  Display the posts of a mentoring session.
 
-Track development
+Track development (WIP)
   dev unimplemented     List the unimplemented practice exercises.
 
 Use `command exercism help` for help about the CLI itself.'
