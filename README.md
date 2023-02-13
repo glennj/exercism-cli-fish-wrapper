@@ -143,7 +143,7 @@ set -e exercism_wrapper_home
 
 ## Tools used herein
 
-- [exercism][exercism] of course!
+- [exercism][exercism] and [fish][fish] of course!
 - curl
 - [jq][jq]
 - [miller][miller]
@@ -156,6 +156,7 @@ set -e exercism_wrapper_home
 
 
 [exercism]: https://exercism.org/docs/using/solving-exercises/working-locally
+[fish]: https://fishshell.com
 [jq]: https://stedolan.github.io/jq/
 [miller]: https://miller.readthedocs.io/en/latest/
 [optional-arg]: https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
