@@ -12,8 +12,13 @@ Dump the solution\'s most recent test run.'
     end
 
     __exercism__has_metadata; or return 1
+    set json (exercism metadata -i)
+    if ! begin; echo $json | jq 'if has("error") then ("" | halt_error) else empty end'; end
+        echo $json | jq -r .error.message
+        return 1
+    end
     set uri (
-        exercism metadata -i \
+        echo $json \
         | jq -r '
             .solution.uuid as $soln |
             .iterations[-1].submission_uuid as $subm |
