@@ -10,7 +10,7 @@ function __exercism__test
 
 Run the tests for this exercise.'
 
-    argparse --name="exercism test" 'h/help' -- $argv
+    argparse --ignore-unknown --name="exercism test" 'h/help' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -20,22 +20,27 @@ Run the tests for this exercise.'
         for file in (status dirname)/__exercism__test__*.fish
             string match -g --regex '__test__(.+)\.fish' $file
         end | paste - - - - | column -t | sed 's/^/    /'
+        echo
+        echo 'Go exercises can take a `--bench` option to run benchmarks.'
         return
     end
 
     __exercism__has_metadata; or return 1
 
-    set info (jq -r '.track, .exercise' .exercism/metadata.json)
-    set track $info[1]
-    set slug  $info[2]
+    jq -r '.track, .exercise' .exercism/metadata.json | begin
+        read track
+        read slug
+    end
 
     set func __exercism__test__(string replace --all -- - _ $track)
     if not test -f (status dirname)/$func.fish
         echo "Don't know how to test the $track track."
         return 2
     end
+    functions -q $func
+    or source (status dirname)/$func.fish
 
-    $func --track=$track $slug
+    $func --track=$track $argv $slug 
 end
 
 function __echo_and_execute

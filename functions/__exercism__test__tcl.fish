@@ -1,5 +1,5 @@
 function __exercism__test__tcl
-    argparse t/track= -- $argv
+    argparse --ignore-unknown t/track= -- $argv
     __exercism__test__validate_runner $_flag_track tclsh; or return 1
 
     set verbosity "configure -verbose {body error usec}"

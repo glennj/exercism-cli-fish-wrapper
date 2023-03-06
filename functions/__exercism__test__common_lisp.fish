@@ -1,5 +1,5 @@
 function __exercism__test__common_lisp
-    argparse t/track= -- $argv
+    argparse --ignore-unknown t/track= -- $argv
     __exercism__test__validate_runner $_flag_track sbcl; or return 1
     set slug $argv[1]
     __echo_and_execute \

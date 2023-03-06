@@ -1,5 +1,5 @@
 function __exercism__test__wren
-    argparse t/track= -- $argv
+    argparse --ignore-unknown t/track= -- $argv
     __exercism__test__validate_runner $_flag_track wrenc; or return 1
     set slug $argv[1]
     set spec $slug.spec.wren
