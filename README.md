@@ -69,6 +69,9 @@ All gloriously tab-completed.
 * `test`
     - run test suite for this exercise
     - only some tracks currently supported (the ones I've joined)
+* `check`
+    - run formatters and/or linters for this exercise
+    - only some tracks currently supported
 * `publish`
     - mark the exercise as complete, and enables comments on the public solution
 * `refresh`

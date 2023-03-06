@@ -15,6 +15,7 @@ Commands that override or augment CLI commands:
 
 Additional commands for interacting with solutions
   test                  Run the tests.
+  check                 Execute any configured formatters and linters.
   publish               Mark the exercise as complete.
   refresh               Re-download the solution.
   iterations            List the submitted iterations.
@@ -36,6 +37,7 @@ Mentoring subcommands
   mentoring queue       Show your mentoring queue.
   mentoring inbox       List your mentoring workspace.
   mentoring discussion  Display the posts of a mentoring session.
+  mentoring overview    Show notifications, queue and inbox.
 
 Track development (WIP)
   dev unimplemented     List the unimplemented practice exercises.

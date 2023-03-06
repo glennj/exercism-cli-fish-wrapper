@@ -29,6 +29,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "reputation" -d "Show rece
 complete -f -c exercism -n "__fish_use_subcommand" -a "sync" -d "Sync an exercise so it is up-to-date"
 complete -f -c exercism -n "__fish_use_subcommand" -a "switch-user" -d "Switch user.json"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test" -d "Run the test suite for the current exercise"
+complete -f -c exercism -n "__fish_use_subcommand" -a "check" -d "Run formatters/linters for the current exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test-all" -d "Refresh and retest every exercise for a track"
 complete -f -c exercism -n "__fish_use_subcommand" -a "tracks" -d "List all Exercism tracks"
 

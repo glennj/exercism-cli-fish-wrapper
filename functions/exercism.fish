@@ -3,7 +3,7 @@
 
 function exercism
     switch $argv[1]
-        case  cleanup dev download enable-comments enable_comments \
+        case  check cleanup dev download enable-comments enable_comments \
               help iterations last-test-run mentoring \
               metadata missing notifications open \
               publish refresh reputation submit switch-user \
