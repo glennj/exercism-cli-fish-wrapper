@@ -95,9 +95,7 @@ Example: most recently ended discussion
                     .value.exercise.title,
                     .value.student.handle,
                     (.value.updated_at | fromdateiso8601 | duration),
-                    .value.uuid,
-                    .value.is_finished,
-                    .value.is_unread
+                    .value.uuid
                   ]
                 | @csv
             '
@@ -121,7 +119,7 @@ Example: most recently ended discussion
             cat
         else
             mlr --c2p --barred --implicit-csv-header \
-                label "Num,Track,Exercise,Student,Posted,UUID,finished,unread" \
+                label "Num,Track,Exercise,Student,Posted,UUID" \
                 then put 'end {if (NR == 0) {print "No discussions '$box'"}}'
         end
     end
