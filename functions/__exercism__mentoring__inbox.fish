@@ -14,11 +14,12 @@ Options
     -o<choice>|--order=choice
                     Sort the discussions.
                     - one of ["recent", "oldest", "student", "exercise"]
-    -p<n>--pages=<n> 
+    -p<n>|--pages=<n> 
                     Return a max number of pages of discussions.
+    --dump          Output the raw JSON.
 
 Example: most recently ended discussion
-  --finished --order=recent --num=1'
+  --finished --order=recent'
 
     argparse --name="exercism mentoring inbox" \
         'h/help' 'inbox' 'student' 'finished' 'o/order=' 'c/count' 'p/pages=' 'dump' -- $argv
@@ -103,24 +104,22 @@ Example: most recently ended discussion
         test $current -ge $max; and break
         set current (math $current + 1)
     end \
-    | while read line
-        set uuid (string split -f 6 , $line | string trim -c '"')
-        set title (string split -f 3 , $line | string trim -c '"')
-        set track (string split -f 2 , $line | string trim -c '"')
-        set student (string split -f 4 , $line | string trim -c '"')
-        set __EXERCISM__MENTORING_DISCUSSIONS $__EXERCISM__MENTORING_DISCUSSIONS (
-            string join \v $uuid $title $track $student
-        )
-        echo $line
-      end \
-    | awk -F, -v OFS=, '{$1 = NR} 1' \
-    | begin
-        if set -q _flag_count; or set -q _flag_dump
-            cat
-        else
-            mlr --c2p --barred --implicit-csv-header \
-                label "Num,Track,Exercise,Student,Posted,UUID" \
-                then put 'end {if (NR == 0) {print "No discussions '$box'"}}'
-        end
+    | if set -q _flag_dump
+        less
+      else
+        while read line
+            set uuid (string split -f 6 , $line | string trim -c '"')
+            set title (string split -f 3 , $line | string trim -c '"')
+            set track (string split -f 2 , $line | string trim -c '"')
+            set student (string split -f 4 , $line | string trim -c '"')
+            set __EXERCISM__MENTORING_DISCUSSIONS $__EXERCISM__MENTORING_DISCUSSIONS (
+                string join \v $uuid $title $track $student
+            )
+            echo $line
+        end \
+        | awk -F, -v OFS=, '{$1 = NR} 1' \
+        | mlr --c2p --barred --implicit-csv-header \
+            label "Num,Track,Exercise,Student,Posted,UUID" \
+            then put 'end {if (NR == 0) {print "No discussions '$box'"}}'
     end
 end

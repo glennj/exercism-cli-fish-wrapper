@@ -60,6 +60,8 @@ complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l student -d "li
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l finished -d "list finished discussions"
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s p -l pages -d "how many pages to fetch"
 complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s o -l order -r -a "recent oldest student exercise" -k -d "sort order"
+complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -s c -l count -d "show count by mainbox"
+complete -f -c exercism -n "__fish_seen_subcommand_from inbox" -l dump -d "dump raw JSON"
 complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -l end -d "end the discussion"
 complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -l post -d "add a post to the discussion"
 
