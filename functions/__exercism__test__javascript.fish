@@ -1,5 +1,7 @@
 function __exercism__test__javascript
-    argparse --ignore-unknown t/track= -- $argv
+    argparse --ignore-unknown track= help -- $argv
+    set -q _flag_help; and return
+
     __exercism__test__validate_runner $_flag_track pnpm; or return 1
     set _sed sed
     # Homebrew on MacOS installs GNU sed as "gsed"

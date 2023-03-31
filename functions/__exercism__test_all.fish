@@ -8,7 +8,7 @@ Writes a "report" into the track\'s parent directory.'
     argparse --name="exercism test-all" 'h/help' -- $argv
     or return 1
 
-    if set -q _flag_help; or test (count $argv) -eq 0
+    if set -q _flag_help
         echo $help
         return
     end

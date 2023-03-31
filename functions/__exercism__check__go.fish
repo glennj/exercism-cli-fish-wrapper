@@ -6,9 +6,9 @@ function __exercism__check__go
 
     __echo_and_execute go fmt $solution
     echo
-    __echo_and_execute go vet $solution
+    __echo_and_execute go vet .
     echo
     command -q staticcheck
-    and __echo_and_execute staticcheck $solution
+    and __echo_and_execute staticcheck .
 
 end

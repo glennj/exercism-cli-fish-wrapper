@@ -1,6 +1,8 @@
 function __exercism__test__bash
-    argparse --ignore-unknown t/track= -- $argv
-    __exercism__test__validate_runner $_flag_t bats; or return 3
+    argparse --ignore-unknown track= help -- $argv
+    set -q _flag_help; and return
+
+    __exercism__test__validate_runner $_flag_track bats; or return 3
 
     # test all .bats files
     set -lx BATS_RUN_SKIPPED true
