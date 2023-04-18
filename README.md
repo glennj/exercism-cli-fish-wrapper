@@ -101,6 +101,8 @@ All gloriously tab-completed.
     - not all tracks supported
 * `tracks`
     - list all Exercism tracks, and your progress through each.
+* `exercises`
+    - list the exercises, and your progress, for a track.
 
 ### commands related to your activity on exercism
 

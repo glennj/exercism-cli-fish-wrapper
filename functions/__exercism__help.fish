@@ -28,6 +28,7 @@ Commands for keeping up-to-date solutions
   missing               List exercises not downloaded for a track.
   cleanup               Cleanup build artifacts.
   tracks                List exercism tracks and your progress.
+  exercises             List the exercises and progress for a track.
 
 Commands relating to your profile and activity
   notifications         List recent exercism notifications.

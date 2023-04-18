@@ -4,7 +4,7 @@
 function exercism
     switch $argv[1]
         case  check cleanup dev download enable-comments enable_comments \
-              help iterations last-test-run mentoring \
+              exercises help iterations last-test-run mentoring \
               metadata missing notifications open \
               publish refresh reputation submit switch-user \
               sync test test-all test_all tracks
