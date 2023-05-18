@@ -4,7 +4,7 @@ function __exercism__test__ballerina
     __exercism__test__validate_runner $_flag_t bal; or return 3
 
     find ./tests -name '*.bal' \
-                 -exec perl -i -pe 's{enable:\s*false}{//$&}' '{}' ';'
+                 -exec perl -i -pe 's{(^|\s)(enable:\s*false)}{$1//$2}' '{}' ';'
 
     __echo_and_execute bal test --offline
 end
