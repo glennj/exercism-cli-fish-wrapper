@@ -88,7 +88,8 @@ All gloriously tab-completed.
 
 * `sync`
     - updates the exercise
-        - this is like clicking "See what's changed" in the "This exercise has been updated..." banner, then clicking the "Update exercise" button
+        - this is like clicking "See what's changed" in the "This exercise has been updated..." banner, 
+          then clicking the "Update exercise" button
     - requires the presence of the .exercism/ directory: you may need to `exercism refresh` first
 * `test-all`
     - run test suite for all downloaded exercise in a track
@@ -103,6 +104,9 @@ All gloriously tab-completed.
     - list all Exercism tracks, and your progress through each.
 * `exercises`
     - list the exercises, and your progress, for a track.
+* `syllabus`
+    - create a `_concepts` directory for a track,
+      linking the Concept name to the exercise's README.
 
 ### commands related to your activity on exercism
 

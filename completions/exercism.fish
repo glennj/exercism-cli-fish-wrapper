@@ -33,6 +33,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "check" -d "Run formatters
 complete -f -c exercism -n "__fish_use_subcommand" -a "test-all" -d "Refresh and retest every exercise for a track"
 complete -f -c exercism -n "__fish_use_subcommand" -a "tracks" -d "List all Exercism tracks"
 complete -f -c exercism -n "__fish_use_subcommand" -a "exercises" -d "List all exercises in a track"
+complete -f -c exercism -n "__fish_use_subcommand" -a "syllabus" -d "Create a concepts directory for a track."
 
 # and subcommand options
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s p -l publish -d "specify which iterations to publish"
