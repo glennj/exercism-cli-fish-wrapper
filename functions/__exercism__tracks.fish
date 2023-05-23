@@ -7,9 +7,10 @@ function __exercism__tracks
 List your progress through exercism\'s tracks.
 
 Options
-    -a|--all    Show all tracks; default is tracks you\'ve joined.'
+    -a|--all    Show all tracks; default is tracks you\'ve joined.
+    --students  Show the number of students enrolled.'
 
-    argparse --name="exercism tracks" 'h/help' 'a/all' -- $argv
+    argparse --name="exercism tracks" 'h/help' 'a/all' 'students' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -19,6 +20,12 @@ Options
 
     set show_all false
     set -q _flag_all; and set show_all true
+    set labels Track,Joined,Concepts,Exercises,Progress 
+    set -q _flag_students; and set labels "$labels,Students"
+
+    # Having to query each slug page individually is slow.
+    # Show progress with dots.
+    set -q _flag_students; and printf . >&2
 
     __exercism__api_call "/tracks" \
     | jq -r --argjson show_all $show_all '
@@ -35,7 +42,26 @@ Options
         | select($show_all or .[1] == "yes")
         | @csv
     ' \
+    | if set -q _flag_students
+        while read -d , slug rest
+            printf . >&2
+            printf '%s,%s,"%s"\n' $slug $rest (__exercism__tracks__students $slug)
+        end
+        echo >&2
+    else
+        cat
+    end \
     | mlr --c2p --right --implicit-csv-header \
-        label Track,Joined,Concepts,Exercises,Progress \
+        label $labels \
         then sort -r Joined -nr Progress -f Track
+end
+
+function __exercism__tracks__students -a slug
+    if not type -q pup
+        echo "This uses pup to parse HTML: https://github.com/ericchiang/pup" >&2
+        return 1
+    end
+    curl -s https://exercism.org/tracks/(string replace -a '"' '' $slug) \
+    | pup 'div.students span text{}' \
+    | string match -r '\b[\d,]+\b'
 end

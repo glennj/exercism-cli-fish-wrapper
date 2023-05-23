@@ -50,6 +50,8 @@ complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s a -l all -d "sy
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s h -l help -d "help"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s s -l status -d "display sync status"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s u -l update -d "perform sync"
+complete -f -c exercism -n "__fish_seen_subcommand_from tracks" -s a -l all -d "show all tracks"
+complete -f -c exercism -n "__fish_seen_subcommand_from tracks" -l students -d "show student count"
 
 # mentoring sub-subcommands
 complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a queue -d "List my queue"
