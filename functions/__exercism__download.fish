@@ -3,6 +3,22 @@
 # - perform any track-specific tasks
 
 function __exercism__download
+    argparse --ignore-unknown --name="exercism download" \
+        't/track=' 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        set argv --help $argv
+    else if set -q _flag_track
+        set argv --track=$_flag_track $argv
+    else
+        if __exercism__in_track_root 2>/dev/null
+            set argv --track=(basename $PWD) $argv
+        else if __exercism__has_metadata >/dev/null
+            set argv --track=(jq -r '.track' ./.exercism/metadata.json) $argv
+        end
+    end
+
     set out (command exercism download $argv 2>&1)
     set rc $status
     printf "%s\n" $out

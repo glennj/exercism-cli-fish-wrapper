@@ -59,6 +59,7 @@ All gloriously tab-completed.
 
 * `download`
     - after downloading, cd to the solution directory
+    - you can omit the `--track` option if the function can figure it out
 * `submit`
     - with no arguments, uploads the solution file from .exercism/config.json
 * `open`
