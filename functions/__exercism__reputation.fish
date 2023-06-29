@@ -27,7 +27,7 @@ Options
         set json (__exercism__api_call reputation)
         set results (
             echo $json \
-            | jq -L (realpath (status dirname)/../lib) \
+            | TZ=UTC jq -L (realpath (status dirname)/../lib) \
                 --arg all "$_flag_all" \
                 -r '
                       include "duration";

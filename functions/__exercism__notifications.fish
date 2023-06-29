@@ -18,7 +18,7 @@ Options
 
     set results (
         __exercism__api_call /notifications \
-        | jq -L (realpath (status dirname)/../lib) \
+        | TZ=UTC jq -L (realpath (status dirname)/../lib) \
              --arg all "$_flag_all" \
              -r '
                   include "duration";

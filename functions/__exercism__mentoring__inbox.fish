@@ -86,7 +86,7 @@ Example: most recently ended discussion
             end >&2
 
             echo $json \
-            | jq -L (realpath (status dirname)/../lib) -r '
+            | TZ=UTC jq -L (realpath (status dirname)/../lib) -r '
                 include "duration";
                 .results
                 | to_entries[]

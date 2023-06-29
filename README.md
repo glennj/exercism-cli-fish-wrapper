@@ -158,11 +158,18 @@ set -e exercism_wrapper_home
 - [jq][jq]
 - [miller][miller]
     - to print tables with pretty boxes.
-- specific commands for testing on your track (see the [`test-all`][test-all] function)
 - for `mentoring discussions` rendering of posts:
     - ruby
     - [colorize][colorize] gem
     - [html-to-text][html-to-text]
+
+Assuming [fish][fish] and [Homebrew][brew] are already installed:
+```sh
+brew install exercism curl jq miller node
+brew install ruby ## if not already installed
+gem install colorize
+npm install --global html-to-text
+```
 
 
 [exercism]: https://exercism.org/docs/using/solving-exercises/working-locally
@@ -172,4 +179,4 @@ set -e exercism_wrapper_home
 [optional-arg]: https://fishshell.com/docs/current/cmds/argparse.html?highlight=parse#note-optional-arguments
 [colorize]: https://github.com/fazibear/colorize
 [html-to-text]: https://github.com/html-to-text/node-html-to-text
-[test-all]: ./functions/__exercism__test_all.fish
+[brew]: https://brew.sh

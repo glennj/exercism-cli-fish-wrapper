@@ -111,7 +111,7 @@ Options:
     # but I've already got that `duration` function, so ...
 
     echo $json \
-    | jq -L (realpath (status dirname)/../lib) -r '
+    | TZ=UTC jq -L (realpath (status dirname)/../lib) -r '
         include "duration";
         [
           .items[] |

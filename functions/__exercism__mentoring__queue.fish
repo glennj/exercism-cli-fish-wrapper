@@ -32,7 +32,8 @@ Options
         if set -q _flag_dump
             echo $json | jq .
         else
-            echo $json | jq -L (realpath (status dirname)/../lib) -r '
+            echo $json \
+            | TZ=UTC jq -L (realpath (status dirname)/../lib) -r '
                 include "duration";
                 .results
                 | to_entries[]
