@@ -36,6 +36,8 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "exercises" -d "List all e
 complete -f -c exercism -n "__fish_use_subcommand" -a "syllabus" -d "Create a concepts directory for a track."
 
 # and subcommand options
+complete -f -c exercism -n "__fish_seen_subcommand_from open" -l overview -d "open the exercise overview page"
+complete -f -c exercism -n "__fish_seen_subcommand_from open" -l community -d "open the exercise community solutions page"
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s p -l publish -d "specify which iterations to publish"
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s a -l all -d "publish all iterations"
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s a -l all -d "publish all iterations"
