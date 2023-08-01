@@ -5,14 +5,11 @@ function __exercism__test__fortran
     __exercism__test__validate_runner $_flag_track gfortran; or return 1
     __exercism__test__validate_runner $_flag_track cmake; or return 1
 
-    set cwd $PWD
-    if __exercism__has_metadata >/dev/null
-        mkdir -p build; and cd build
-        test -d ./testlib; or cmake -G "Unix Makefiles" ..
-    end
-    if string match -q '*/build' $PWD
-        make
-        and ctest -V
-    end
-    cd $cwd
+    __exercism__has_metadata; or return 1
+    mkdir -p build
+    cd build
+    test -d ./testlib; or cmake -G "Unix Makefiles" ..
+    make
+    and ctest -V
+    cd ..
 end

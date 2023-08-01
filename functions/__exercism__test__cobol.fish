@@ -8,11 +8,7 @@ function __exercism__test__cobol
         set test_dir (dirname $test_path)
         set test_file (basename $test_path)
         set files {$test_dir}/{,.}{$test_file}*
-        if begin
-            test (count $files) -gt 1
-            and not test -f ./ALLTESTS
-            or test $test_path -nt ./ALLTESTS
-        end
+        if test (count $files) -gt 1
             echo "Looks like you're editing $test_file: close it first"
             return 1
         end
