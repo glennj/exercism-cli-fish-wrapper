@@ -46,7 +46,7 @@ Options
             case ballerina
                 perl -i -pe 's{(^|\s)(enable:\s*false)}{$1//$2}' $test_files
             case c
-                perl -i -pe 's{\b(TEST_IGNORE)\b}{// $1}' $test_files
+                perl -i -pe 's{^(\s+)(TEST_IGNORE)\b}{$1// $2}' $test_files
             case crystal
                 perl -i -pe 's/\bpending\b/it/' $test_files
             case fsharp
