@@ -4,11 +4,13 @@
 
 function __exercism__download
     argparse --ignore-unknown --name="exercism download" \
-        't/track=' 'h/help' -- $argv
+        'uuid=' 't/track=' 'h/help' -- $argv
     or return 1
 
     if set -q _flag_help
         set argv --help $argv
+    else if set -q _flag_uuid
+        set argv --uuid=$_flag_uuid $argv
     else if set -q _flag_track
         set argv --track=$_flag_track $argv
     else

@@ -20,6 +20,7 @@ Options
 
     if set -q _flag_help
         echo $help
+        return 1
         # command exercism test --help
     end
 
@@ -38,10 +39,14 @@ Options
         type -q gsed; and set _sed gsed
 
         switch $track
+            case 8th
+                set -fx RUN_ALL_TESTS true
             case awk bash jq
                 set -fx BATS_RUN_SKIPPED true
             case ballerina
                 perl -i -pe 's{(^|\s)(enable:\s*false)}{$1//$2}' $test_files
+            case c
+                perl -i -pe 's{\b(TEST_IGNORE)\b}{// $1}' $test_files
             case crystal
                 perl -i -pe 's/\bpending\b/it/' $test_files
             case fsharp
@@ -66,6 +71,9 @@ Options
 
     # not covered by exercism CLI, or overriding, or adding extra behaviour
     switch $track
+        case 8th
+            8th test.8th
+            return $status
         case common-lisp
             __exercism__test__validate_runner $track sbcl; or return 1
             __echo_and_execute \

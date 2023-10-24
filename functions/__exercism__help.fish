@@ -18,6 +18,7 @@ Additional commands for interacting with solutions
   check                 Execute any configured formatters and linters.
   publish               Mark the exercise as complete.
   refresh               Re-download the solution.
+  square1               Reset the solution back to its initial contents.
   iterations            List the submitted iterations.
   last-test-run         Data about the most recent test run.
   metadata              Dump exercism\'s data.
@@ -30,6 +31,7 @@ Commands for keeping up-to-date solutions
   tracks                List exercism tracks and your progress.
   exercises             List the exercises and progress for a track.
   syllabus              Create a syllabus directory for a track.
+  by-exercise           Create a directory mapping exercises to tracks.
 
 Commands relating to your profile and activity
   notifications         List recent exercism notifications.

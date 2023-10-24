@@ -26,6 +26,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "open" -d "Open the exerci
 complete -f -c exercism -n "__fish_use_subcommand" -a "publish" -d "Mark as complete and enable comments"
 complete -f -c exercism -n "__fish_use_subcommand" -a "refresh" -d "Re-downloads a submitted exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "reputation" -d "Show recent exercism reputation awards"
+complete -f -c exercism -n "__fish_use_subcommand" -a "square1" -d "Reset the solution files back to their initial state"
 complete -f -c exercism -n "__fish_use_subcommand" -a "sync" -d "Sync an exercise so it is up-to-date"
 complete -f -c exercism -n "__fish_use_subcommand" -a "switch-user" -d "Switch user.json"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test" -d "Run the test suite for the current exercise"
@@ -34,6 +35,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "test-all" -d "Refresh and
 complete -f -c exercism -n "__fish_use_subcommand" -a "tracks" -d "List all Exercism tracks"
 complete -f -c exercism -n "__fish_use_subcommand" -a "exercises" -d "List all exercises in a track"
 complete -f -c exercism -n "__fish_use_subcommand" -a "syllabus" -d "Create a concepts directory for a track."
+complete -f -c exercism -n "__fish_use_subcommand" -a "by-exercise" -d "Create a directory mapping exercises to tracks."
 
 # and subcommand options
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l overview -d "open the exercise overview page"

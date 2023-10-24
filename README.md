@@ -78,6 +78,8 @@ All gloriously tab-completed.
 * `refresh`
     - re-download the current solution (based on $PWD)
     - I use this mainly to refresh the .exercism/ directory
+* `square1`
+    - Destroy your current solution (!) and reset it back to its initial contents
 * `iterations`
     - list the iterations for one or all solutions in a track
 * `last-test-run`
@@ -108,6 +110,9 @@ All gloriously tab-completed.
 * `syllabus`
     - create a `_concepts` directory for a track,
       linking the Concept name to the exercise's README.
+* `by-exercise`
+    - create a `_by_exercise` directory mapping exercises you've
+      completed to the tracks you've completed them in.
 
 ### commands related to your activity on exercism
 
