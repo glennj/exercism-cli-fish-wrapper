@@ -41,7 +41,7 @@ Writes a "report" into the track\'s parent directory.'
             test -d ./.exercism; or exercism refresh
             and exercism sync --update
             and exercism refresh
-            and exercism test
+            and exercism test --all
         end
         or set errs $errs $e
     end
