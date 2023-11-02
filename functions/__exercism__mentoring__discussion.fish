@@ -99,7 +99,7 @@ Options:
         return
     end
 
-    echo "https://exercism.org$uri"
+    echo "https://exercism.org/$uri"
 
     set errmsg (echo $json | jq -r '.error.message // ""')
     if test -n $errmsg

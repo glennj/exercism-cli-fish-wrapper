@@ -44,7 +44,7 @@ Options
                 set -fx BATS_RUN_SKIPPED true
             case ballerina
                 perl -i -pe 's{(^|\s)(enable:\s*false)}{$1//$2}' $test_files
-            case c
+            case c x86-64-assembly
                 perl -i -pe 's{^(\s+)(TEST_IGNORE)\b}{$1// $2}' $test_files
             case crystal
                 perl -i -pe 's/\bpending\b/it/' $test_files
@@ -73,8 +73,16 @@ Options
         case 8th
             8th test.8th
             return $status
+        case awk
+            set -q AWKPATH; and not contains . $AWKPATH; and set -fx AWKPATH $AWKPATH .
+            # proceed to command exercism test
         case common-lisp
-            if __exercism__test__validate_runner -o $track sbcl
+            if __exercism__test__validate_runner -o $track ros
+                # roswell https://roswell.github.io/
+                __echo_and_execute \
+                    ros run --load "$slug-test.lisp" \
+                            --eval "(uiop/image:quit (if ($slug-test:run-tests) 0 5))"
+            else if __exercism__test__validate_runner -o $track sbcl
                 # Steel Bank Common Lisp: http://www.sbcl.org/
                 __echo_and_execute \
                     sbcl --noinform \
@@ -156,6 +164,10 @@ Options
                     echo "added test verbosity"
                 end
             end
+            # proceed to command exercism test
+        case wren
+            __exercism__test__validate_runner $track wrenc; or return 1
+            wrenc package.wren install; or return 1
             # proceed to command exercism test
     end
 

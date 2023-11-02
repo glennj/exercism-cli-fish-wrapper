@@ -58,8 +58,9 @@ complete -f -c exercism -n "__fish_seen_subcommand_from tracks" -s a -l all -d "
 complete -f -c exercism -n "__fish_seen_subcommand_from tracks" -l students -d "show student count"
 
 # mentoring sub-subcommands
-complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a queue -d "List my queue"
-complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a inbox -d "List my inbox"
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a queue -d "list my queue"
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a request -d "show a mentoring request"
+complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a inbox -d "list my inbox"
 complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a discussion -d "show the discussion posts"
 complete -f -c exercism -n "__fish_seen_subcommand_from mentoring" -a overview -d "inbox and queue"
 complete -f -c exercism -n "__fish_seen_subcommand_from queue" -s c -l count -d "just show counts"

@@ -4,6 +4,7 @@ function __exercism__mentoring
 Mentoring subcommands.
 
   queue       Show your mentoring queue
+  request     Display a summary of a mentoring request from the queue
   inbox       List your mentoring workspace.
   overview    Your notifications, queue and inbox.
   discussion  Display the posts of a mentoring session.'
@@ -17,11 +18,11 @@ Mentoring subcommands.
     end
 
     switch $argv[1]
-        case help;    echo $help
-        case queue;   __exercism__mentoring__queue $argv[2..]
-        case inbox;   __exercism__mentoring__inbox $argv[2..]
-        case discussion
-            __exercism__mentoring__discussion $argv[2..]
+        case help;       echo $help
+        case queue;      __exercism__mentoring__queue $argv[2..]
+        case inbox;      __exercism__mentoring__inbox $argv[2..]
+        case discussion; __exercism__mentoring__discussion $argv[2..]
+        case request;    __exercism__mentoring__request $argv[2..]
         case overview
             __exercism__notifications
             __exercism__mentoring__queue

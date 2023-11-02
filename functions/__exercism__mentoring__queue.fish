@@ -25,13 +25,21 @@ Options
         | jq -r '.tracks[] | [.slug, .num_solutions_queued] | @csv' \
         | mlr --c2p --barred --implicit-csv-header label Track,Count
     else
+        # remember the data for the next `exercism mentoring request` call
+        set -g __EXERCISM__MENTORING_REQUESTS
+
         set slugs (echo $tracks_mentored | jq -r '.tracks[] | .slug')
         echo "Queued on your tracks: "(string join ", " $slugs)
 
         set json (__exercism__api_call "mentoring/requests")
+
+        set __EXERCISM__MENTORING_REQUESTS (echo $json | jq -c '.results[]')
+
         if set -q _flag_dump
             echo $json | jq .
         else
+            # TODO handle paginated response
+
             echo $json \
             | TZ=UTC jq -L (realpath (status dirname)/../lib) -r '
                 include "duration";
@@ -43,12 +51,12 @@ Options
                     .value.exercise_title,
                     .value.student_handle,
                     (.value.updated_at | fromdateiso8601 | duration),
-                    .value.uuid
+                    .value.url
                 ]
                 | @csv
             ' \
             | mlr --c2p --barred --implicit-csv-header \
-                label "Num,Track,Exercise,Student,Waiting,UUID" \
+                label "Num,Track,Exercise,Student,Waiting,URL" \
                 then put 'end {if (NR == 0) {print "Queue is empty"}}'
         end
     end

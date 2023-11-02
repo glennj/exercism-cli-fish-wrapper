@@ -127,6 +127,9 @@ This subcommand is itself subdivided.
 
 * `mentoring queue`
     - show your current mentoring queue, sorted by age
+* `mentoring request`
+    - display a summary of a mentoring request
+    - it is necessary to call `mentoring queue` first
 * `mentoring inbox`
     - list the discussions in your mentoring workspace
 * `mentoring discussion`
@@ -163,17 +166,18 @@ set -e exercism_wrapper_home
 - [jq][jq]
 - [miller][miller]
     - to print tables with pretty boxes.
+- [pup][pup] for parsing HTML (like jq for HTML)
 - for `mentoring discussions` rendering of posts:
     - ruby
     - [colorize][colorize] gem
-    - [html-to-text][html-to-text]
+    - [@html-to/text-cli][html-to-text] npm package
 
 Assuming [fish][fish] and [Homebrew][brew] are already installed:
 ```sh
 brew install exercism curl jq miller node
-brew install ruby ## if not already installed
 gem install colorize
-npm install --global html-to-text
+npm install --global '@html-to/text-cli'
+go install 'github.com/ericchiang/pup@latest'
 ```
 
 
@@ -185,3 +189,4 @@ npm install --global html-to-text
 [colorize]: https://github.com/fazibear/colorize
 [html-to-text]: https://github.com/html-to-text/node-html-to-text
 [brew]: https://brew.sh
+[pup]: https://github.com/ericchiang/pup
