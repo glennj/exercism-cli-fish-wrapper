@@ -142,6 +142,10 @@ Options
                 end
             end
             return 1
+        case kotlin
+            test -f ./gradlew
+            and chmod u+x ./gradlew
+            # proceed to command exercism test
         case perl5
             if test -f cpanfile
                 __exercism__test__validate_runner $track carton; or return 1
