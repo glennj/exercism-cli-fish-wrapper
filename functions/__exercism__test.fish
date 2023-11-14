@@ -77,31 +77,11 @@ Options
             set -q AWKPATH; and not contains . $AWKPATH; and set -fx AWKPATH $AWKPATH .
             # proceed to command exercism test
         case common-lisp
-            if __exercism__test__validate_runner -o $track ros
-                # roswell https://roswell.github.io/
-                __echo_and_execute \
-                    ros run --load "$slug-test.lisp" \
-                            --eval "(uiop/image:quit (if ($slug-test:run-tests) 0 5))"
-            else if __exercism__test__validate_runner -o $track sbcl
-                # Steel Bank Common Lisp: http://www.sbcl.org/
-                __echo_and_execute \
-                    sbcl --noinform \
-                         --load "$slug-test" \
-                         --eval "(exit :code (if ($slug-test:run-tests) 0 5))"
-            else if __exercism__test__validate_runner -o $track ccl
-                # Clozure CL: https://ccl.clozure.com/
-                __echo_and_execute \
-                    ccl --quiet \
-                        --load "$slug-test.lisp" \
-                        --eval "(quit (if ($slug-test:run-tests) 0 5))"
-            else if __exercism__test__validate_runner -o $track clisp
-                # GNU CLISP: http://www.clisp
-                __echo_and_execute \
-                    clisp -q -q \
-                          -x "(load \"$slug-test\")(exit (if ($slug-test:run-tests) 0 5))"
-            else
-                false
-            end
+            __exercism__test__validate_runner -o $track ros; or return 1
+            # roswell https://roswell.github.io/
+            __echo_and_execute \
+                ros run --load "$slug-test.lisp" \
+                        --eval "(uiop:quit (if ($slug-test:run-tests) 0 5))"
             return $status
         case cobol
             for t in $test_files
@@ -133,6 +113,9 @@ Options
                 return $status
             end
             # proceed to command exercism test
+        case groovy
+            sh gradlew test
+            return $status
         case javascript typescript
             for runner in  pnpm  npm
                 if __exercism__test__validate_runner -o $track $runner

@@ -45,25 +45,30 @@ Options:
 
     set info (
         echo $__EXERCISM__MENTORING_REQUESTS[$argv[1]] \
-        | jq -r '.exercise_title, .tooltip_url, .url'
+        | jq -r '.exercise.title, .track.title, .url, .student.handle, .solution.uuid, .tooltip_url'
     )
     set exercise $info[1]
-    set tooltip $info[2]
+    set track $info[2]
     set url $info[3]
+    set student $info[4]
+    set solution_uuid $info[5]
+    set tooltip $info[6]
 
-	set info (string match --regex 'students/([^?]+).*=(.+)' $tooltip)
-    set student $info[2]
-    set track_slug $info[3]
-
-	set json (__exercism__api_call (string replace '/api/v2/' "" $tooltip))
-	set info (
-		echo $json \
-		| jq -r '.student | .name, .reputation, .num_total_discussions, .num_discussions_with_mentor'
+    set json (__exercism__api_call (string replace '/api/v2/' "" $tooltip))
+    set info (
+        echo $json \
+        | jq -r '.student | .reputation, .num_total_discussions, .num_discussions_with_mentor'
     )
+    set rep $info[1]
+    set nsess $info[2]
+    set usess $info[3]
 
-    echo $url
+    echo "$exercise on $track by $student"
     echo
-	echo "$exercise on $track_slug by $info[1]"
     echo $json | jq -r '.student.track_objectives' | fold -s | sed 's/^/    | /'
-    echo "    - $info[2] rep, mentored $info[3] times, $info[4] by you."
+    echo
+    echo "$rep rep, mentored $nsess times, $usess by you."
+    echo
+    echo "Request: $url"
+    echo "Download: exercism download --uuid=$solution_uuid"
 end
