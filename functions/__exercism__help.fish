@@ -39,6 +39,7 @@ Commands relating to your profile and activity
 
 Mentoring subcommands
   mentoring queue       Show your mentoring queue.
+  mentoring request     Show details of a mentoring request.
   mentoring inbox       List your mentoring workspace.
   mentoring discussion  Display the posts of a mentoring session.
   mentoring overview    Show notifications, queue and inbox.
