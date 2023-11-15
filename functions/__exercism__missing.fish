@@ -12,8 +12,9 @@ Show all exercises in this track that have not been downloaded.'
         return
     end
 
-    __exercism__in_track_root; or return 1
-    set track (basename $PWD)
+    set track_root (__exercism__get_current_track_root); or return 1
+    pushd $track_root
+    set track (basename $track_root)
 
     set json (__exercism__api_call /tracks/{$track}/exercises)
     set here (string trim --right --chars / */)
@@ -46,4 +47,5 @@ Show all exercises in this track that have not been downloaded.'
         | mlr --c2p --implicit-csv-header \
             label Type,Exercise,Difficulty,Link
     end
+    popd
 end

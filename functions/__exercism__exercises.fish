@@ -11,8 +11,8 @@ List your progress through the exercises in this track.'
         return
     end
 
-    __exercism__in_track_root; or return 1
-    set track (basename $PWD)
+    set track_root (__exercism__get_current_track_root); or return 1
+    set track (basename $track_root)
 
     set json (__exercism__api_call /tracks/{$track}/exercises'?'sideload=solutions)
 
