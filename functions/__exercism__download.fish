@@ -13,12 +13,8 @@ function __exercism__download
         set argv --uuid=$_flag_uuid $argv
     else if set -q _flag_track
         set argv --track=$_flag_track $argv
-    else
-        if __exercism__in_track_root 2>/dev/null
-            set argv --track=(basename $PWD) $argv
-        else if __exercism__has_metadata >/dev/null
-            set argv --track=(jq -r '.track' ./.exercism/metadata.json) $argv
-        end
+    else if set track_root (__exercism__get_current_track_root)
+        set argv --track=(basename $track_root) $argv
     end
 
     set out (command exercism download $argv 2>&1)

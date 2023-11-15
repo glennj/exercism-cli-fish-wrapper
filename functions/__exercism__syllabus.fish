@@ -11,8 +11,10 @@ Create a concepts directory, linking the concept to the relevant exercise README
         return
     end
 
-    __exercism__in_track_root; or return 1
-    set track (basename $PWD)
+    set track_root (__exercism__get_current_track_root); or return 1
+    pushd $track_root
+    set track (basename $track_root)
+
     set config https://raw.githubusercontent.com/exercism/{$track}/main/config.json
 
     mkdir -p _concepts
@@ -29,4 +31,6 @@ Create a concepts directory, linking the concept to the relevant exercise README
     end
     and ls -l
     and popd
+
+    popd
 end
