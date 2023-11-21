@@ -51,7 +51,7 @@ Options
             case fsharp
                 xargs perl -i -pe 's/\(Skip = .*?\)//' $test_files
             case groovy java kotlin
-                $_sed -Ei 's,@Ignore,//&,' $test_files
+                $_sed -Ei 's,@(Ignore|Disabled),//&,' $test_files
             case javascript typescript
                 $_sed -Ei '
                     s/x(test|it|describe)/\1/
@@ -63,6 +63,8 @@ Options
                 end
             case tcl
                 set -fx RUN_ALL true
+            case wasm
+                $_sed -i 's/xtest/test/' $test_files
             case wren
                 $_sed -i 's/skip.test/do.test/' $test_files
         end
@@ -116,7 +118,7 @@ Options
         case groovy
             sh gradlew test
             return $status
-        case javascript typescript
+        case javascript typescript wasm
             for runner in  pnpm  npm
                 if __exercism__test__validate_runner -o $track $runner
                     test -d ./node_modules; or __echo_and_execute $runner install
@@ -133,7 +135,7 @@ Options
             if test -f cpanfile
                 __exercism__test__validate_runner $track carton; or return 1
                 __echo_and_execute carton install
-                __echo_and_execute carton exec prove .
+                __echo_and_execute carton exec prove . t/
                 return $status
             end
             # proceed to command exercism test
