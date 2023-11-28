@@ -116,6 +116,12 @@ Options
             end
             # proceed to command exercism test
         case groovy
+            if test (java -version 2>&1 | grep -oP 'version "\K\d+') -gt 11
+                echo "Groovy wants an older version"
+                echo "  brew unlink openjdk@17 # perhaps"
+                echo "  brew link openjdk@11"
+                return 1
+            end
             sh gradlew test
             return $status
         case javascript typescript wasm
