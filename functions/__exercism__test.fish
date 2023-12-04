@@ -138,13 +138,15 @@ Options
             and chmod u+x ./gradlew
             # proceed to command exercism test
         case perl5
+            set cmd prove
             if test -f cpanfile
                 __exercism__test__validate_runner $track carton; or return 1
                 __echo_and_execute carton install
-                __echo_and_execute carton exec prove . t/
-                return $status
+                set cmd carton exec prove
             end
-            # proceed to command exercism test
+            set test_files (find . -name '*.t')
+            __echo_and_execute $cmd $test_files
+            return $status
         case tcl
             set verbosity "configure -verbose {body error usec}"
             for t in $test_files
