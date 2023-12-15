@@ -57,6 +57,8 @@ Options
                     s/x(test|it|describe)/\1/
                     s/(test|it).skip/\1/
                 ' $test_files
+            case pyret
+                # TBD
             case ruby
                 for t in $test_files
                     gawk -i inplace '1; /< Minitest::Test/ {print "  def skip; end"}' $t
@@ -147,6 +149,10 @@ Options
             set test_files (find . -name '*.t')
             __echo_and_execute $cmd $test_files
             return $status
+        case pyret
+            __exercism__test__validate_runner $track pyret; or return 1
+            __echo_and_execute pyret $test_files
+            return $status
         case tcl
             set verbosity "configure -verbose {body error usec}"
             for t in $test_files
@@ -161,7 +167,13 @@ Options
                     echo "added test verbosity"
                 end
             end
-            # proceed to command exercism test
+            for runner in  tclsh87 tclsh
+                if __exercism__test__validate_runner -o $track $runner
+                    __echo_and_execute $runner $test_files
+                    return $status
+                end
+            end
+            return 1
         case vimscript
             set src_files (jq -r '.files.solution[]' .exercism/config.json)
             vim -c 'source %' -c 'Vader %:p:r.vader' $src_files[1]
