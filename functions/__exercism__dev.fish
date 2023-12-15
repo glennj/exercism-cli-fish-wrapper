@@ -3,7 +3,8 @@ function __exercism__dev
 
 Track development subcommands.
 
-  unimplemented  List the unimplemented practice exercises.'
+  unimplemented  List the unimplemented practice exercises.
+  difficulties   List the track\'s exercises and difficulties'
 
     argparse --name="exercism dev" --stop-nonopt 'h/help' -- $argv
     or return 1
@@ -16,6 +17,8 @@ Track development subcommands.
     switch $argv[1]
         case help
             echo $help
+        case difficulties
+            __exercism__dev__difficulties $argv[2..]
         case unimplemented
             __exercism__dev__unimplemented $argv[2..]
         case '*'

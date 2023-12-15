@@ -76,4 +76,6 @@ complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -l end -d "e
 complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -l post -d "add a post to the discussion"
 
 # dev sub-subcommands
+complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a difficulties -d "List unimplemented exercises"
+complete -f -c exercism -n "__fish_seen_subcommand_from difficulties" -s s -l sort -d "sort by difficulty"
 complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a unimplemented -d "List unimplemented exercises"
