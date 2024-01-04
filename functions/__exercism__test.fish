@@ -58,7 +58,7 @@ Options
                     s/(test|it).skip/\1/
                 ' $test_files
             case pyret
-                # TBD
+                $_sed -i 's/^\(  test([^,]\+, \)false\b/\1true/' $test_files
             case ruby
                 for t in $test_files
                     gawk -i inplace '1; /< Minitest::Test/ {print "  def skip; end"}' $t
