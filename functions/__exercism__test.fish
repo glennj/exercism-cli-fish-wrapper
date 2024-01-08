@@ -48,6 +48,8 @@ Options
                 perl -i -pe 's{^(\s+)(TEST_IGNORE)\b}{$1// $2}' $test_files
             case crystal
                 perl -i -pe 's/\bpending\b/it/' $test_files
+            case dart
+                perl -i -pe 's/skip: \Ktrue/false/' $test_files
             case fsharp
                 xargs perl -i -pe 's/\(Skip = .*?\)//' $test_files
             case groovy java kotlin
