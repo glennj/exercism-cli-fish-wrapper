@@ -37,6 +37,14 @@ function __exercism__download
             case '*/'{java,type}'script/*'
                 #npm install
                 #pnpm install
+            case '*/dart/*'
+                dart pub add --dev lints
+                if ! grep -q 'include: package:lints/recommended.yaml' analysis_options.yaml
+                    begin
+                        echo
+                        echo 'include: package:lints/recommended.yaml'
+                    end >> analysis_options.yaml
+                end
         end
     end
 end

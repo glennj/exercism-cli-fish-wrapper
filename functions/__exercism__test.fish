@@ -49,7 +49,9 @@ Options
             case crystal
                 perl -i -pe 's/\bpending\b/it/' $test_files
             case dart
-                perl -i -pe 's/skip: \Ktrue/false/' $test_files
+                # `dart test` has a `--run-skipped` option
+                # the `--` is to hide the option from the `exercism test` subcommand.
+                set argv -- --run-skipped
             case fsharp
                 xargs perl -i -pe 's/\(Skip = .*?\)//' $test_files
             case groovy java kotlin
