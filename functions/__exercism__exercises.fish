@@ -21,10 +21,11 @@ List your progress through the exercises in this track.'
 		.solutions as $s
 		| .exercises
 		| map({key: .slug, value: {
-            title: (.title + if .is_recommended then " (*)" else "" end),
-            difficulty,
-            status: ""
-        }})
+                    title: (.title + if .is_recommended then " (*)" else "" end),
+                    slug: .slug,
+                    difficulty,
+                    status: ""
+                }})
 		| from_entries as $e
 		| reduce $s[] as $soln ($e; .[$soln.exercise.slug]["status"] = $soln.status)
 		| to_entries | map(.value)
