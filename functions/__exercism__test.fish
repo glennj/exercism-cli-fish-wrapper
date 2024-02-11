@@ -49,9 +49,7 @@ Options
             case crystal
                 perl -i -pe 's/\bpending\b/it/' $test_files
             case dart
-                # `dart test` has a `--run-skipped` option
-                # the `--` is to hide the option from the `exercism test` subcommand.
-                set argv -- --run-skipped
+                perl -i -pe 's/\bskip: \Ktrue\b/false/' $test_files
             case fsharp
                 xargs perl -i -pe 's/\(Skip = .*?\)//' $test_files
             case groovy java kotlin
@@ -62,7 +60,7 @@ Options
                     s/(test|it).skip/\1/
                 ' $test_files
             case pyret
-                $_sed -i 's/^\(  test([^,]\+, \)false\b/\1true/' $test_files
+                perl -i -pe 's/^\s+test\(.*, \Kfalse/true/' $test_files
             case ruby
                 for t in $test_files
                     gawk -i inplace '1; /< Minitest::Test/ {print "  def skip; end"}' $t
