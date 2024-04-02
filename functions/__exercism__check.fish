@@ -41,16 +41,3 @@ Run formatters/linters for this exercise.'
 
     $func --track=$track $argv $slug 
 end
-
-function __echo_and_execute
-    string join -- " " $argv
-    env $argv
-end
-
-function __exercism__test__validate_runner -a track tool
-    type -q $tool; and return
-
-    echo "Can't find required tool '$tool'" >&2
-    echo "See https://exercism.org/docs/tracks/$track/installation"
-    return 1
-end

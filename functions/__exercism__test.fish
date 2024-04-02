@@ -50,6 +50,8 @@ Options
                 perl -i -pe 's/\bpending\b/it/' $test_files
             case dart
                 perl -i -pe 's/\bskip: \Ktrue\b/false/' $test_files
+            case elm
+                $_sed -i 's/skip <|/{- & -}/' $test_files
             case fsharp
                 xargs perl -i -pe 's/\(Skip = .*?\)//' $test_files
             case groovy java kotlin
@@ -100,6 +102,10 @@ Options
                 end
             end
             # proceed to command exercism test
+        case dart
+            __exercism__test__validate_runner $track dart; or return 1
+            __echo_and_execute dart test -r github
+            return $status
         case fortran
             __exercism__test__validate_runner $track cmake; or return 1
             __exercism__test__validate_runner $track make; or return 1
@@ -187,27 +193,6 @@ Options
     end
 
     command exercism test $argv
-end
-
-function __echo_and_execute
-    string join -- " " (string escape -- $argv)
-    # env $argv
-    # not using `env` allows the "tool" to be a shell function
-    $argv
-end
-
-function __exercism__test__validate_runner
-    argparse --ignore-unknown --name="exercism test validate runner" 'o/optional' -- $argv
-    set -q _flag_optional; and set tool_type optional; or set tool_type required
-
-    set track $argv[1]
-    set tool  $argv[2]
-
-    type -q $tool; and return
-
-    echo "Can't find $tool_type tool '$tool'" >&2
-    echo "See https://exercism.org/docs/tracks/$track/installation"
-    return 1
 end
 
 function __exercism__test__command_version
