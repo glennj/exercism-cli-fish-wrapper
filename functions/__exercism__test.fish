@@ -106,6 +106,10 @@ Options
             __exercism__test__validate_runner $track dart; or return 1
             __echo_and_execute dart test -r github
             return $status
+        case euphoria
+            __exercism__test__validate_runner $track eutest; or return 1
+            __echo_and_execute eutest
+            return $status
         case fortran
             __exercism__test__validate_runner $track cmake; or return 1
             __exercism__test__validate_runner $track make; or return 1
