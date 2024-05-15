@@ -69,7 +69,7 @@ All gloriously tab-completed.
 
 * `test`
     - run test suite for this exercise
-    - only some tracks currently supported (the ones I've joined)
+    - enhances the builtin `exercism test` with some custom behaviour for some tracks.
 * `check`
     - run formatters and/or linters for this exercise
     - only some tracks currently supported
@@ -89,6 +89,9 @@ All gloriously tab-completed.
 
 ### subcommands to feed my obsession at keeping up-to-date solutions
 
+* `bulk-download`
+    - bulk download all your solutions for a track.
+    - handy for those who store their solutions in a git repo.
 * `sync`
     - updates the exercise
         - this is like clicking "See what's changed" in the "This exercise has been updated..." banner, 

@@ -24,6 +24,7 @@ Additional commands for interacting with solutions
   metadata              Dump exercism\'s data.
 
 Commands for keeping up-to-date solutions
+  bulk-download         Bulk download new and updated solution for a track.
   sync                  Update the exercises for upstream changes.
   test-all              Test all downloaded exercises for a track.
   missing               List exercises not downloaded for a track.

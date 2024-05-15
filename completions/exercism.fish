@@ -36,8 +36,11 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "tracks" -d "List all Exer
 complete -f -c exercism -n "__fish_use_subcommand" -a "exercises" -d "List all exercises in a track"
 complete -f -c exercism -n "__fish_use_subcommand" -a "syllabus" -d "Create a concepts directory for a track."
 complete -f -c exercism -n "__fish_use_subcommand" -a "by-exercise" -d "Create a directory mapping exercises to tracks."
+complete -f -c exercism -n "__fish_use_subcommand" -a "bulk-download" -d "Download multiple solutions for a track."
 
 # and subcommand options
+complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s n -l dry-run -d "just show what will be done"
+complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s f -l force -d "refresh existing solutions"
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l overview -d "open the exercise overview page"
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l community -d "open the exercise community solutions page"
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s p -l publish -d "specify which iterations to publish"
