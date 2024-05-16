@@ -20,7 +20,8 @@ Options
 
     set show_all false
     set -q _flag_all; and set show_all true
-    set labels Track,Joined,Concepts,Exercises,Progress 
+    set bar_wid 24
+    set labels Track,Joined,Concepts,Exercises,Progress,Bar
     set -q _flag_students; and set labels "$labels,Students"
 
     # Having to query each slug page individually is slow.
@@ -42,6 +43,10 @@ Options
         | select($show_all or .[1] == "yes")
         | @csv
     ' \
+    | while read -d , -a fields
+        set bar (string repeat -n (math "floor($bar_wid * $fields[-1] / 100)") '=')
+        string join ',' $fields (printf '%-*s' $bar_wid $bar)
+    end \
     | if set -q _flag_students
         while read -d , slug rest
             printf . >&2
