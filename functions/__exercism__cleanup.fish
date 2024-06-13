@@ -37,7 +37,7 @@ Implemented for
                 echo $path
                 rm -rf $path
             end
-        case java groovy kotlin
+        case java groovy kotlin gleam
             find . -mindepth 2 -maxdepth 2 -type d -name build -o -name out | \
             while read path
                 echo $path

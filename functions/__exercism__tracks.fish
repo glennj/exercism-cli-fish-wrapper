@@ -45,7 +45,8 @@ Options
     ' \
     | while read -d , -a fields
         set bar (string repeat -n (math "floor($bar_wid * $fields[-1] / 100)") '=')
-        string join ',' $fields (printf '%-*s' $bar_wid $bar)
+        test $fields[-1] -eq 100; and set suffix '!'; or set suffix '>'
+        string join ',' $fields (printf '%-*s' (math $bar_wid + 1) "$bar$suffix")
     end \
     | if set -q _flag_students
         while read -d , slug rest
