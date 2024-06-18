@@ -3,7 +3,8 @@
 
 function exercism
     switch $argv[1]
-        case    bulk-download  bulk_download \
+        case    achievements \
+                bulk-download  bulk_download \
                 by-exercise \
                 check \
                 cleanup \

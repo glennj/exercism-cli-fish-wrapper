@@ -119,6 +119,8 @@ All gloriously tab-completed.
 
 ### commands related to your activity on exercism
 
+* `achievements`
+    - list your track trophies and badges
 * `notifications`
     - list recent notifications
 * `reputation`

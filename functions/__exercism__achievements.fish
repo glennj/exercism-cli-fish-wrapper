@@ -1,0 +1,124 @@
+# Get track trophies
+
+function __exercism__achievements
+    set help 'Usage: exercism achievements [options]
+
+List your trophies and badges.
+
+Options
+    -b|--badges         List your badges
+    -t|--trophies       List your trophies achieved
+    -r|--reputation     (TODO) Chart your reputation'
+
+    argparse --name="exercism achievements" 'h/help' \
+        't/trophies' 'r/reputation' 'b/badges' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo $help
+        return
+    end
+
+    if begin
+            not set -q _flag_trophies
+            and not set -q _flag_reputation
+            and not set -q _flag_badges
+        end
+            echo "Specify one or more of: -t -r -b"
+            return
+    end
+
+    set -q _flag_reputation; and __exercism__achievements__reputation
+    set -q _flag_badges;     and __exercism__achievements__badges
+    set -q _flag_trophies;   and __exercism__achievements__trophies
+end
+
+
+function __exercism__achievements__trophies
+    echo '##############'
+    echo '#  Trophies  #'
+    echo '##############'
+
+    set tracks (
+        __exercism__api_call "/tracks" \
+        | jq -r '
+            .tracks[]
+            | select(.is_joined)
+            | .slug
+        ' 
+    )
+
+    begin
+        for track in $tracks
+            printf '.' >&2
+            __exercism__api_call "/tracks/$track/trophies" \
+            | jq -c '
+                .[]
+                | select(.status == "revealed")
+                | "( in)? \(.track.title)" as $re
+                | [
+                    .name,
+                    (.criteria | sub($re; "")),
+                    .num_awardees,
+                    .track.title
+                ]
+            ' 
+        end
+        echo >&2
+    end \
+    | jq -rs '
+        reduce .[] as [$trophy, $meaning, $total, $track] ({};
+            if (has($trophy) | not) then .[$trophy] = {$meaning, $total, count: 0, tracks:[]} end
+            | .[$trophy].count += 1
+            | .[$trophy].tracks += [$track]
+        )
+        | to_entries[]
+        | .key,
+          "\(.value.meaning).",
+          "Achieved in \(.value.count) tracks, out of \(.value.total) awarded.",
+          (.value.tracks | join(", ")),
+          ""
+    ' \
+    | fold -s \
+    | awk -v RS="" -F '\n' '{
+        print $1
+        print "    " $2
+        print "    " $3
+        for (i = 4; i <= NF; i++)
+            print "      > " $i
+        print ""
+    }'
+end
+
+function __exercism__achievements__badges
+    echo '############'
+    echo '#  Badges  #'
+    echo '############'
+
+    begin
+        set -l page 1
+        set -l total 99
+        while test $page -le $total
+            set json (__exercism__api_call "/badges?page=$page")
+
+            echo $json | jq -c '.results[]'
+
+            set total (echo $json | jq -r '.meta.total_pages')
+            set page (math $page + 1)
+        end
+    end \
+    | jq -rs '
+        {"legendary": 1, "ultimate": 2, "rare": 3, "common": 4} as $rarity 
+        | sort_by($rarity[.rarity], .num_awardees)[]
+        | [.rarity, .name, .description, .num_awardees]
+        | @csv
+    ' \
+    | mlr --c2p --implicit-csv-header \
+        label 'Type,Name,Description,Awardees' \
+        then cat
+    echo
+end
+
+function __exercism__achievements__reputation
+    echo "TODO: reputation"
+end

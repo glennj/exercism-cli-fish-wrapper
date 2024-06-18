@@ -37,8 +37,11 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "exercises" -d "List all e
 complete -f -c exercism -n "__fish_use_subcommand" -a "syllabus" -d "Create a concepts directory for a track."
 complete -f -c exercism -n "__fish_use_subcommand" -a "by-exercise" -d "Create a directory mapping exercises to tracks."
 complete -f -c exercism -n "__fish_use_subcommand" -a "bulk-download" -d "Download multiple solutions for a track."
+complete -f -c exercism -n "__fish_use_subcommand" -a "achievements" -d "List trophies and badges"
 
 # and subcommand options
+complete -f -c exercism -n "__fish_seen_subcommand_from achievements" -s t -l trophies -d "list trophies"
+complete -f -c exercism -n "__fish_seen_subcommand_from achievements" -s b -l badges -d "list badges"
 complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s n -l dry-run -d "just show what will be done"
 complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s f -l force -d "refresh existing solutions"
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l overview -d "open the exercise overview page"

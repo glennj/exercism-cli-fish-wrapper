@@ -35,6 +35,7 @@ Commands for keeping up-to-date solutions
   by-exercise           Create a directory mapping exercises to tracks.
 
 Commands relating to your profile and activity
+  achievements          List your track trophies and badges.
   notifications         List recent exercism notifications.
   reputation            Show your recent awards of reputation.
 
