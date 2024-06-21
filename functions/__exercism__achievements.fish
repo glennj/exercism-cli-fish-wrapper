@@ -1,17 +1,19 @@
 # Get track trophies
 
 function __exercism__achievements
-    set help 'Usage: exercism achievements [options]
+    set help (string collect ' Usage: exercism achievements option [...]
 
 List your trophies and badges.
 
-Options
+Options: one or more of
     -b|--badges         List your badges
     -t|--trophies       List your trophies achieved
-    -r|--reputation     (TODO) Chart your reputation'
+    -r|--reputation     (TODO) Chart your reputation
+    -a|--all            All of the above
+')
 
     argparse --name="exercism achievements" 'h/help' \
-        't/trophies' 'r/reputation' 'b/badges' -- $argv
+        't/trophies' 'r/reputation' 'b/badges' 'a/all' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -19,12 +21,17 @@ Options
         return
     end
 
-    if begin
+    if set -q _flag_all
+        set _flag_trophies yes
+        set _flag_reputation yes
+        set _flag_badges yes
+    end
+    if  begin
             not set -q _flag_trophies
             and not set -q _flag_reputation
             and not set -q _flag_badges
         end
-            echo "Specify one or more of: -t -r -b"
+            echo $help
             return
     end
 
@@ -45,37 +52,53 @@ function __exercism__achievements__trophies
             .tracks[]
             | select(.is_joined)
             | .slug
-        ' 
+        '
     )
 
-    begin
-        for track in $tracks
-            printf '.' >&2
-            __exercism__api_call "/tracks/$track/trophies" \
-            | jq -c '
-                .[]
-                | select(.status == "revealed")
-                | "( in)? \(.track.title)" as $re
-                | [
-                    .name,
-                    (.criteria | sub($re; "")),
-                    .num_awardees,
-                    .track.title
-                ]
-            ' 
+    set cache $HOME/.cache/exercism
+    mkdir -p $cache
+    set trophies $cache/trophies.jsonl
+    if  begin
+            test -f $trophies
+            and test (math (date '+%s') - (stat -c '%Y' $trophies)) -lt (math '86400 * 2')
         end
-        echo >&2
+            cat $trophies
+    else
+        begin
+            for track in $tracks
+                printf '.' >&2
+                __exercism__api_call "/tracks/$track/trophies" \
+                | jq -c '
+                    .trophies[]
+                    | select(.status == "revealed")
+                    | "( in)? \(.track.title)" as $re
+                    | [
+                        .name,
+                        (.criteria | sub($re; "")),
+                        .num_awardees,
+                        .track.title
+                    ]
+                '
+            end
+            echo >&2
+        end \
+        | tee $trophies
     end \
     | jq -rs '
+        def percentage(num; den): (100 * num / den) * 100 | floor / 100;
+
         reduce .[] as [$trophy, $meaning, $total, $track] ({};
             if (has($trophy) | not) then .[$trophy] = {$meaning, $total, count: 0, tracks:[]} end
             | .[$trophy].count += 1
             | .[$trophy].tracks += [$track]
         )
-        | to_entries[]
+        | to_entries
+        | map(.value.pct = percentage(.value.count; .value.total))
+        | sort_by(.value.pct)
+        | .[]
         | .key,
           "\(.value.meaning).",
-          "Achieved in \(.value.count) tracks, out of \(.value.total) awarded.",
+          "Achieved in \(.value.count) tracks, out of \(.value.total) awarded (\(.value.pct)%).",
           (.value.tracks | join(", ")),
           ""
     ' \
@@ -108,7 +131,7 @@ function __exercism__achievements__badges
         end
     end \
     | jq -rs '
-        {"legendary": 1, "ultimate": 2, "rare": 3, "common": 4} as $rarity 
+        {"legendary": 1, "ultimate": 2, "rare": 3, "common": 4} as $rarity
         | sort_by($rarity[.rarity], .num_awardees)[]
         | [.rarity, .name, .description, .num_awardees]
         | @csv
