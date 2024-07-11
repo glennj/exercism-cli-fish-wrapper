@@ -56,18 +56,19 @@ Options
     end
 
     if set -q _flag_update
-        if test $_status = "ok" 
+        if test "$_status" = "ok" 
             not set -q _flag_status
             and echo "$slug is already up to date"
         else
             set uuid (jq -r .id ./.exercism/metadata.json)
             set updated (__exercism__api_call -X PATCH "/solutions/$uuid/sync")
-            set out_of_date (echo $updated | jq -r .solution.is_out_of_date)""
+            set out_of_date (echo $updated | jq -r '.solution.is_out_of_date')
 
-            if test $out_of_date = "false"
+            if test "$out_of_date" = "false"
                 echo $updated | jq -r '"\(.solution.track.slug) \"\(.solution.exercise.title)\" has been updated"'
             else
                 echo "Could not sync the exercise?" >&2
+                set -S out_of_date
                 echo $updated | jq . >&2
                 return 1
             end
