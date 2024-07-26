@@ -6,14 +6,14 @@ This provides additional subcommands that I find useful to improve my experience
 
 ```sh
 (~)$ cd (exercism workspace)
-(~/s/e/exercism)$ cd wren             # working on the wren track
-(~/s/e/e/wren)$ exercism missing      # I've _almost_ finished it
+(~/s/e/exercism)$ cd wren                    # working on the wren track
+(~/s/e/e/wren)$ exercism missing             # I've _almost_ finished it
 clock
-(~/s/e/e/wren)$ exercism download --track=wren --exercise=clock
+(~/s/e/e/wren)$ exercism download -e clock   # `-t wren` not required
 (~/s/e/e/w/clock)$ #...edit/test...
 (~/s/e/e/w/clock)$ exercism submit
-(~/s/e/e/w/clock)$ exercism open      # see how it looks online
-(~/s/e/e/w/clock)$ exercism publish   # Done!
+(~/s/e/e/w/clock)$ exercism open             # see how it looks online
+(~/s/e/e/w/clock)$ exercism publish          # Done!
 ```
 Now, what does Exercism know about this exercise?
 ```sh
