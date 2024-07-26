@@ -44,6 +44,7 @@ complete -f -c exercism -n "__fish_seen_subcommand_from achievements" -s t -l tr
 complete -f -c exercism -n "__fish_seen_subcommand_from achievements" -s b -l badges -d "list badges"
 complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s n -l dry-run -d "just show what will be done"
 complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s f -l force -d "refresh existing solutions"
+complete -f -c exercism -n "__fish_seen_subcommand_from exercises" -s a -l all -d "include published solutions"
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l overview -d "open the exercise overview page"
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l community -d "open the exercise community solutions page"
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s p -l publish -d "specify which iterations to publish"

@@ -1,9 +1,12 @@
 function __exercism__exercises
     set help 'Usage: exercism exercises
 
-List your progress through the exercises in this track.'
+List your progress through the exercises in this track.
 
-    argparse --name="exercism next" 'h/help' -- $argv
+Options: 
+    -a|--all    Show published exercises too.  '
+
+    argparse --name="exercism next" 'h/help' 'a/all' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -34,5 +37,10 @@ List your progress through the exercises in this track.'
         @total = NR;
         $status == "published" || $status == "completed" {@completed += 1}
         end {emitf @completed, @total, @progress}
-    '
+    ' \
+    | if set -q _flag_all
+        cat
+    else
+        grep -vFw published
+    end
 end
