@@ -56,7 +56,7 @@ Options
                 xargs perl -i -pe 's/\(Skip = .*?\)//' $test_files
             case groovy java kotlin
                 $_sed -Ei 's,@(Ignore|Disabled),//&,' $test_files
-            case javascript typescript
+            case javascript typescript coffeescript
                 $_sed -Ei '
                     s/x(test|it|describe)/\1/
                     s/(test|it).skip/\1/
