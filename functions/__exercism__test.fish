@@ -194,6 +194,9 @@ Options
             __exercism__test__validate_runner $track wrenc; or return 1
             wrenc package.wren install; or return 1
             # proceed to command exercism test
+        case yamlscript
+            __echo_and_execute make test
+            return $status
     end
 
     command exercism test $argv
