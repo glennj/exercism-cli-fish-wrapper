@@ -48,6 +48,8 @@ Options
                 perl -i -pe 's{^(\s+)(TEST_IGNORE)\b}{$1// $2}' $test_files
             case crystal
                 perl -i -pe 's/\bpending\b/it/' $test_files
+            case d
+                perl -i -pe 's/ int allTestsEnabled = \K0/1/' $test_files
             case dart
                 perl -i -pe 's/\bskip: \Ktrue\b/false/' $test_files
             case elm
@@ -102,6 +104,10 @@ Options
                 end
             end
             # proceed to command exercism test
+        case d
+            __exercism__test__validate_runner $track dub; or return 1
+            __echo_and_execute dub test
+            return $status
         case dart
             __exercism__test__validate_runner $track dart; or return 1
             __echo_and_execute dart test -r github

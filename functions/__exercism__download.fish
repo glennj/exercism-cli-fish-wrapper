@@ -37,6 +37,8 @@ function __exercism__download
             case '*/'{java,type}'script/*'
                 #npm install
                 #pnpm install
+            case '*/d/*'
+                echo "$(basename $PWD)-test-library" > .gitignore
             case '*/dart/*'
                 dart pub add --dev lints
                 if ! grep -q 'include: package:lints/recommended.yaml' analysis_options.yaml
