@@ -69,6 +69,8 @@ Options
                 for t in $test_files
                     gawk -i inplace '1; /< Minitest::Test/ {print "  def skip; end"}' $t
                 end
+            case scala
+                perl -i -pe 's{ pending}{ //pending}' $test_files
             case tcl
                 set -fx RUN_ALL true
             case wasm
