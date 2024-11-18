@@ -70,9 +70,10 @@ All gloriously tab-completed.
 * `test`
     - run test suite for this exercise
     - enhances the builtin `exercism test` with some custom behaviour for some tracks.
-* `check`
+* `check`, `format`
     - run formatters and/or linters for this exercise
     - only some tracks currently supported
+    - "format" is an alias for "check"
 * `publish`
     - mark the exercise as complete, and enables comments on the public solution
 * `refresh`

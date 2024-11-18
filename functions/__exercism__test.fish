@@ -196,7 +196,7 @@ Options
             return 1
         case vimscript
             set src_files (jq -r '.files.solution[]' .exercism/config.json)
-            vim -c 'source %' -c 'Vader %:p:r.vader' $src_files[1]
+            vim -R -c 'source %' -c 'Vader %:p:r.vader' $src_files[1]
             return $status
         case wren
             __exercism__test__validate_runner $track wrenc; or return 1

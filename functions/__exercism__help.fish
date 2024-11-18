@@ -15,7 +15,7 @@ Commands that override or augment CLI commands:
 
 Additional commands for interacting with solutions
   test                  Run the tests.
-  check                 Execute any configured formatters and linters.
+  check, format         Execute any configured formatters and linters.
   publish               Mark the exercise as complete.
   refresh               Re-download the solution.
   square1               Reset the solution back to its initial contents.

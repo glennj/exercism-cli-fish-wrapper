@@ -6,7 +6,7 @@ function exercism
         case    achievements \
                 bulk-download  bulk_download \
                 by-exercise \
-                check \
+                check  format \
                 cleanup \
                 dev \
                 download \

@@ -41,3 +41,5 @@ Run formatters/linters for this exercise.'
 
     $func --track=$track $argv $slug 
 end
+
+alias __exercism__format __exercism__check
