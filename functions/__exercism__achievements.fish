@@ -60,7 +60,11 @@ function __exercism__achievements__trophies
     set trophies $cache/trophies.jsonl
     if  begin
             test -f $trophies
-            and test (math (date '+%s') - (stat -c '%Y' $trophies)) -lt (math '86400 * 2')
+            and set tdate (
+                stat -c '%Y' $trophies 2>/dev/null      # Linux
+                or stat -f '%m' $trophies               # Mac
+            )
+            and test (math (date '+%s') - $tdate) -lt (math '86400 * 2')
         end
             cat $trophies
     else
