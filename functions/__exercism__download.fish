@@ -4,22 +4,42 @@
 
 function __exercism__download
     argparse --ignore-unknown --name="exercism download" \
-        'uuid=' 't/track=' 'h/help' -- $argv
+        'uuid=' 't/track=' 'h/help' 'r/recommended' -- $argv
     or return 1
 
+    set track ""
     if set -q _flag_help
         set argv --help $argv
     else if set -q _flag_uuid
         set argv --uuid=$_flag_uuid $argv
     else if set -q _flag_track
-        set argv --track=$_flag_track $argv
+        set track $_flag_track
+        set argv --track=$track $argv
     else if set track_root (__exercism__get_current_track_root)
-        set argv --track=(basename $track_root) $argv
+        set track (basename $track_root)
+        set argv --track=$track $argv
+    end
+
+    if set -q _flag_recommended
+        __exercism__api_call /tracks/{$track}/exercises \
+        | jq -r '.exercises[] | select(.is_recommended) | (.slug // ""), (.title // "")' \
+        | begin; read exercise_slug; read exercise_name; end
+
+        if test -n $exercise_slug
+            echo "Recommended exercise: $exercise_name"
+            set argv $argv --exercise=$exercise_slug
+        end
     end
 
     set out (command exercism download $argv 2>&1)
     set rc $status
     printf "%s\n" $out
+
+    if set -q _flag_help
+        printf '\nAdditional Flags:\n'
+        echo '  -r, --recommended    download the next recommended exercise.'
+    end
+
     if test $rc -ne 0
         set out (string match -r -g "directory '(.+?)' already exists" $out)
         or return 1

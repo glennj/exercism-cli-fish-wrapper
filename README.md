@@ -60,6 +60,8 @@ All gloriously tab-completed.
 * `download`
     - after downloading, cd to the solution directory
     - you can omit the `--track` option if the function can figure it out
+    - use the `--recommended` option to download the next recommended exercise
+      (usually the first "available" exercise in the track)
 * `submit`
     - with no arguments, uploads the solution file from .exercism/config.json
 * `open`
