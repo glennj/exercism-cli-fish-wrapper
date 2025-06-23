@@ -39,6 +39,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "syllabus" -d "Create a co
 complete -f -c exercism -n "__fish_use_subcommand" -a "by-exercise" -d "Create a directory mapping exercises to tracks."
 complete -f -c exercism -n "__fish_use_subcommand" -a "bulk-download" -d "Download multiple solutions for a track."
 complete -f -c exercism -n "__fish_use_subcommand" -a "achievements" -d "List trophies and badges"
+complete -f -c exercism -n "__fish_use_subcommand" -a "github" -d "Info about Exercism github organization"
 
 # and subcommand options
 complete -f -c exercism -n "__fish_seen_subcommand_from achievements" -s t -l trophies -d "list trophies"
@@ -88,3 +89,7 @@ complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -l post -d "
 complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a difficulties -d "List unimplemented exercises"
 complete -f -c exercism -n "__fish_seen_subcommand_from difficulties" -s s -l sort -d "sort by difficulty"
 complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a unimplemented -d "List unimplemented exercises"
+
+# github sub-subcommands
+complete -f -c exercism -n "__fish_seen_subcommand_from github" -a team -d "List members of a github team"
+complete -f -c exercism -n "__fish_seen_subcommand_from github" -a teams -d "List my github teams"

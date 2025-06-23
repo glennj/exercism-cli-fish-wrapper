@@ -152,6 +152,13 @@ This subcommand is itself subdivided.
 * `dev unimplemented`
     - lists unimplemented, foregone or deprecated exercises.
 
+### Github queries for the Exercism organization
+
+* `github teams`
+    - lists the teams you're a member of.
+* `github team`
+    - lists the members of a team.
+
 ## fish setup
 
 Add to `~/.config/fish/config.fish`:
@@ -179,10 +186,11 @@ set -e exercism_wrapper_home
     - ruby
     - [colorize][colorize] gem
     - [@html-to/text-cli][html-to-text] npm package
+- [gh][gh] for the Github queries
 
 Assuming [fish][fish] and [Homebrew][brew] are already installed:
 ```sh
-brew install exercism curl jq miller node
+brew install exercism curl jq miller node gh
 gem install colorize
 npm install --global '@html-to/text-cli'
 go install 'github.com/ericchiang/pup@latest'
@@ -198,3 +206,4 @@ go install 'github.com/ericchiang/pup@latest'
 [html-to-text]: https://github.com/html-to-text/node-html-to-text
 [brew]: https://brew.sh
 [pup]: https://github.com/ericchiang/pup
+[gh]: https://cli.github.com

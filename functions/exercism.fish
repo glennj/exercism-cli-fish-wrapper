@@ -12,6 +12,7 @@ function exercism
                 download \
                 enable-comments  enable_comments \
                 exercises \
+                github \
                 help \
                 iterations \
                 last-test-run \
