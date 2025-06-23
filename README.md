@@ -158,6 +158,10 @@ This subcommand is itself subdivided.
     - lists the teams you're a member of.
 * `github team`
     - lists the members of a team.
+* `github prs`
+    - lists my open Exercism PRs
+* `github issues`
+    - lists my open Exercism issues
 
 ## fish setup
 

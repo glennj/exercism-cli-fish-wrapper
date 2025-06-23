@@ -4,7 +4,9 @@ function __exercism__github
 Exercism github subcommands.
 
   team T        List the members of exercism team T
-  teams         List my exercism teams'
+  teams         List my exercism teams
+  prs           List my open exercism PRs
+  issues        List my open exercism issues'
 
     argparse --name="exercism github" --stop-nonopt 'h/help' -- $argv
     or return 1
@@ -17,6 +19,7 @@ Exercism github subcommands.
     switch $argv[1]
         case help
             echo $help
+
         case teams
             echo "My exercism teams:"
             gh api graphql --paginate -f query='
@@ -70,6 +73,56 @@ Exercism github subcommands.
                 | @csv
             ' \
             | mlr --c2p --implicit-csv-header label Name,URL then cat
+
+        case 'prs'
+            echo 'My open Exercism PRs:'
+            gh api graphql --paginate -f query='
+                query($endCursor: String) {
+                  viewer {
+                    pullRequests(first:10, after:$endCursor, states:OPEN) {
+                      nodes {
+                        number
+                        repository {name}
+                        permalink
+                        createdAt
+                      }
+                    }
+                  }
+                }
+            ' --jq '
+                .data.viewer.pullRequests.nodes
+                | sort_by(.createdAt)
+                | .[]
+                | select(.permalink | contains("/exercism/"))
+                | [(.repository.name + "#" + (.number|tostring)), .permalink, .createdAt]
+                | @csv
+            ' \
+            | mlr --c2p --implicit-csv-header label PR,URL,Created then cat
+
+        case 'issues'
+            echo 'My open Exercism Issues:'
+            gh api graphql --paginate -f query='
+              query($endCursor: String) {
+                viewer {
+                  issues(first:10, after:$endCursor, states:OPEN) {
+                    nodes {
+                      number
+                      repository {name}
+                      url
+                      title
+                      createdAt
+                    }
+                  }
+                }
+              }
+            ' \
+            --jq '
+                .data.viewer.issues.nodes
+                | sort_by(.createdAt)
+                | map(select(.url | contains("/exercism")) | [(.repository.name + "#" + (.number | tostring)), .title, .url, .createdAt])
+                | .[] | @csv
+            ' \
+            | mlr --c2p --implicit-csv-header label Issue,Title,URL,Created then cat
 
         case '*'
             echo 'unknown subcommand' >&2

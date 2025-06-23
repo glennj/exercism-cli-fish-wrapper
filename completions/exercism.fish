@@ -91,5 +91,7 @@ complete -f -c exercism -n "__fish_seen_subcommand_from difficulties" -s s -l so
 complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a unimplemented -d "List unimplemented exercises"
 
 # github sub-subcommands
+complete -f -c exercism -n "__fish_seen_subcommand_from github" -a issues -d "List my open Exercism issues"
+complete -f -c exercism -n "__fish_seen_subcommand_from github" -a prs -d "List my open Exercism PRs"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a team -d "List members of a github team"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a teams -d "List my github teams"
