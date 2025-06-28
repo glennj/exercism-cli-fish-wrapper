@@ -40,6 +40,8 @@ Options
         switch $track
             case 8th
                 set -fx RUN_ALL_TESTS true
+            case arturo
+                $_sed -i 's/test\.skip/test/' $test_files
             case awk bash jq
                 set -fx BATS_RUN_SKIPPED true
             case ballerina
@@ -187,13 +189,10 @@ Options
                     echo "added test verbosity"
                 end
             end
-            for runner in  tclsh87 tclsh
-                if __exercism__test__validate_runner -o $track $runner
-                    __echo_and_execute $runner $test_files
-                    return $status
-                end
-            end
-            return 1
+
+            __exercism__test__validate_runner $track tclsh; or return 1
+            __echo_and_execute tclsh $test_files
+            return $status
         case vimscript
             set src_files (jq -r '.files.solution[]' .exercism/config.json)
             vim -R -c 'source %' -c 'Vader %:p:r.vader' $src_files[1]
