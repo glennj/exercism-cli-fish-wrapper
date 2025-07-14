@@ -83,6 +83,7 @@ Exercism github subcommands.
                       nodes {
                         number
                         repository {name}
+                        title
                         permalink
                         createdAt
                       }
@@ -94,10 +95,10 @@ Exercism github subcommands.
                 | sort_by(.createdAt)
                 | .[]
                 | select(.permalink | contains("/exercism/"))
-                | [(.repository.name + "#" + (.number|tostring)), .permalink, .createdAt]
+                | [.repository.name, .number, .title, .permalink, .createdAt]
                 | @csv
             ' \
-            | mlr --c2p --implicit-csv-header label PR,URL,Created then cat
+            | mlr --c2p --implicit-csv-header label Repo,Num,Title,URL,Created then cat
 
         case 'issues'
             echo 'My open Exercism Issues:'
@@ -119,10 +120,10 @@ Exercism github subcommands.
             --jq '
                 .data.viewer.issues.nodes
                 | sort_by(.createdAt)
-                | map(select(.url | contains("/exercism")) | [(.repository.name + "#" + (.number | tostring)), .title, .url, .createdAt])
+                | map(select(.url | contains("/exercism")) | [.repository.name, .number, .title, .url, .createdAt])
                 | .[] | @csv
             ' \
-            | mlr --c2p --implicit-csv-header label Issue,Title,URL,Created then cat
+            | mlr --c2p --implicit-csv-header label Repo,Num,Title,URL,Created then cat
 
         case '*'
             echo 'unknown subcommand' >&2
