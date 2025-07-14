@@ -7,48 +7,23 @@ This provides additional subcommands that I find useful to improve my experience
 ```sh
 (~)$ cd (exercism workspace)
 (~/s/e/exercism)$ cd wren                    # working on the wren track
-(~/s/e/e/wren)$ exercism missing             # I've _almost_ finished it
-clock
+(~/s/e/e/wren)$ exercism exercises           # I've _almost_ finished it
++----------------------------+----------------------------+------------+-----------+
+| title                      | slug                       | difficulty | status    |
++----------------------------+----------------------------+------------+-----------+
+| Clock (*)                  | clock                      | easy       |           |
++----------------------------+----------------------------+------------+-----------+
+
++-----------+-------+
+| completed | total |
++-----------+-------+
+| 61        | 62    |
++-----------+-------+
 (~/s/e/e/wren)$ exercism download -e clock   # `-t wren` not required
 (~/s/e/e/w/clock)$ #...edit/test...
 (~/s/e/e/w/clock)$ exercism submit
 (~/s/e/e/w/clock)$ exercism open             # see how it looks online
 (~/s/e/e/w/clock)$ exercism publish          # Done!
-```
-Now, what does Exercism know about this exercise?
-```sh
-(~/s/e/e/w/clock)$ exercism metadada
-{
-  "solution": {
-    "uuid": "73af9a29bd774aca8f6ed4f0446d231b",
-    "private_url": "https://exercism.org/tracks/wren/exercises/clock",
-    "public_url": "https://exercism.org/tracks/wren/exercises/clock/solutions/glennj",
-    "status": "published",
-    "mentoring_status": "none",
-    "published_iteration_head_tests_status": "passed",
-    "has_notifications": false,
-    "num_views": 0,
-    "num_stars": 0,
-    "num_comments": 0,
-    "num_iterations": 3,
-    "num_loc": 0,
-    "is_out_of_date": false,
-    "published_at": "2022-07-16T15:58:05Z",
-    "completed_at": "2022-07-16T15:58:05Z",
-    "updated_at": "2022-07-16T15:58:06Z",
-    "last_iterated_at": "2022-07-16T15:57:55Z",
-    "exercise": {
-      "slug": "clock",
-      "title": "Clock",
-      "icon_url": "https://dg8krxphbh767.cloudfront.net/exercises/clock.svg"
-    },
-    "track": {
-      "slug": "wren",
-      "title": "Wren",
-      "icon_url": "https://dg8krxphbh767.cloudfront.net/tracks/wren.svg"
-    }
-  }
-}
 ```
 
 ## Subcommands
@@ -62,6 +37,9 @@ All gloriously tab-completed.
     - you can omit the `--track` option if the function can figure it out
     - use the `--recommended` option to download the next recommended exercise
       (usually the first "available" exercise in the track)
+* `test`
+    - run test suite for this exercise
+    - enhances the builtin `exercism test` with some custom behaviour for some tracks.
 * `submit`
     - with no arguments, uploads the solution file from .exercism/config.json
 * `open`
@@ -69,9 +47,6 @@ All gloriously tab-completed.
 
 ### additional subcommands for interacting with solutions
 
-* `test`
-    - run test suite for this exercise
-    - enhances the builtin `exercism test` with some custom behaviour for some tracks.
 * `check`, `format`
     - run formatters and/or linters for this exercise
     - only some tracks currently supported
@@ -103,8 +78,6 @@ All gloriously tab-completed.
 * `test-all`
     - run test suite for all downloaded exercise in a track
     - only some tracks currently supported (the ones I've joined)
-* `missing`
-    - show track exercises that are not currently downloaded
 * `cleanup`
     - cleanup build artifacts from track exercises
     - useful to remove huge node_modules subdirectories (unless you use pnpm)
