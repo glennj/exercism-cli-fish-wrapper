@@ -62,7 +62,7 @@ Options
                 $_sed -Ei 's,@(Ignore|Disabled),//&,' $test_files
             case javascript typescript coffeescript
                 $_sed -Ei '
-                    s/x(test|it|describe)/\1/
+                    /^import/!{ s/x(test|it|describe)/\1/ ;}
                     s/(test|it).skip/\1/
                 ' $test_files
             case pyret
@@ -149,14 +149,10 @@ Options
             sh gradlew test
             return $status
         case javascript typescript wasm
-            for runner in  pnpm  npm
-                if __exercism__test__validate_runner -o $track $runner
-                    test -d ./node_modules; or __echo_and_execute $runner install
-                    __echo_and_execute $runner run test
-                    return $status
-                end
+            if __exercism__test__validate_runner -o $track corepack
+                test -d ./node_modules; or __echo_and_execute corepack pnpm install
             end
-            return 1
+            # proceed to command exercism test
         case kotlin
             test -f ./gradlew
             and chmod u+x ./gradlew
@@ -174,6 +170,12 @@ Options
         case pyret
             __exercism__test__validate_runner $track pyret; or return 1
             __echo_and_execute pyret $test_files
+            return $status
+        case reasonml
+            __exercism__test__validate_runner $track npm; or return 1
+            test -d ./node_modules; or __echo_and_execute npm install
+            __echo_and_execute npm run build
+            and __echo_and_execute npm run test:ci
             return $status
         case tcl
             set verbosity "configure -verbose {body error usec}"

@@ -12,12 +12,19 @@ symbolically linking the tracks you\'ve implemented them.'
         return
     end
 
+    pushd (command exercism workspace)
+
     mkdir -p _by_exercise
     for lang in */
         switch $lang
             case _by_exercise/ users/ _mentor_notes/; continue
         end
         pushd $lang 
+        if not test -d hello-world
+            popd
+            continue
+        end
+        echo $lang
         for slug in */
             pushd ../_by_exercise
             mkdir -p $slug
@@ -28,4 +35,5 @@ symbolically linking the tracks you\'ve implemented them.'
         end
         popd
     end
+    popd
 end

@@ -41,7 +41,7 @@ Options
         return
     end
 
-    __exercism__has_metadata; or exercism refresh
+    __exercism__has_metadata >/dev/null 2>&1; or exercism refresh
 
     set solution (exercism metadata); or return 1
     set slug (echo $solution | jq -r '.solution.exercise.slug')
@@ -66,6 +66,8 @@ Options
 
             if test "$out_of_date" = "false"
                 echo $updated | jq -r '"\(.solution.track.slug) \"\(.solution.exercise.title)\" has been updated"'
+                echo "waiting for a bit ..."
+                sleep 10
                 exercism refresh
             else
                 echo "Could not sync the exercise?" >&2
