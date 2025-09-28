@@ -32,6 +32,8 @@ Options
     end
     set test_files (jq -r '.files.test[]' .exercism/config.json)
 
+    set -l extra_args
+
     # for running all tests, unskip them
     if set -q _flag_all
         # Homebrew on MacOS installs GNU sed as "gsed"
@@ -53,7 +55,7 @@ Options
             case d
                 perl -i -pe 's/ int allTestsEnabled = \K0/1/' $test_files
             case dart
-                perl -i -pe 's/\bskip: \Ktrue\b/false/' $test_files
+                set extra_args --run-skipped
             case elm
                 $_sed -i 's/skip <|/{- & -}/' $test_files
             case fsharp
@@ -114,7 +116,7 @@ Options
             return $status
         case dart
             __exercism__test__validate_runner $track dart; or return 1
-            __echo_and_execute dart test -r github
+            __echo_and_execute dart test -r github $extra_args
             return $status
         case euphoria
             __exercism__test__validate_runner $track eutest; or return 1
@@ -176,6 +178,11 @@ Options
             test -d ./node_modules; or __echo_and_execute npm install
             __echo_and_execute npm run build
             and __echo_and_execute npm run test:ci
+            return $status
+        case scheme
+            __exercism__test__validate_runner $track guile; or return 1
+            set src_files (jq -r '.files.solution[]' .exercism/config.json)
+            __echo_and_execute guile test.scm $src_files
             return $status
         case tcl
             set verbosity "configure -verbose {body error usec}"
