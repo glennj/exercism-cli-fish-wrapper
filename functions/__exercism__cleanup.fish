@@ -27,7 +27,7 @@ Implemented for
     set track (basename $root)
 
     switch $track
-        case javascript typescript
+        case javascript typescript reasonml
             find . -maxdepth 2 \
                     -name node_modules -o \
                     -name pnpm-lock.yaml -o \

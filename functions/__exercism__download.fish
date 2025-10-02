@@ -57,6 +57,8 @@ function __exercism__download
             case '*/'{java,type}'script/*'
                 #npm install
                 #pnpm install
+            case '*/reasonml/*'
+                npm install
             case '*/d/*'
                 echo "$(basename $PWD)-test-library" > .gitignore
             case '*/dart/*'
