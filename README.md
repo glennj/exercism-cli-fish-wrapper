@@ -19,11 +19,11 @@ This provides additional subcommands that I find useful to improve my experience
 +-----------+-------+
 | 61        | 62    |
 +-----------+-------+
-(~/s/e/e/wren)$ exercism download -e clock   # `-t wren` not required
+(~/s/e/e/wren)$ exercism download -r     # get the "recommended" next exercise
 (~/s/e/e/w/clock)$ #...edit/test...
 (~/s/e/e/w/clock)$ exercism submit
-(~/s/e/e/w/clock)$ exercism open             # see how it looks online
-(~/s/e/e/w/clock)$ exercism publish          # Done!
+(~/s/e/e/w/clock)$ exercism open         # see how it looks online
+(~/s/e/e/w/clock)$ exercism publish      # Done!
 ```
 
 ## Subcommands

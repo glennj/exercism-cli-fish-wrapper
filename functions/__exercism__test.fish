@@ -43,7 +43,7 @@ Options
             case 8th
                 set -fx RUN_ALL_TESTS true
             case arturo
-                $_sed -i 's/test\.skip/test/' $test_files
+                $_sed -i 's/\(test\|it\)\.skip/\1/' $test_files
             case awk bash jq
                 set -fx BATS_RUN_SKIPPED true
             case ballerina
@@ -155,7 +155,7 @@ Options
                 test -d ./node_modules; or __echo_and_execute corepack pnpm install
             end
             # proceed to command exercism test
-        case kotlin
+        case java kotlin
             test -f ./gradlew
             and chmod u+x ./gradlew
             # proceed to command exercism test

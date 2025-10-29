@@ -21,7 +21,8 @@ function __exercism__download
     end
 
     if set -q _flag_recommended
-        __exercism__api_call /tracks/{$track}/exercises \
+        set json (__exercism__api_call /tracks/{$track}/exercises); or return 1
+        echo $json \
         | jq -r '.exercises[] | select(.is_recommended) | (.slug // ""), (.title // "")' \
         | begin; read exercise_slug; read exercise_name; end
 

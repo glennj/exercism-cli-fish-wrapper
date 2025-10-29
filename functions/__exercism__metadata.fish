@@ -26,5 +26,6 @@ Options
     set -q _flag_iterations
     and set uri "$uri?sideload=iterations"
 
-    __exercism__api_call $uri | jq .
+    set json (__exercism__api_call $uri); or return 1
+    echo $json | jq .
 end

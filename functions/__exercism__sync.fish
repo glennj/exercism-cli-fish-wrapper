@@ -68,7 +68,7 @@ Options
                 echo $updated | jq -r '"\(.solution.track.slug) \"\(.solution.exercise.title)\" has been updated"'
                 echo "waiting for a bit ..."
                 sleep 10
-                exercism refresh
+                exercism refresh; or return 1
             else
                 echo "Could not sync the exercise?" >&2
                 set -S out_of_date
