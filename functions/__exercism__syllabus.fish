@@ -15,14 +15,18 @@ Create a concepts directory.'
     pushd $track_root
     set track (basename $track_root)
 
+    set base https://raw.githubusercontent.com/exercism/{$track}/refs/heads/main
+
+    set concepts (curl -s {$base}/config.json | jq -r '.concepts // [] | .[] | [.slug, .name] | @tsv')
+    if test (count $concepts) -eq 0
+        echo "$track has no concepts"
+        return 1
+    end
+
     mkdir -p _concepts
     and pushd _concepts
 
-    set base https://raw.githubusercontent.com/exercism/{$track}/refs/heads/main
-
-    curl -s {$base}/config.json \
-    | jq -r '.concepts[] | [.slug, .name] | @tsv' \
-    | while read -d \t slug name
+    string collect $concepts | while read -d \t slug name
         set filename {$name}.md
         if not test -f $filename
             set url {$base}/concepts/{$slug}/about.md 

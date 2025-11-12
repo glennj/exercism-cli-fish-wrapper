@@ -38,9 +38,11 @@ Writes a "report" into the track\'s parent directory.'
         end
         begin
             cd $root/$e
-            test -d ./.exercism; or exercism refresh
-            and exercism sync --update
-            and exercism refresh
+            #test -d ./.exercism; or exercism refresh
+            #and exercism sync --update
+            #and exercism refresh
+            true
+
             and exercism test --all
         end
         or set errs $errs $e
