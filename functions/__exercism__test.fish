@@ -55,14 +55,11 @@ Options
 
     # for running all tests, unskip them
     if set -q _flag_all
-        # Homebrew on MacOS installs GNU sed as "gsed"
-        type -q gsed; and set _sed gsed; or set _sed sed
-
         switch $track
             case 8th
                 set -fx RUN_ALL_TESTS true
             case arturo
-                $_sed -i 's/\(test\|it\)\.skip/\1/' $test_files
+                perl -i -pe 's/(test|it)\.skip/$1/' $test_files
             case awk bash jq
                 set -fx BATS_RUN_SKIPPED true
             case ballerina
@@ -76,12 +73,14 @@ Options
             case dart
                 set extra_args --run-skipped
             case elm
-                $_sed -i 's/skip <|/{- & -}/' $test_files
+                perl -i -pe 's/skip <|/{- & -}/' $test_files
             case fsharp
                 xargs perl -i -pe 's/\(Skip = .*?\)//' $test_files
             case groovy java kotlin
-                $_sed -Ei 's,@(Ignore|Disabled),//&,' $test_files
+                perl -i -pe 's,@(Ignore|Disabled),//$&,' $test_files
             case javascript typescript coffeescript
+                # Homebrew on MacOS installs GNU sed as "gsed"
+                type -q gsed; and set _sed gsed; or set _sed sed
                 $_sed -Ei '
                     /^import/!{ s/x(test|it|describe)/\1/ ;}
                     s/(test|it).skip/\1/
@@ -99,9 +98,9 @@ Options
             case tcl
                 set -fx RUN_ALL true
             case wasm
-                $_sed -i 's/xtest/test/' $test_files
+                perl -i -pe 's/xtest/test/' $test_files
             case wren
-                $_sed -i 's/skip.test/do.test/' $test_files
+                perl -i -pe 's/skip.test/do.test/' $test_files
         end
     end
 
