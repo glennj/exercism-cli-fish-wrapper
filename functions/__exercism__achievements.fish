@@ -46,30 +46,40 @@ function __exercism__achievements__trophies
     echo '#  Trophies  #'
     echo '##############'
 
-    set tracks (
-        __exercism__api_call "/tracks" \
-        | jq -r '
-            .tracks[]
-            | select(.is_joined)
-            | .slug
-        '
-    )
-
+    set refresh true
     set cache $HOME/.cache/exercism
     mkdir -p $cache
     set trophies $cache/trophies.jsonl
-    if  begin
-            test -f $trophies
-            and set tdate (
-                stat -c '%Y' $trophies 2>/dev/null      # Linux
-                or stat -f '%m' $trophies               # Mac
-            )
-            and test (math (date '+%s') - $tdate) -lt (math '86400 * 2')
+
+    if test -f $trophies
+        set tdate (
+            stat -c '%Y' $trophies 2>/dev/null      # Linux
+            or stat -f '%m' $trophies               # Mac
+        )
+        if test (math (date '+%s') - $tdate) -le (math '86400 * 7')
+            # less than a week
+            date -d @$tdate '+As of %F'\n
+            set refresh false
         end
-            cat $trophies
+    end
+
+    if not $refresh
+        cat $trophies
     else
+        set tracks (
+            __exercism__api_call "/tracks" \
+            | jq -r '
+                .tracks[]
+                | select(.is_joined)
+                | .slug
+            '
+        )
         begin
+            set delay 0
             for track in $tracks
+                sleep $delay     # play nicely with rate limiting
+                set delay 5
+
                 printf '.' >&2
                 __exercism__api_call "/tracks/$track/trophies" \
                 | jq -c '
@@ -123,9 +133,14 @@ function __exercism__achievements__badges
     echo '############'
 
     begin
+        set delay 0
         set -l page 1
         set -l total 99
         while test $page -le $total
+            sleep $delay     # play nicely with rate limiting
+            set delay 5
+
+            printf '.' >&2
             set json (__exercism__api_call "/badges?page=$page")
 
             echo $json | jq -c '.results[]'
@@ -133,15 +148,16 @@ function __exercism__achievements__badges
             set total (echo $json | jq -r '.meta.total_pages')
             set page (math $page + 1)
         end
+        echo >&2
     end \
     | jq -rs '
         {"legendary": 1, "ultimate": 2, "rare": 3, "common": 4} as $rarity
         | sort_by($rarity[.rarity], .num_awardees)[]
-        | [.rarity, .name, .description, .num_awardees]
+        | [.rarity, .num_awardees, .name, .description]
         | @csv
     ' \
     | mlr --c2p --implicit-csv-header \
-        label 'Type,Name,Description,Awardees' \
+        label 'Type,Awardees,Name,Description' \
         then cat
     echo
 end
