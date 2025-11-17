@@ -25,6 +25,7 @@ function exercism
                 refresh \
                 reputation \
                 square1 \
+                stats \
                 submit \
                 switch-user \
                 syllabus \

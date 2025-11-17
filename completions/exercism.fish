@@ -27,6 +27,7 @@ complete -f -c exercism -n "__fish_use_subcommand" -a "publish" -d "Mark as comp
 complete -f -c exercism -n "__fish_use_subcommand" -a "refresh" -d "Re-downloads a submitted exercise"
 complete -f -c exercism -n "__fish_use_subcommand" -a "reputation" -d "Show recent exercism reputation awards"
 complete -f -c exercism -n "__fish_use_subcommand" -a "square1" -d "Reset the solution files back to their initial state"
+complete -f -c exercism -n "__fish_use_subcommand" -a "stats" -d "Exercise statistics"
 complete -f -c exercism -n "__fish_use_subcommand" -a "sync" -d "Sync an exercise so it is up-to-date"
 complete -f -c exercism -n "__fish_use_subcommand" -a "switch-user" -d "Switch user.json"
 complete -f -c exercism -n "__fish_use_subcommand" -a "test" -d "Run the test suite for the current exercise"
