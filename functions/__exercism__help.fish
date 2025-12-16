@@ -47,6 +47,8 @@ Mentoring subcommands
   mentoring overview    Show notifications, queue and inbox.
 
 Track development (WIP)
+  stats                 Gather some statistics for all exercises for all tracks.
+  dev difficulties      List the implemented exercise in order of difficulty.
   dev unimplemented     List the unimplemented practice exercises.
 
 Use `command exercism help` for help about the CLI itself.'

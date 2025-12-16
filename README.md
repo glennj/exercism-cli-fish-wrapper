@@ -122,14 +122,16 @@ This subcommand is itself subdivided.
 
 ### track development
 
-* `dev unimplemented`
-    - lists unimplemented, foregone or deprecated exercises.
-* `dev difficulties`
-    - lists each exercise and its difficulty
 * `stats`
     - extracts statistics for all tracks' exercises
     - use `--download` option to fetch all the config.json files
       into your cache directory.
+* `dev unimplemented`
+    - lists unimplemented, foregone or deprecated exercises.
+    - with `--stats` option, show stats for this track's unimplemented exercises.
+      Useful for selecting the next exercise to implement.
+* `dev difficulties`
+    - lists each exercise and its difficulty
 
 ### Github queries for the Exercism organization
 

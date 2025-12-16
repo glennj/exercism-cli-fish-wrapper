@@ -67,6 +67,7 @@ function __exercism__tracks__students -a slug
         echo "This uses pup to parse HTML: https://github.com/ericchiang/pup" >&2
         return 1
     end
+    sleep 1
     curl -s https://exercism.org/tracks/(string replace -a '"' '' $slug) \
     | pup 'div.students span text{}' \
     | string match -r '\b[\d,]+\b'

@@ -3,8 +3,9 @@ function __exercism__dev
 
 Track development subcommands.
 
+  difficulties   List the track\'s exercises and difficulties
   unimplemented  List the unimplemented practice exercises.
-  difficulties   List the track\'s exercises and difficulties'
+  unimplemented --stats  List the unimplemented statistics from all tracks.'
 
     argparse --name="exercism dev" --stop-nonopt 'h/help' -- $argv
     or return 1

@@ -1,7 +1,7 @@
 # List track exercises with a different state than the problem specifications.
 
 function __exercism__dev__unimplemented
-    argparse --name="exercism dev unimplemented" 'h/help' -- $argv
+    argparse --name="exercism dev unimplemented" 'h/help' 's/stats' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -10,6 +10,15 @@ function __exercism__dev__unimplemented
     end
 
     __exercism__in_dev_root; or return 1
+
+    if set -q _flag_stats
+        exercism stats | while read line
+            echo $line | read slug rest
+            test -d exercises/practice/$slug
+            or echo $line
+        end
+        return
+    end
 
     set prob_spec_dir (__exercism__dev_prob_specs_cache); or return 1
 
