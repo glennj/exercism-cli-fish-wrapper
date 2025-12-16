@@ -24,13 +24,27 @@ Options
         # command exercism test --help
     end
 
-    __exercism__has_metadata; or return 1
+    set -f track
+    set -f slug
+    set -f test_files
 
-    jq -r '.track, .exercise' .exercism/metadata.json | begin
-        read track
-        read slug
+    set md_output "$(__exercism__has_metadata 2>&1)"
+    if test $status -eq 0
+        jq -r '.track, .exercise' .exercism/metadata.json | begin
+            read track
+            read slug
+        end
+        set test_files (jq -r '.files.test[]' .exercism/config.json)
+    else
+        set parts (string match -g -r '(.+)/([^/]+)/([^/]+)' (pwd))
+        if test $parts[1] != (command exercism workspace)
+            echo $md_output >&2
+            return 1
+        end
+        set track $parts[2]
+        set slug $parts[3]
+        set test_files /dev/null
     end
-    set test_files (jq -r '.files.test[]' .exercism/config.json)
 
     set -l extra_args
 
@@ -159,6 +173,10 @@ Options
             test -f ./gradlew
             and chmod u+x ./gradlew
             # proceed to command exercism test
+        case 'odin*'
+            __exercism__test__validate_runner odin odin; or return 1
+            __echo_and_execute odin test . -vet -strict-style -vet-tabs -disallow-do -warnings-as-errors
+            return $status
         case perl5
             set cmd prove
             if test -f cpanfile
