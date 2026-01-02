@@ -22,6 +22,7 @@ This is based on your current directory, since there may be no metadata.'
             cd $dir
             __exercism__refresh
             prevd
+            sleep 5
         end
         return
     end
