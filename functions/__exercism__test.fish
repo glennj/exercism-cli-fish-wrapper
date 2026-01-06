@@ -34,7 +34,12 @@ Options
             read track
             read slug
         end
-        set test_files (jq -r '.files.test[]' .exercism/config.json)
+        set -l config .exercism/config.json
+        if not test -f $config
+            echo "Error: $slug/$config missing! => exercism refresh" >&2
+            return 1
+        end
+        set test_files (jq -r '.files.test[]' $config)
     else
         set parts (string match -g -r '(.+)/([^/]+)/([^/]+)' (pwd))
         if test $parts[1] != (command exercism workspace)
@@ -201,6 +206,10 @@ Options
             __exercism__test__validate_runner $track guile; or return 1
             set src_files (jq -r '.files.solution[]' .exercism/config.json)
             __echo_and_execute guile test.scm $src_files
+            return $status
+        case sqlite
+            __exercism__test__validate_runner $track sqlite3; or return 1
+            __echo_and_execute sh -c 'sqlite3 --bail < "$0"' $test_files[1]
             return $status
         case tcl
             set verbosity "configure -verbose {body error usec}"
