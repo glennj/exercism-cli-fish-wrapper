@@ -86,6 +86,8 @@ Options
                     /^import/!{ s/x(test|it|describe)/\1/ ;}
                     s/(test|it).skip/\1/
                 ' $test_files
+            case moonscript
+                perl -i -pe 's/^\s+\Kpending\b/it/' $test_files
             case pyret
                 perl -i -pe 's/^\s+test\(.*, \Kfalse/true/' $test_files
             case ruby
@@ -178,8 +180,12 @@ Options
             test -f ./gradlew
             and chmod u+x ./gradlew
             # proceed to command exercism test
-        case 'odin*'
-            __exercism__test__validate_runner odin odin; or return 1
+        case moonscript
+            __exercism__test__validate_runner $track busted; or return 1
+            __echo_and_execute busted
+            return $status
+        case odin
+            __exercism__test__validate_runner $track odin; or return 1
             __echo_and_execute odin test . -vet -strict-style -vet-tabs -disallow-do -warnings-as-errors
             return $status
         case perl5
