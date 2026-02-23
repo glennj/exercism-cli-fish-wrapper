@@ -39,6 +39,7 @@ function __exercism__download
     if set -q _flag_help
         printf '\nAdditional Flags:\n'
         echo '  -r, --recommended    download the next recommended exercise.'
+		return
     end
 
     if test $rc -ne 0
