@@ -1,5 +1,5 @@
 function __exercism__stats
-    set help 'Usage: exercism stats [options]
+    set help 'Usage: exercism stats [options] [exercise-slug]
 
 Gather some statistics about Exercism exercises.
 
@@ -24,6 +24,12 @@ Options
 
     if not test -d $cache_dir/exercism/tracks
         set _flag_download true
+    end
+
+    if test (count $argv) -gt 0
+        exercism stats \
+        | awk -v slug=$argv[1] 'NR == 1 || $1 == slug'
+        return
     end
 
     if set -q _flag_download
