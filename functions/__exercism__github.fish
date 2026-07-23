@@ -5,6 +5,7 @@ Exercism github subcommands.
 
   team T        List the members of exercism team T
   teams         List my exercism teams
+  teams -u userid       List exercism teams for the user
   prs           List my open exercism PRs
   issues        List my open exercism issues'
 
@@ -21,28 +22,44 @@ Exercism github subcommands.
             echo $help
 
         case teams
-            echo "My exercism teams:"
-            gh api graphql --paginate -f query='
-              query($endCursor: String) {
+            set argv $argv[2..]
+            argparse --name="exercism github" 'u/user=' -- $argv
+            or return 1
+
+            if set -q _flag_user
+                echo "Exercism teams for $_flag_user:"
+            else
+                set _flag_user (gh auth status --json hosts --jq '.hosts."github.com"[0].login')
+                echo "My exercism teams:"
+            end
+
+            gh api graphql --paginate -f user=$_flag_user -f query='
+              query($user: String!, $endCursor: String) {
                 organization(login: "exercism") {
-                  teams(first:100, after: $endCursor, role:MEMBER) {
-                    edges {
-                      node {
+                  teams(first:100, after: $endCursor, userLogins: [$user]) {
+                    nodes {
                         slug
-                      }
+                        members(first: 1, query: $user) {
+                          edges {
+                            role
+                          }
+                        }
+                    }
+                    pageInfo {
+                      hasNextPage
+                      endCursor
                     }
                   }
                 }
               }
             ' --jq '
-                .data.organization.teams.edges
-                | map(.node.slug)
+              .data.organization.teams.nodes
+                | map([.slug, .members.edges[0].role, ("https://github.com/exercism/" + .slug)])
                 | sort
-                | map([., "https://github.com/exercism/" + .])
                 | .[]
                 | @csv
             ' \
-            | mlr --c2p --implicit-csv-header label Team,URL then cat
+            | mlr --c2p --implicit-csv-header label Team,Role,URL then cat
 
         case team
             if test (count $argv) -ne 2
