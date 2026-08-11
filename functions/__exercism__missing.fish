@@ -16,7 +16,7 @@ Show all exercises in this track that have not been downloaded.'
     pushd $track_root
     set track (basename $track_root)
 
-    set json (__exercism__api_call /tracks/{$track}/exercises)
+    set json (__exercism__api_call /tracks/{$track}/exercises); or return 1
     set here (string trim --right --chars / */)
     set results (
         for type in concept practice

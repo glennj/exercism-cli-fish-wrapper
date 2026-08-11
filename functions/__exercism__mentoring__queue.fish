@@ -20,7 +20,7 @@ Options
         return
     end
 
-    set tracks_mentored (__exercism__api_call mentoring/tracks/mentored)
+    set tracks_mentored (__exercism__api_call mentoring/tracks/mentored); or return 1
 
     if set -q _flag_count
         echo $tracks_mentored \
@@ -35,7 +35,7 @@ Options
     set slugs (echo $tracks_mentored | jq -r '.tracks[] | .title')
     echo "Queued on your tracks: "(string join ", " $slugs)
 
-    set json (__exercism__api_call "mentoring/requests")
+    set json (__exercism__api_call "mentoring/requests"); or return 1
 
     set __EXERCISM__MENTORING_REQUESTS (echo $json | jq -c '.results[]')
 

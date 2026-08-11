@@ -66,9 +66,9 @@ function __exercism__achievements__trophies
     if not $refresh
         cat $trophies
     else
+        set result (__exercism__api_call "/tracks"); or return 1
         set tracks (
-            __exercism__api_call "/tracks" \
-            | jq -r '
+            echo $result | jq -r '
                 .tracks[]
                 | select(.is_joined)
                 | .slug
@@ -81,8 +81,8 @@ function __exercism__achievements__trophies
                 set delay 5
 
                 printf '.' >&2
-                __exercism__api_call "/tracks/$track/trophies" \
-                | jq -c '
+                set result (__exercism__api_call "/tracks/$track/trophies"); or return 1
+                echo $result | jq -c '
                     .trophies[]
                     | select(.status == "revealed")
                     | "( in)? \(.track.title)" as $re
@@ -141,7 +141,7 @@ function __exercism__achievements__badges
             set delay 5
 
             printf '.' >&2
-            set json (__exercism__api_call "/badges?page=$page")
+            set json (__exercism__api_call "/badges?page=$page"); or return 1
 
             echo $json | jq -c '.results[]'
 

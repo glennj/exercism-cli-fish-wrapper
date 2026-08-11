@@ -31,13 +31,14 @@ Options:
         echo $argv[1] on $argv[2] by $argv[3]
         set track (
             # not all track slugs are just the title lower-cased
-            __exercism__api_call /tracks \
+            set result (__exercism__api_call /tracks); or return 1
+            echo $result \
             | jq --arg title $argv[2] -r '
                 .tracks[] | select(.title == $title) | .slug
               '
         )
         set uri "mentoring/students/$argv[3]?track_slug=$track"
-        set json (__exercism__api_call $uri)
+        set json (__exercism__api_call $uri); or return 1
         echo
         echo $json | jq -r '.student.track_objectives' | fold -s | sed 's/^/    /'
         echo
@@ -76,12 +77,10 @@ Options:
         set uri "mentoring/discussions/$uuid/posts"
         set data (jq -nc --arg content $_flag_post '$ARGS.named')
         echo "Posting '$data' to '$uri'"
-        #read -p "__exercism__prompt_yn 'Is this OK'" ans
         set ans (__exercism__prompt_yn 'Is this OK')
         switch (string trim (string lower $ans))
             case 'y*'
-                #__exercism__api_call --verbose -X POST -H 'Content-Type: application/json' --data $data $uri
-                set response (__exercism__api_call -X POST -H 'Content-Type: application/json' --data $data $uri)
+                set response (__exercism__api_call -X POST -H 'Content-Type: application/json' --data $data $uri); or return 1
                 echo
                 exercism mentoring discussion $uuid
         end
@@ -93,7 +92,7 @@ Options:
     end
 
     set uri "mentoring/discussions/$uuid"
-    set json (__exercism__api_call "$uri/posts")
+    set json (__exercism__api_call "$uri/posts"); or return 1
     if set -q _flag_dump
         echo $json | jq .
         return
@@ -136,12 +135,11 @@ Options:
       '
 
     if set -q _flag_end
-        #read -p '__exercism__prompt_yn "You\'re ending the discussion. Are you sure"' ans
         set ans (__exercism__prompt_yn "You\'re ending the discussion. Are you sure")
         switch (string trim (string lower $ans))
             case 'y*'
                 echo OK ending...
-                set json (__exercism__api_call -X PATCH "$uri/finish")
+                set json (__exercism__api_call -X PATCH "$uri/finish"); or return 1
         end
     end
 end

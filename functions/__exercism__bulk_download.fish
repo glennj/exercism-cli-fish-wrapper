@@ -20,9 +20,9 @@ Options
     set track_root (__exercism__get_current_track_root); or return 1
     set track (basename $track_root)
 
+    set json (__exercism__api_call /tracks/{$track}/exercises'?'sideload=solutions); or return 1
     set slugs (
-        __exercism__api_call /tracks/{$track}/exercises'?'sideload=solutions \
-	| jq -r '
+        echo $json | jq -r '
             .solutions
             | map(
                 select(.status | IN("published","iterated")) 

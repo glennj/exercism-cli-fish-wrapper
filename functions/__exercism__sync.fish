@@ -61,7 +61,7 @@ Options
             and echo "$slug is already up to date"
         else
             set uuid (jq -r .id ./.exercism/metadata.json)
-            set updated (__exercism__api_call -X PATCH "/solutions/$uuid/sync")
+            set updated (__exercism__api_call -X PATCH "/solutions/$uuid/sync"); or return 1
             set out_of_date (echo $updated | jq -r '.solution.is_out_of_date')
 
             if test "$out_of_date" = "false"

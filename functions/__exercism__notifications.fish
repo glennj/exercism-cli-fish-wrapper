@@ -17,7 +17,8 @@ Options
     end
 
     set results (
-        __exercism__api_call /notifications \
+        set result (__exercism__api_call /notifications); or return 1
+        echo $result \
         | TZ=UTC jq -L (realpath (status dirname)/../lib) \
              --arg all "$_flag_all" \
              -r '

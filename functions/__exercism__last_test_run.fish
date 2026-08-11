@@ -25,5 +25,6 @@ Dump the solution\'s most recent test run.'
             "/solutions/\($soln)/submissions/\($subm)/test_run"
         '
     )
-    __exercism__api_call $uri | jq .
+    set json (__exercism__api_call $uri); or return 1
+    echo $json | jq .
 end

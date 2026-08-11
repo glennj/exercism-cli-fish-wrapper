@@ -62,7 +62,7 @@ Options
             test (count $_flag_publish) -eq 0; and set _flag_publish "nil"
             set uuid (jq -r '.id' .exercism/metadata.json)
             set uri "/solutions/$uuid/published_iteration?published_iteration_idx=$_flag_publish"
-            set output (__exercism__api_call -X PATCH $uri)
+            set output (__exercism__api_call -X PATCH $uri); or return 1
             if test $output = "Retry later"
                 echo "API response: $output" >&2
             end

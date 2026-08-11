@@ -54,7 +54,7 @@ Options:
     set solution_uuid $info[5]
     set tooltip $info[6]
 
-    set json (__exercism__api_call (string replace '/api/v2/' "" $tooltip))
+    set json (__exercism__api_call (string replace '/api/v2/' "" $tooltip)); or return 1
     set info (
         echo $json \
         | jq -r '.student | .reputation, .num_total_discussions, .num_discussions_with_mentor'

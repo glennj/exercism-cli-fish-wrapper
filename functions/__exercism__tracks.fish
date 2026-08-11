@@ -28,7 +28,8 @@ Options
     # Show progress with dots.
     set -q _flag_students; and printf . >&2
 
-    __exercism__api_call "/tracks" \
+    set result (__exercism__api_call "/tracks"); or return 1
+    echo $result \
     | jq -r --argjson show_all $show_all '
         .tracks[]
         | (.num_learnt_concepts//0) as $c

@@ -19,12 +19,12 @@ Options
     end
 
     if set -q _flag_mark
-        set json (__exercism__api_call -X PATCH reputation/mark_all_as_seen)
+        set json (__exercism__api_call -X PATCH reputation/mark_all_as_seen); or return 1
         set _flag_all yes
     end
 
     if not set -q _flag_quiet
-        set json (__exercism__api_call reputation)
+        set json (__exercism__api_call reputation); or return 1
         set results (
             echo $json \
             | TZ=UTC jq -L (realpath (status dirname)/../lib) \

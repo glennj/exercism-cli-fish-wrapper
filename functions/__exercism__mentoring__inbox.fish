@@ -67,7 +67,7 @@ Example: most recently ended discussion
             set uri "$uri&page=$current"
         end
 
-        set json (__exercism__api_call $uri)
+        set json (__exercism__api_call $uri); or return 1
 
         echo $json \
         | jq -r '"\(.meta.current_page) \(.meta.total_pages)"' \

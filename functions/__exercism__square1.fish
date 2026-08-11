@@ -24,7 +24,7 @@ Wipe out your current solution and download the initial files.'
     exercism download --force -e (jq -r .exercise .exercism/metadata.json) >/dev/null
 
     set uuid (jq -r '.id' .exercism/metadata.json)
-    set json (__exercism__api_call "/solutions/$uuid/initial_files")
+    set json (__exercism__api_call "/solutions/$uuid/initial_files"); or return 1
 
     echo $json | jq -r '.files[] | .filename' | while read file
         echo "    Resetting $file ..."
