@@ -1,5 +1,6 @@
 function __exercism__refresh
-    set help 'Usage: exercism refresh [options]
+    set pause 15
+    set help "Usage: exercism refresh [options]
 
 Re-download the current solution.
 
@@ -7,7 +8,7 @@ Options
     --all         Refresh all track solutions.
     -v|--verbose  Extra verbosity
 
-This is based on your current directory, since there may be no metadata.'
+This is based on your current directory, since there may be no metadata."
 
     argparse --name='exercism refresh' 'h/help' 'all' 'v/verbose' -- $argv
     or return 1
@@ -23,7 +24,7 @@ This is based on your current directory, since there may be no metadata.'
             cd $dir
             __exercism__refresh
             prevd
-            sleep 5
+            sleep $pause
         end
         return
     end
