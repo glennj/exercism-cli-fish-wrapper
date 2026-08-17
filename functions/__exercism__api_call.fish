@@ -41,7 +41,7 @@ function __exercism__api_call
         echo "Error 429: take a break for a while." >&2
         return 1
     else if test $response_code -ge 400
-        echo "Error $response_codeb: cannot fetch $uri" >&2
+        echo "Error $response_code: cannot fetch $uri" >&2
         return 2
     end
     

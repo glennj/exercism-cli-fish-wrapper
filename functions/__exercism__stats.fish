@@ -35,7 +35,7 @@ Options
     end
 
     if set -q _flag_download
-        set result (__exercism__api_call '/tracks'); or return 1
+        set result (__exercism__api_get '/tracks'); or return 1
         echo $result \
         | jq -r '.tracks[].slug' \
         | while read slug
