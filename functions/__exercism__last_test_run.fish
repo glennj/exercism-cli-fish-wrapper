@@ -17,6 +17,10 @@ Dump the solution\'s most recent test run.'
         echo $json | jq -r .error.message
         return 1
     end
+    if test "true" = (echo $json | jq '(.iterations | length) == 0')
+        echo "no iterations! Submit something first"
+        return 1
+    end
     set uri (
         echo $json \
         | jq -r '
