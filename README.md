@@ -84,6 +84,7 @@ All gloriously tab-completed.
     - not all tracks supported
 * `tracks`
     - list all Exercism tracks, and your progress through each.
+    - `--get` option to download all track's config.json files to your cache directory.
 * `exercises`
     - list the exercises, and your progress, for a track.
 * `syllabus`
@@ -143,6 +144,18 @@ This subcommand is itself subdivided.
     - lists my open Exercism PRs
 * `github issues`
     - lists my open Exercism issues
+
+## "Offline" operation
+
+As of summer 2026, to combat DDOS attacks, Exercism has configured the Cloudflare layer to block most API calls from robots.
+This disables some of the functionality of this wrapper :(
+
+Some subcommands have been made aware of this, and can operate in a "non-API" fashion.
+To enable this, fetch the active track config.json files from GitHub using:
+
+```sh
+exercism tracks --get
+```
 
 ## fish setup
 

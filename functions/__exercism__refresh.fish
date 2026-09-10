@@ -4,11 +4,12 @@ function __exercism__refresh
 Re-download the current solution.
 
 Options
-    --all   Refresh all track solutions.
+    --all         Refresh all track solutions.
+    -v|--verbose  Extra verbosity
 
 This is based on your current directory, since there may be no metadata.'
 
-    argparse --name='exercism refresh' 'h/help' 'all' -- $argv
+    argparse --name='exercism refresh' 'h/help' 'all' 'v/verbose' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -32,8 +33,11 @@ This is based on your current directory, since there may be no metadata.'
     test (count $utils) -gt 0; and rm $utils
 
     set dirs (string split / $PWD)
-    echo exercism download --force --track=$dirs[-2] --exercise=$dirs[-1]
-    exercism download --force --track=$dirs[-2] --exercise=$dirs[-1]
+    set args --force --track=$dirs[-2] --exercise=$dirs[-1]
+    set -q _flag_verbose; and set args --verbose $args
+
+    echo exercism download $args
+    exercism download $args
     or return 1
 
     if test (count $utils) -gt 0

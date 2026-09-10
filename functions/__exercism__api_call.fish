@@ -2,7 +2,7 @@ function __exercism__api_call
     # The _last_ argument will be the URI added to the exercism API root.
     # Anything before that will be taken as a curl option.
     # Example:
-    #   set result(__exercism__api_call tracks/javascript/trophies); or return 1
+    #   set result (__exercism__api_call tracks/javascript/trophies); or return 1
     #   __exercism__api_call -v --output hello_world.export.zip tracks/javascript/exercises/hello-world/export_solutions
 
     argparse --ignore-unknown 'v/verbose' -- $argv
@@ -11,8 +11,16 @@ function __exercism__api_call
     set uri (string join "/" "https://exercism.org/api/v2" $argv[-1])
     set -e argv[-1]
 
-    set Headers -H (__exercism__api_auth_header) \
-                -H "User-Agent: exercism_cli_fish_wrapper/0.1"
+    set user_agent "exercism_cli_fish_wrapper/0.1"
+    # mimic the CLI
+    # set user_agent (
+    #     exercism troubleshoot | awk '
+    #         $1 == "Current:" {ver = $2}
+    #         $1 == "OS:" {os = $2}
+    #         $1 == "Architecture:" {arch = $2}
+    #         END {printf("github.com/exercism/cli v%s (%s/%s)\n", ver, os, arch)}'
+    # )
+    set Headers -H (__exercism__api_auth_header) -H "User-Agent: $user_agent"
 
     set curl_opts --silent --include --location --write-out '\n%{response_code}'
     set -q _flag_verbose; and set curl_opts $curl_opts --verbose

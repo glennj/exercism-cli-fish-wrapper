@@ -8,13 +8,20 @@ List your progress through exercism\'s tracks.
 
 Options
     -a|--all    Show all tracks; default is tracks you\'ve joined.
+    -g|--get    Fetch track configs for all active tracks.
+                They are cached in $XDG_CACHE_HOME/exercism/tracks/
     --students  Show the number of students enrolled.'
 
-    argparse --name="exercism tracks" 'h/help' 'a/all' 'students' -- $argv
+    argparse --name="exercism tracks" 'h/help' 'a/all' 'g/get' 'students' -- $argv
     or return 1
 
     if set -q _flag_help
         echo $help
+        return
+    end
+
+    if set -q _flag_get
+        __exercism__tracks__get_configs
         return
     end
 
@@ -28,22 +35,7 @@ Options
     # Show progress with dots.
     set -q _flag_students; and printf . >&2
 
-    set result (__exercism__api_get "/tracks"); or return 1
-    echo $result \
-    | jq -r --argjson show_all $show_all '
-        .tracks[]
-        | (.num_learnt_concepts//0) as $c
-        | (.num_completed_exercises//0) as $e
-        | [
-            .slug,
-            (if .is_joined then "yes" else "no" end),
-            "\($c)/\(.num_concepts)",
-            "\($e)/\(.num_exercises)",
-            (100 * ($e / .num_exercises) | round)
-        ]
-        | select($show_all or .[1] == "yes")
-        | @csv
-    ' \
+    __exercism__tracks__get_info $show_all \
     | while read -d , -a fields
         set bar (string repeat -n (math "floor($bar_wid * $fields[-1] / 100)") '=')
         test $fields[-1] -eq 100; and set suffix '!'; or set suffix '>'
@@ -72,4 +64,80 @@ function __exercism__tracks__students -a slug
     curl -s https://exercism.org/tracks/(string replace -a '"' '' $slug) \
     | pup 'div.students span text{}' \
     | string match -r '\b[\d,]+\b'
+end
+
+function __exercism__tracks__cache_dir
+    set cache_dir $XDG_CACHE_HOME
+    if test -n $cache_dir; or not test -d $cache_dir
+        set cache_dir $HOME/.cache
+    end
+    echo "$cache_dir/exercism/tracks"
+end
+
+function __exercism__tracks__get_configs
+    set cache_dir (__exercism__tracks__cache_dir)
+    set track_slugs (__exercism__tracks__get_info --slug)
+    for slug in $track_slugs
+        set track_dir $cache_dir/$slug
+        set url https://raw.githubusercontent.com/exercism/{$slug}/refs/heads/main/config.json
+        mkdir -p $track_dir
+        printf "."
+        curl --output $track_dir/config.json --silent --location $url
+    end
+    echo
+    date > $cache_dir/latest_download
+end
+
+function __exercism__tracks__get_slugs
+    gh api graphql --paginate -f query='
+        query($endCursor: String) {
+        organization(login: "exercism") {
+            repositories(first: 100, after: $endCursor) {
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                }
+                nodes {
+                    name
+                    object(expression: "HEAD:config.json") {
+                        ... on Blob {
+                            text
+                        }
+                    }
+                }
+            }
+        }
+    }' --jq '
+        .data.organization.repositories.nodes[] 
+        | select(.object.text != null) 
+        | select((.object.text | try fromjson catch {}) .active == true) 
+        | .name
+    ' 
+end
+
+function __exercism__tracks__get_info -a show_all
+    argparse --name="exercism track info" 's/slug' -- $argv
+    or return 1
+
+    set json (__exercism__api_get /tracks)
+
+    if set -q _flag_slug
+        echo $json | jq -r '.tracks[].slug'
+    else
+        echo $json \
+        | jq -r --argjson show_all $show_all '
+            .tracks[]
+            | (.num_learnt_concepts//0) as $c
+            | (.num_completed_exercises//0) as $e
+            | [
+                .slug,
+                (if .is_joined then "yes" else "no" end),
+                "\($c)/\(.num_concepts)",
+                "\($e)/\(.num_exercises)",
+                (100 * ($e / .num_exercises) | round)
+            ]
+            | select($show_all or .[1] == "yes")
+            | @csv
+        '
+    end
 end

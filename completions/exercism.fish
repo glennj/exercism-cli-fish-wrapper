@@ -1,5 +1,8 @@
 # *Append* my new subcommands to an existing completion
 
+# To reload this file:
+# set -e __EXERCISM__ADDITIONAL_COMPLETIONS; and source /path/to/completions/exercism.fish
+
 # Return immediately if we've sourced this file already
 set -q __EXERCISM__ADDITIONAL_COMPLETIONS; and return
 set -g __EXERCISM__ADDITIONAL_COMPLETIONS yes
@@ -49,6 +52,7 @@ complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s n -l d
 complete -f -c exercism -n "__fish_seen_subcommand_from bulk-download" -s f -l force -d "refresh existing solutions"
 complete -f -c exercism -n "__fish_seen_subcommand_from download" -s r -l recommended -d "download the next recommended exercise"
 complete -f -c exercism -n "__fish_seen_subcommand_from exercises" -s a -l all -d "include published solutions"
+complete -f -c exercism -n "__fish_seen_subcommand_from exercises" -s v -l verbose -d "verbose"
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l overview -d "open the exercise overview page"
 complete -f -c exercism -n "__fish_seen_subcommand_from open" -l community -d "open the exercise community solutions page"
 complete -f -c exercism -n "__fish_seen_subcommand_from iterations" -s p -l publish -d "specify which iterations to publish"
@@ -61,11 +65,15 @@ complete -f -c exercism -n "__fish_seen_subcommand_from publish" -l no-comment -
 complete -f -c exercism -n "__fish_seen_subcommand_from refresh" -s a -l all -d "refresh all exercises"
 complete -f -c exercism -n "__fish_seen_subcommand_from reputation" -l all -d "show all reputation"
 complete -f -c exercism -n "__fish_seen_subcommand_from reputation" -l mark -d "mark all as seen"
+complete -f -c exercism -n "__fish_seen_subcommand_from stats" -s a -l all -d "stats for all exercises"
+complete -f -c exercism -n "__fish_seen_subcommand_from stats" -s d -l download -d "cache the track config files"
+complete -f -c exercism -n "__fish_seen_subcommand_from stats" -s v -l verbose -d "verbose"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s a -l all -d "sync all exercises"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s h -l help -d "help"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s s -l status -d "display sync status"
 complete -f -c exercism -n "__fish_seen_subcommand_from sync" -s u -l update -d "perform sync"
 complete -f -c exercism -n "__fish_seen_subcommand_from tracks" -s a -l all -d "show all tracks"
+complete -f -c exercism -n "__fish_seen_subcommand_from tracks" -s g -l get -d "cache the track config files"
 complete -f -c exercism -n "__fish_seen_subcommand_from tracks" -l students -d "show student count"
 
 # mentoring sub-subcommands

@@ -1,47 +1,75 @@
-# see if we want something that's cached (cached via `exercism stats -d`)
+# see if we want something that's cached (cached via `exercism tracks --get`)
 
 function __exercism__api_get
     set -l uri $argv[1]
     __exercism__api_call $uri; and return
 
-    set -l cache $XDG_CACHE_HOME
-    test -z $cache; and set cache $HOME/.cache
-    set cache $cache/exercism
-    mkdir -p $cache
+    set -l cache (__exercism__tracks__cache_dir)
 
     switch $uri
         case '/tracks'
-            test -d $cache/tracks/; or return 1
+            test -d $cache/; or return 1
             echo "Using cached configs in $cache/tracks/" >&2
-            set tracks (find $cache/tracks -mindepth 1 -type d -printf '%f\n')
+            set tracks (find $cache -mindepth 1 -type d -printf '%f\n')
+            # a track is joined if it exists as a directory in the workspace
+            set workspace (exercism workspace)
             for track in $tracks
-                jq -c '{
-                    slug,
-                    is_joined: true,
-                    num_exercises: (.exercises.practice | length),
-                    num_concepts: (.exercises.concept // [] | length)
-                }' $cache/tracks/{$track}/config.json 
+                jq -r '
+                    "\(.slug),\(.exercises.practice | length),\(.exercises.concept // [] | length)"
+                ' $cache/{$track}/config.json 
+            end \
+            | while read -d , slug np nc 
+                test -d "$workspace/$slug"; and set joined true; or set joined false
+                jq  -nc \
+                    --arg slug $slug \
+                    --argjson is_joined $joined \
+                    --argjson num_concepts $nc \
+                    --argjson num_exercises $np \
+                    '$ARGS.named'
             end \
             | jq -s '{tracks: .}'
 
-        case '/tracks/*/exercises'
+        case '/tracks/*/exercises*'
             set track (path dirname $uri | path basename)
-            set config $cache/tracks/{$track}/config.json
+            set config $cache/{$track}/config.json
             test -f $config; or return 1
             echo "Using cached config $config" >&2
-            jq --arg track $track '
-                (.exercises.concept // [] | map(. + {type: "concept"}))
-                + (.exercises.practice // [] | map(. + {type: "practice"}))
-                | map({
-                    type,
-                    slug,
-                    title: .name,
-                    difficulty,
-                    is_unlocked: true,
-                    links: {self: "/tracks/\($track)/exercises/\(.slug)"}
-                })
-                | {exercises: .}
-            ' $config
+            set exercises (
+                jq --arg track $track '
+                    (.exercises.concept // [] | map(. + {type: "concept"}))
+                    + (.exercises.practice // [] | map(. + {type: "practice"}))
+                    | map({
+                        type,
+                        slug,
+                        title: .name,
+                        difficulty,
+                        is_unlocked: true,
+                        is_recommended: false,
+                        links: {self: "/tracks/\($track)/exercises/\(.slug)"}
+                    })
+                    | {exercises: .}
+                ' $config
+            )
 
+            set solutions '{}'
+            if string match -q '*?sideload=solutions' $uri
+                set downloaded (
+                    find (exercism workspace)/$track -mindepth 1 -maxdepth 1 -type d -printf '%f\n' \
+                    | jq -Rc '[., inputs]'
+                )
+                # we'll assume if it's in the workspace it's published.
+                set solutions (
+                    echo $exercises \
+                    | jq --argjson dl $downloaded '
+                        .exercises
+                        | map({
+                            exercise: {slug: .slug},
+                            status: (if (.slug | IN($dl[])) then "published" else "available" end)
+                        })
+                        | {solutions: .}
+                    '
+                )
+            end
+            begin; echo $exercises; echo $solutions; end | jq -s add
     end
 end

@@ -11,7 +11,7 @@ Options
             Instead of stats, show the exercise difficulties for each track.
     -a|--all    Include exercises that only appear on one track.'
 
-    argparse --name="exercism data" 'h/help' 'd/download' 'a/all' 'v/verbose' -- $argv
+    argparse --name="exercism stats" 'h/help' 'd/download' 'a/all' 'v/verbose' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -19,12 +19,9 @@ Options
         return
     end
 
-    set cache_dir $XDG_CACHE_HOME
-    if test -n $cache_dir; or not test -d $cache_dir
-        set cache_dir $HOME/.cache
-    end
+    set cache_dir (__exercism__tracks__cache_dir)
 
-    if not test -d $cache_dir/exercism/tracks
+    if not test -d $cache_dir
         set _flag_download true
     end
 
@@ -34,22 +31,9 @@ Options
         return
     end
 
-    if set -q _flag_download
-        set result (__exercism__api_get '/tracks'); or return 1
-        echo $result \
-        | jq -r '.tracks[].slug' \
-        | while read slug
-            set track_dir $cache_dir/exercism/tracks/$slug
-            set url https://raw.githubusercontent.com/exercism/{$slug}/refs/heads/main/config.json
-            mkdir -p $track_dir
-            printf "."
-            curl --output $track_dir/config.json --silent --location $url
-        end
-        echo
-        date > $cache_dir/exercism/tracks/latest_download
-    end
+    set -q _flag_download; and __exercism__tracks__get_configs
 
-    pushd $cache_dir/exercism/tracks
+    pushd $cache_dir
 
     jq -r '
         .slug as $track
