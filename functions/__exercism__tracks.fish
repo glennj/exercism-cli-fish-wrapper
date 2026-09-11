@@ -12,7 +12,8 @@ Options
                 They are cached in $XDG_CACHE_HOME/exercism/tracks/
     --students  Show the number of students enrolled.'
 
-    argparse --name="exercism tracks" 'h/help' 'a/all' 'g/get' 'students' -- $argv
+    argparse --name="exercism tracks" \
+        'h/help' 'a/all' 'g/get' 'force' 'students' 'cache-dir' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -20,8 +21,13 @@ Options
         return
     end
 
+    if set -q _flag_cache_dir
+        __exercism__tracks__cache_dir
+        return
+    end
+
     if set -q _flag_get
-        __exercism__tracks__get_configs
+        __exercism__tracks__get_configs $_flag_force
         return
     end
 
@@ -74,9 +80,24 @@ function __exercism__tracks__cache_dir
     echo "$cache_dir/exercism/tracks"
 end
 
-function __exercism__tracks__get_configs
+function __exercism__tracks__get_configs -a force
     set cache_dir (__exercism__tracks__cache_dir)
-    set track_slugs (__exercism__tracks__get_info --slug)
+    set track_slugs
+
+    # invalidate cache after 30 days
+    set last_download $cache_dir/latest_download
+    if test (count $force) -gt 0; or not test -f $last_download
+        set track_slugs (__exercism__tracks__get_slugs)
+    else
+        set past (cat $last_download)
+        set now (date '+%s')
+        if test (math $now - $past) -lt (math '30 * 24 * 60 * 60')
+            echo "Track configs are relatively up-to-date. Use --force if needed" >&2
+            return
+        end
+        set track_slugs (__exercism__tracks__get_info --slug)
+    end
+
     for slug in $track_slugs
         set track_dir $cache_dir/$slug
         set url https://raw.githubusercontent.com/exercism/{$slug}/refs/heads/main/config.json
@@ -85,7 +106,7 @@ function __exercism__tracks__get_configs
         curl --output $track_dir/config.json --silent --location $url
     end
     echo
-    date > $cache_dir/latest_download
+    date '+%s' > $last_download
 end
 
 function __exercism__tracks__get_slugs

@@ -19,7 +19,7 @@ Options
         return
     end
 
-    set cache_dir (__exercism__tracks__cache_dir)
+    set cache_dir (exercism tracks --cache-dir)
 
     if not test -d $cache_dir
         set _flag_download true
@@ -31,7 +31,11 @@ Options
         return
     end
 
-    set -q _flag_download; and __exercism__tracks__get_configs
+    if set -q _flag_download
+        exercism tracks --get
+        echo "Have configs for $(string trim (path basename $cache_dir/*/ | wc -l)) tracks"
+        return
+    end
 
     pushd $cache_dir
 

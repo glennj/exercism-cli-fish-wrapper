@@ -4,13 +4,13 @@ function __exercism__api_get
     set -l uri $argv[1]
     __exercism__api_call $uri; and return
 
-    set -l cache (__exercism__tracks__cache_dir)
+    set -l cache (exercism tracks --cache-dir)
 
     switch $uri
         case '/tracks'
-            test -d $cache/; or return 1
+            exercism tracks --get
             echo "Using cached configs in $cache/tracks/" >&2
-            set tracks (find $cache -mindepth 1 -type d -printf '%f\n')
+            set tracks (path basename $cache/*/)
             # a track is joined if it exists as a directory in the workspace
             set workspace (exercism workspace)
             for track in $tracks
@@ -18,7 +18,7 @@ function __exercism__api_get
                     "\(.slug),\(.exercises.practice | length),\(.exercises.concept // [] | length)"
                 ' $cache/{$track}/config.json 
             end \
-            | while read -d , slug np nc 
+            | while read -d , slug np nc
                 test -d "$workspace/$slug"; and set joined true; or set joined false
                 jq  -nc \
                     --arg slug $slug \
@@ -30,6 +30,7 @@ function __exercism__api_get
             | jq -s '{tracks: .}'
 
         case '/tracks/*/exercises*'
+            exercism tracks --get
             set track (path dirname $uri | path basename)
             set config $cache/{$track}/config.json
             test -f $config; or return 1
@@ -54,7 +55,7 @@ function __exercism__api_get
             set solutions '{}'
             if string match -q '*?sideload=solutions' $uri
                 set downloaded (
-                    find (exercism workspace)/$track -mindepth 1 -maxdepth 1 -type d -printf '%f\n' \
+                    path basename (exercism workspace)/$track/*/ \
                     | jq -Rc '[., inputs]'
                 )
                 # we'll assume if it's in the workspace it's published.
