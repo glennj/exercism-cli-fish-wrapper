@@ -45,6 +45,6 @@ Options:
     | if set -q _flag_all
         cat
     else
-        grep -vFw published
+        grep -vEw 'published|deprecated'
     end
 end

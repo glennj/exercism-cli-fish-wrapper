@@ -46,6 +46,7 @@ function __exercism__api_get
                         difficulty,
                         is_unlocked: true,
                         is_recommended: false,
+                        track_status: .status,
                         links: {self: "/tracks/\($track)/exercises/\(.slug)"}
                     })
                     | {exercises: .}
@@ -65,7 +66,7 @@ function __exercism__api_get
                         .exercises
                         | map({
                             exercise: {slug: .slug},
-                            status: (if (.slug | IN($dl[])) then "published" else "available" end)
+                            status: (if (.slug | IN($dl[])) then "published" else (.track_status // "available") end)
                         })
                         | {solutions: .}
                     '
