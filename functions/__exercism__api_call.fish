@@ -12,14 +12,10 @@ function __exercism__api_call
     set -e argv[-1]
 
     set user_agent "exercism_cli_fish_wrapper/0.1"
-    # mimic the CLI
-    # set user_agent (
-    #     exercism troubleshoot | awk '
-    #         $1 == "Current:" {ver = $2}
-    #         $1 == "OS:" {os = $2}
-    #         $1 == "Architecture:" {arch = $2}
-    #         END {printf("github.com/exercism/cli v%s (%s/%s)\n", ver, os, arch)}'
-    # )
+    if test -r $XDG_CONFIG_HOME/exercism/user_agent
+        set user_agent (cat $XDG_CONFIG_HOME/exercism/user_agent)
+    end
+
     set Headers -H (__exercism__api_auth_header) -H "User-Agent: $user_agent"
 
     set curl_opts --silent --include --location --write-out '\n%{response_code}'
@@ -52,7 +48,7 @@ function __exercism__api_call
         echo "Error $response_code: cannot fetch $uri" >&2
         return 2
     end
-    
+
     printf '%s\n' $output | begin
         read x http_status x
         while read line
