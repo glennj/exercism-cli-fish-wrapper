@@ -73,6 +73,7 @@ Exercism github subcommands.
                   team(slug: $team) {
                     members {
                       edges {
+                        role
                         node {
                           login
                           name
@@ -85,11 +86,11 @@ Exercism github subcommands.
             ' \
             --jq '
                 .data.organization.team.members.edges
-                | map([(.node.name // .node.login), ("https://github.com/" + .node.login)])
+                | map([(.node.name // .node.login), .role, ("https://github.com/" + .node.login)])
                 | .[]
                 | @csv
             ' \
-            | mlr --c2p --implicit-csv-header label Name,URL then cat
+            | mlr --c2p --implicit-csv-header label Name,Role,URL then cat
 
         case 'prs'
             echo 'My open Exercism PRs:'
