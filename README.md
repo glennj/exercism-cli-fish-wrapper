@@ -138,8 +138,10 @@ This subcommand is itself subdivided.
 
 * `github teams`
     - lists the teams you're a member of.
-* `github team`
+* `github team <team>`
     - lists the members of a team.
+* `github maintainer-status <slug>`
+    - lists the ruleset and topics of repo R.
 * `github prs`
     - lists my open Exercism PRs
 * `github issues`

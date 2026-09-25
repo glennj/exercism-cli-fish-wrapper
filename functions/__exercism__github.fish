@@ -6,6 +6,7 @@ Exercism github subcommands.
   team T        List the members of exercism team T
   teams         List my exercism teams
   teams -u userid       List exercism teams for the user
+  maintainer-status R   Display the ruleset and topics for repo R
   prs           List my open exercism PRs
   issues        List my open exercism issues'
 
@@ -91,6 +92,16 @@ Exercism github subcommands.
                 | @csv
             ' \
             | mlr --c2p --implicit-csv-header label Name,Role,URL then cat
+
+        case 'maintainer-status'
+            if test (count $argv) -ne 2
+                echo $help
+                return
+            end
+            set slug $argv[2]
+            set ruleset_id (gh api /repos/exercism/{$slug}/rulesets --jq '.[0].id')
+            gh api /repos/exercism/{$slug}/rulesets/{$ruleset_id}
+            gh api /repos/exercism/{$slug}/topics
 
         case 'prs'
             echo 'My open Exercism PRs:'

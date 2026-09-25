@@ -102,6 +102,7 @@ complete -f -c exercism -n "__fish_seen_subcommand_from unimplemented" -s s -l s
 
 # github sub-subcommands
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a issues -d "List my open Exercism issues"
+complete -f -c exercism -n "__fish_seen_subcommand_from github" -a maintainer-status -d "Display ruleset and topics for repo"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a prs -d "List my open Exercism PRs"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a team -d "List members of a github team"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a teams -d "List my github teams"
