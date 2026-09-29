@@ -33,15 +33,20 @@ Options
         set opts
         set -q _flag_update; and set opts $opts --update
         set -q _flag_status; and set opts $opts --status
+        set __this (status current-function)
         for dir in */
             cd $dir
-            __exercism__sync $opts
+            $__this $opts
+            sleep 5
             prevd
         end
         return
     end
 
-    __exercism__has_metadata >/dev/null 2>&1; or exercism refresh
+    if not __exercism__has_metadata >/dev/null 2>&1
+        exercism refresh >/dev/null
+        sleep 5
+    end
 
     set solution (exercism metadata); or return 1
     set slug (echo $solution | jq -r '.solution.exercise.slug')
@@ -69,6 +74,7 @@ Options
                 echo "waiting for a bit ..."
                 sleep 10
                 exercism refresh; or return 1
+                sleep 5
             else
                 echo "Could not sync the exercise?" >&2
                 set -S out_of_date

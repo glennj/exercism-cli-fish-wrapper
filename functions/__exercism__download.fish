@@ -64,7 +64,7 @@ function __exercism__download
             case '*/d/*'
                 echo "$(basename $PWD)-test-library" > .gitignore
             case '*/dart/*'
-                dart pub add --dev lints
+                dart pub add --dev lints > /dev/null
                 if ! grep -q 'include: package:lints/recommended.yaml' analysis_options.yaml
                     begin
                         echo
