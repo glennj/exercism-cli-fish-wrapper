@@ -101,8 +101,10 @@ complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a unimplemented -d
 complete -f -c exercism -n "__fish_seen_subcommand_from unimplemented" -s s -l stats -d "Show stats for unimplemented"
 
 # github sub-subcommands
+complete -f -c exercism -n "__fish_seen_subcommand_from github" -a audit -d "Perform some audits of Exercism repos"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a issues -d "List my open Exercism issues"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a maintainer-status -d "Display ruleset and topics for repo"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a prs -d "List my open Exercism PRs"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a team -d "List members of a github team"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a teams -d "List my github teams"
+complete -f -c exercism -n "__fish_seen_subcommand_from audit"  -a community-contributions -d "Audits communiuty contribution status"

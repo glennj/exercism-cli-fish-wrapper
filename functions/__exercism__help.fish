@@ -46,6 +46,13 @@ Mentoring subcommands
   mentoring discussion  Display the posts of a mentoring session.
   mentoring overview    Show notifications, queue and inbox.
 
+Github queries for maintenance
+  github team           Members of an Exercism team
+  github teams          Teams a person is a member of
+  github prs            My open PRs
+  github issues         Open issues assigned to me
+  github audit          Perform some audits of Exercism repos
+  
 Track development (WIP)
   stats                 Gather some statistics for all exercises for all tracks.
   dev difficulties      List the implemented exercise in order of difficulty.

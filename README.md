@@ -145,7 +145,9 @@ This subcommand is itself subdivided.
 * `github prs`
     - lists my open Exercism PRs
 * `github issues`
-    - lists my open Exercism issues
+    - lists open Exercism issues assigned to me
+* `github audit`
+    - audits some aspects of Exercism repos.
 
 ## "Offline" operation
 

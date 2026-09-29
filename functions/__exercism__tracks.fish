@@ -109,31 +109,70 @@ function __exercism__tracks__get_configs -a force
     date '+%s' > $last_download
 end
 
+# example:
+#   __exercism__tracks__get_slugs --inactive --with-config-date | mlr --implicit-tsv-header --t2p label Repo,Date then sort -f Date
 function __exercism__tracks__get_slugs
+    argparse --name="exercism track slugs" '/inactive' '/with-config-date' '/topics' -- $argv
+    or return 1
+
+    set is_active true
+    set -q _flag_inactive; and set is_active false
+
+    set with_date false
+    set -q _flag_with_config_date; and set with_date true
+
+    set with_topics false
+    set -q _flag_topics; and set with_topics true
+
     gh api graphql --paginate -f query='
-        query($endCursor: String) {
+      query($endCursor: String) {
         organization(login: "exercism") {
-            repositories(first: 100, after: $endCursor) {
-                pageInfo {
-                    hasNextPage
-                    endCursor
-                }
-                nodes {
-                    name
-                    object(expression: "HEAD:config.json") {
-                        ... on Blob {
-                            text
-                        }
-                    }
-                }
+          repositories(first: 50, after: $endCursor) {
+            pageInfo {
+              hasNextPage
+              endCursor
             }
+            nodes {
+              name
+              repositoryTopics(first: 10) {
+                nodes {
+                  topic {
+                    name
+                  }
+                }
+              }
+              object(expression: "HEAD:config.json") {
+                ... on Blob {
+                  text
+                }
+              }
+              defaultBranchRef {
+                target {
+                  ... on Commit {
+                    history(first: 1, path: "config.json") {
+                      nodes {
+                        committedDate
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
-    }' --jq '
+      }
+    ' --jq '
         .data.organization.repositories.nodes[] 
+        | select(.repositoryTopics.nodes as $topics | "exercism-track" | IN($topics[].topic.name))
         | select(.object.text != null) 
-        | select((.object.text | try fromjson catch {}) .active == true) 
-        | .name
-    ' 
+        | select((.object.text | try fromjson catch {}) | .active == '{$is_active}') 
+        | if '{$with_date}'
+          then ([.name, ((.defaultBranchRef.target?.history?.nodes // [{}]) | .[0].committedDate)] | @tsv)
+          elif '{$with_topics}'
+          then ([.name] + (.repositoryTopics.nodes | map(.topic.name)) | @tsv)
+          else .name
+          end
+    '
 end
 
 function __exercism__tracks__get_info -a show_all
