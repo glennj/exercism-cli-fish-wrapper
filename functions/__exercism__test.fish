@@ -91,7 +91,8 @@ Options
                 perl -i -pe 's/^\s+test\(.*, \Kfalse/true/' $test_files
             case ruby
                 for t in $test_files
-                    gawk -i inplace '1; /< Minitest::Test/ {print "  def skip; end"}' $t
+                    # gawk -i inplace '1; /< Minitest::Test/ {print "  def skip; end"}' $t
+                    perl -i -lne 'print; /< Minitest::Test/ and print "def skip; end"' $t
                 end
             case scala
                 perl -i -pe 's{ pending}{ //pending}' $test_files
@@ -198,8 +199,9 @@ Options
             __echo_and_execute $cmd $test_files
             return $status
         case pyret
-            __exercism__test__validate_runner $track pyret; or return 1
-            __echo_and_execute pyret $test_files
+            __exercism__test__validate_runner $track npm; or return 1
+            test -d ./node_modules; or __echo_and_execute npm install
+            __echo_and_execute npm run test
             return $status
         case reasonml
             __exercism__test__validate_runner $track npm; or return 1
