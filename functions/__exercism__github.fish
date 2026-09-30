@@ -120,33 +120,24 @@ end
 
 # -----------------------------------------------------
 function __exercism__github_tracks
-    argparse --name="exercism github audit" 'h/help' '/inactive' '/date' '/topics' -- $argv
+    argparse --name="exercism github audit" 'h/help' -- $argv
     or return 1
 
     if set -q _flag_help
         echo "Get track slugs"
-        echo "  --inactive  Show inactive tracks (default: active ones)"
-        echo "  --date      Commit date of config.json included in TSV output"
-        echo "  --topics    Repo topics included in TSV output"
         return
     end
 
-    set args
-    set labels Repo
-    set sort_field Repo
-    set -q _flag_inactive; and set args $args --inactive
-    set -q _flag_date; and begin
-        set args $args --with-config-date
-        set labels "$labels,ConfigDate"
-        set sort_field ConfigDate
-    end
-    set -q _flag_topics; and begin
-        set args $args --topics
-        set labels "$labels,Topics"
-    end
+    begin
+        echo ... fetching active tracks >&2
+        __exercism__tracks__get_slugs --with-config-date --topics \
+        | awk 'BEGIN {FS=OFS="\t"} {$2 = "yes" OFS $2} 1'
 
-    __exercism__tracks__get_slugs $args \
-    | mlr --t2p --implicit-tsv-header label $labels then sort -f $sort_field
+        echo ... fetching inactive tracks >&2
+        __exercism__tracks__get_slugs --with-config-date --topics --inactive \
+        | awk 'BEGIN {FS=OFS="\t"} {$2 = "no" OFS $2} 1'
+    end \
+    | mlr --t2p --implicit-tsv-header label Repo,Active,ConfigDate,Topics then sort -f Repo
   end
 
 # -----------------------------------------------------
@@ -211,12 +202,14 @@ function __exercism__github_team -a team
       }
     ' \
     --jq '
-        .data.organization.team.members.edges
-        | map([(.node.name // .node.login), .role, ("https://github.com/" + .node.login)])
-        | .[]
+        .data.organization.team.members.edges[]
+        | [.node.login, .role, .node.name]
         | @csv
     ' \
-    | mlr --c2p --implicit-csv-header label Name,Role,URL then cat
+    | mlr --c2p --implicit-csv-header label Login,Role,Name then cat
+
+    echo \nTeam repos
+    gh api /orgs/exercism/teams/{$team}/repos --paginate --jq '.[].full_name' | sort
 end
 
 # -----------------------------------------------------
@@ -254,6 +247,9 @@ community-contributions -- check the workflow vs the topics for repos'
                       }
                       object(expression: "HEAD:.github/workflows/pause-community-contributions.yml") {
                         id
+                        ... on Blob {
+                          text
+                        }
                       }
                     }
                   }
@@ -262,22 +258,30 @@ community-contributions -- check the workflow vs the topics for repos'
             ' --jq '
                 .data.organization.repositories.nodes[]
                 | select(.repositoryTopics.nodes as $topics | "exercism-track" | IN($topics[].topic.name))
-                | [.name,
-                    if .object then "yes" else "no" end,
-                    (.repositoryTopics.nodes | map(.topic.name | select(test("community-contributions"))) | join(","))
+                | [ .name
+                  , (.repositoryTopics.nodes | map(.topic.name | select(test("maintained") or . == "wip-track")) | join(","))
+                  , (.repositoryTopics.nodes | map(.topic.name | select(test("community-contributions"))) | join(","))
+                  , if .object then "yes" else "no" end
+                  , ((.object?.text // "") | (capture("forum_category: (?<cat>[a-z0-9]+)") // {}) | .cat)
                 ]
                 | . + [
-                    if   (.[1] == "no" and .[2] == "community-contributions-accepted") then "OK"
-                    elif (.[1] == "yes" and .[2] == "community-contributions-paused") then "OK"
-                    elif (.[1] == "no" and .[2] == "community-contributions-paused") then "incorrect topic"
-                    elif (.[1] == "yes" and .[2] == "community-contributions-accepted") then "incorrect topic"
+                    if   (.[3] == "no"  and .[2] == "community-contributions-accepted") then "OK"
+                    elif (.[3] == "yes" and .[2] == "community-contributions-paused") then "OK"
+                    elif (.[3] == "no"  and .[2] == "community-contributions-paused") then "incorrect topic"
+                    elif (.[3] == "yes" and .[2] == "community-contributions-accepted") then "incorrect topic"
                     elif (.[2] == "") then "missing topic"
                     else "?"
                     end                
                 ]
                 | @tsv
             ' \
-            | mlr --t2p --implicit-tsv-header label "Repo","Exists?","Topic","Status" then sort -f Repo
+            | mlr --t2p --barred --implicit-tsv-header \
+                  label "Repo,MaintenanceTopic,CommunityContributionTopic,WF?,Forum,Status" \
+                  then sort -f MaintenanceTopic,Repo
+
+            echo \nNotes:
+            echo "- 'WF?' == does the repo have the workflow"
+            echo "- ForumCat == the forum category the workflow points to; _should_ be the slug"
 
         case '*'
             echo $help
