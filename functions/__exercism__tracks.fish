@@ -111,9 +111,18 @@ end
 
 # example:
 #   __exercism__tracks__get_slugs --inactive --with-config-date | mlr --implicit-tsv-header --t2p label Repo,Date then sort -f Date
+# see also __exercism__github_tracks
 function __exercism__tracks__get_slugs
     argparse --name="exercism track slugs" '/inactive' '/with-config-date' '/topics' -- $argv
     or return 1
+
+    if set -q _flag_help
+        echo "Get track slugs"
+        echo "  --inactive          Show inactive tracks (default: active ones)"
+        echo "  --with-config-date  Commit date of config.json included in TSV output"
+        echo "  --topics            Repo topics included in TSV output"
+        return
+    end
 
     set is_active true
     set -q _flag_inactive; and set is_active false
@@ -127,7 +136,7 @@ function __exercism__tracks__get_slugs
     gh api graphql --paginate -f query='
       query($endCursor: String) {
         organization(login: "exercism") {
-          repositories(first: 50, after: $endCursor) {
+          repositories(first: 50, isArchived: false, privacy: PUBLIC, after: $endCursor) {
             pageInfo {
               hasNextPage
               endCursor
@@ -166,12 +175,11 @@ function __exercism__tracks__get_slugs
         | select(.repositoryTopics.nodes as $topics | "exercism-track" | IN($topics[].topic.name))
         | select(.object.text != null) 
         | select((.object.text | try fromjson catch {}) | .active == '{$is_active}') 
-        | if '{$with_date}'
-          then ([.name, ((.defaultBranchRef.target?.history?.nodes // [{}]) | .[0].committedDate)] | @tsv)
-          elif '{$with_topics}'
-          then ([.name] + (.repositoryTopics.nodes | map(.topic.name)) | @tsv)
-          else .name
-          end
+        | ( [.name]
+            + (if '{$with_date}' then [.defaultBranchRef.target.history.nodes[0].committedDate] else [] end)
+            + (if '{$with_topics}' then [.repositoryTopics.nodes | map(.topic.name) | join(",")] else [] end)
+        )
+        | @tsv
     '
 end
 

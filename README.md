@@ -148,6 +148,8 @@ This subcommand is itself subdivided.
     - lists open Exercism issues assigned to me
 * `github audit`
     - audits some aspects of Exercism repos.
+* `github tracks`
+    - info about Exercism tracks.
 
 ## "Offline" operation
 

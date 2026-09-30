@@ -10,7 +10,7 @@ Exercism github subcommands.
   team <T>                List the members of exercism team T
   teams                   List my exercism teams
   teams -u userid         List exercism teams for the user
-  '
+  tracks                  Info about track repos'
 
     argparse --name="exercism github" --stop-nonopt 'h/help' -- $argv
     or return 1
@@ -30,6 +30,9 @@ Exercism github subcommands.
                 return 1
             end
             __exercism__github_audit $argv[2..]
+
+        case tracks
+            __exercism__github_tracks $argv[2..]
 
         case teams
             if test (count $argv) -lt 2
@@ -114,6 +117,37 @@ Exercism github subcommands.
             return 1
     end
 end
+
+# -----------------------------------------------------
+function __exercism__github_tracks
+    argparse --name="exercism github audit" 'h/help' '/inactive' '/date' '/topics' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo "Get track slugs"
+        echo "  --inactive  Show inactive tracks (default: active ones)"
+        echo "  --date      Commit date of config.json included in TSV output"
+        echo "  --topics    Repo topics included in TSV output"
+        return
+    end
+
+    set args
+    set labels Repo
+    set sort_field Repo
+    set -q _flag_inactive; and set args $args --inactive
+    set -q _flag_date; and begin
+        set args $args --with-config-date
+        set labels "$labels,ConfigDate"
+        set sort_field ConfigDate
+    end
+    set -q _flag_topics; and begin
+        set args $args --topics
+        set labels "$labels,Topics"
+    end
+
+    __exercism__tracks__get_slugs $args \
+    | mlr --t2p --implicit-tsv-header label $labels then sort -f $sort_field
+  end
 
 # -----------------------------------------------------
 function __exercism__github_teams

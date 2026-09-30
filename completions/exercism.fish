@@ -107,4 +107,5 @@ complete -f -c exercism -n "__fish_seen_subcommand_from github" -a maintainer-st
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a prs -d "List my open Exercism PRs"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a team -d "List members of a github team"
 complete -f -c exercism -n "__fish_seen_subcommand_from github" -a teams -d "List my github teams"
+complete -f -c exercism -n "__fish_seen_subcommand_from github" -a tracks -d "Info about tracks"
 complete -f -c exercism -n "__fish_seen_subcommand_from audit"  -a community-contributions -d "Audits communiuty contribution status"
