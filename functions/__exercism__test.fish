@@ -155,6 +155,10 @@ Options
             set test_status $status
             cd ..
             return $test_status
+        case gdscript
+            __exercism__test__validate_runner $track ./run_tests; or return 1
+            __echo_and_execute ./run_tests
+            return $status
         case go
             __exercism__test__validate_runner $track go; or return 1
             if set -q _flag_bench
