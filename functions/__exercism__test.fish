@@ -213,6 +213,12 @@ Options
             __echo_and_execute npm run build
             and __echo_and_execute npm run test:ci
             return $status
+        case rescript
+            __exercism__test__validate_runner $track npm; or return 1
+            test -d ./node_modules; or __echo_and_execute npm install
+            __echo_and_execute npx rescript; or return $status
+            __echo_and_execute npx retest tests/*.res.js
+            return $status
         case scheme
             __exercism__test__validate_runner $track guile; or return 1
             set src_files (jq -r '.files.solution[]' .exercism/config.json)

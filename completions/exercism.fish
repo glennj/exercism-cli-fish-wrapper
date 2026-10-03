@@ -96,8 +96,9 @@ complete -f -c exercism -n "__fish_seen_subcommand_from discussion" -l post -d "
 
 # dev sub-subcommands
 complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a difficulties -d "List unimplemented exercises"
-complete -f -c exercism -n "__fish_seen_subcommand_from difficulties" -s s -l sort -d "sort by difficulty"
+complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a lychee -d "Run the lychee link checker in docker"
 complete -f -c exercism -n "__fish_seen_subcommand_from dev" -a unimplemented -d "List unimplemented exercises"
+complete -f -c exercism -n "__fish_seen_subcommand_from difficulties" -s s -l sort -d "sort by difficulty"
 complete -f -c exercism -n "__fish_seen_subcommand_from unimplemented" -s s -l stats -d "Show stats for unimplemented"
 
 # github sub-subcommands

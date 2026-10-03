@@ -133,6 +133,8 @@ This subcommand is itself subdivided.
       Useful for selecting the next exercise to implement.
 * `dev difficulties`
     - lists each exercise and its difficulty
+* `dev lychee`
+    - run the lychee link checker in docker.
 
 ### Github queries for the Exercism organization
 
