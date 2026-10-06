@@ -10,7 +10,8 @@ Exercism github subcommands.
   team <T>                List the members of exercism team T
   teams                   List my exercism teams
   teams -u userid         List exercism teams for the user
-  tracks                  Info about track repos'
+  tracks                  Info about track repos
+  track-prs <R>           Data about a track\'s PRs'
 
     argparse --name="exercism github" --stop-nonopt 'h/help' -- $argv
     or return 1
@@ -33,12 +34,15 @@ Exercism github subcommands.
 
         case tracks
             __exercism__github_tracks $argv[2..]
-
-        case teams
+        
+        case track-prs
             if test (count $argv) -lt 2
                 echo $help
                 return 1
             end
+            __exercism__github_track_prs $argv[2..]
+
+        case teams
             __exercism__github_teams $argv[2..]
 
         case team
@@ -141,9 +145,70 @@ function __exercism__github_tracks
   end
 
 # -----------------------------------------------------
+function __exercism__github_track_prs -a slug
+
+    set endCursor ""
+    while true
+		printf . >&2   # dots to show activity for long-running cmd
+        set response (
+            gh api graphql -F owner=exercism -F repo=$slug -F endCursor="$endCursor" -f query='
+              query($owner: String!, $repo: String!, $endCursor: String) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequests(first: 100, states: [OPEN, CLOSED, MERGED], after: $endCursor) {
+                    edges {
+                      node {
+                        number
+                        state
+                        author {
+                          login
+                        }
+                        createdAt
+                        reviews(first: 10, states: APPROVED) {
+                          edges {
+                            node {
+                              author {
+                                login
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    pageInfo {
+                      endCursor
+                      hasNextPage
+                    }
+                  }
+                }
+              }
+            '
+        )
+
+        # Output the rows
+        echo "$response" | jq -r '
+          .data.repository.pullRequests.edges[].node | [.number, .createdAt, .state, .author.login, (.reviews.edges | map(.node.author.login) | join(","))] | @csv
+        '
+
+        # Check if there are more pages
+        set hasNextPage (echo "$response" | jq -r '.data.repository.pullRequests.pageInfo.hasNextPage')
+        
+        test "$hasNextPage" = "false"; and break
+
+        # Get the cursor for the next page
+        set endCursor (echo "$response" | jq -r '.data.repository.pullRequests.pageInfo.endCursor')
+    end \
+    | begin; echo; mlr --c2p --barred --implicit-csv-header label Num,Created,State,Author,Approver then sort -nr Num; end
+end
+
+# -----------------------------------------------------
 function __exercism__github_teams
-    argparse --name="exercism github" 'u/user=' -- $argv
+    argparse --name="exercism github" 'h/help' 'u/user=' -- $argv
     or return 1
+
+    if set -q _flag_help
+        echo "Usage: exercism github teams [-u userid]"
+        return
+    end
 
     if set -q _flag_user
         echo "Exercism teams for $_flag_user:"
@@ -152,32 +217,45 @@ function __exercism__github_teams
         echo "My exercism teams:"
     end
 
-    gh api graphql --paginate -f user=$_flag_user -f query='
-      query($user: String!, $endCursor: String) {
-        organization(login: "exercism") {
-          teams(first:100, after: $endCursor, userLogins: [$user]) {
-            nodes {
-                slug
-                members(first: 1, query: $user) {
-                  edges {
-                    role
+    set endCursor ""
+
+    while true
+        set response (
+            gh api graphql --paginate -f user=$_flag_user -f endCursor="$endCursor" -f query='
+              query($user: String!, $endCursor: String) {
+                organization(login: "exercism") {
+                  teams(first:100, after: $endCursor, userLogins: [$user]) {
+                    nodes {
+                        slug
+                        members(first: 1, query: $user) {
+                          edges {
+                            role
+                          }
+                        }
+                    }
+                    pageInfo {
+                      hasNextPage
+                      endCursor
+                    }
                   }
                 }
-            }
-            pageInfo {
-              hasNextPage
-              endCursor
-            }
-          }
-        }
-      }
-    ' --jq '
-      .data.organization.teams.nodes
-        | map([.slug, .members.edges[0].role, ("https://github.com/exercism/" + .slug)])
-        | sort
-        | .[]
-        | @csv
-    ' \
+              }
+            '
+        )
+
+		echo "$response" | jq -r '
+			.data.organization.teams.nodes
+			| map([.slug, .members.edges[0].role, ("https://github.com/exercism/" + .slug)])
+			| sort
+			| .[]
+			| @csv
+		'
+
+		set hasNextPage (echo "$response" | jq -r '.data.organization.teams.pageInfo.hasNextPage')
+		test $hasNextPage = false; and break
+
+        set endCursor (echo "$response" | jq -r '.data.organization.teams.pageInfo.endCursor')
+    end \
     | mlr --c2p --implicit-csv-header label Team,Role,URL then cat
 end
 
@@ -228,6 +306,7 @@ community-contributions -- check the workflow vs the topics for repos'
 
     switch $argv[1]
         case 'community-contributions'
+			# TODO need a loop here?
             gh api graphql --paginate -f query='
               query($endCursor: String) {
                 organization(login: "exercism") {
