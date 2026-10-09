@@ -382,6 +382,16 @@ function __exercism__github__review -a repo num
         return 2
     end
 
+    if string match --regex --quiet '\-(?:test-runner|representer|analyzer)$' $repo
+        if test -r "$XDG_CONFIG_HOME/exercism/.gha.token"
+            set token (cat $XDG_CONFIG_HOME/exercism/.gha.token)
+            set url https://raw.githubusercontent.com/exercism/terraform/refs/heads/main/terraform/main.tf?token={$token}
+            if curl -so- $url | grep -q "\"$repo\""
+                gum confirm "Tool repo 'exercism/$repo' is NOT live. Continue?"; or return
+            end
+        end
+    end
+
     set pr https://github.com/exercism/{$repo}/pull/{$num}
     gh pr view $pr; or return 1
     gh pr checks $pr
@@ -390,7 +400,7 @@ function __exercism__github__review -a repo num
     
     set author (gh api repos/exercism/{$repo}/pulls/{$num} --jq '.user.login')
     if not string match '*dependabot*' $author
-        echo "Select labels to add:"
+        echo \n"Select labels to add:"
         set labels (
             gum choose --no-limit \
                 x:rep/tiny x:rep/small x:rep/medium x:rep/large \
@@ -408,8 +418,6 @@ function __exercism__github__review -a repo num
     end
 
     echo
-    gum confirm "Approve it?"; or return
-    gh pr review $pr --approve
-    gum confirm "Merge?"; or return
-    gh pr merge $pr --squash
+    gum confirm "Approve it?"; and gh pr review $pr --approve
+    gum confirm "Merge?";      and gh pr merge $pr --squash
 end
