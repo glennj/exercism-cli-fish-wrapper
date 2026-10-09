@@ -37,6 +37,7 @@ Writes a "report" into the track\'s parent directory.'
             continue
         end
         begin
+			echo $e\n
             cd $root/$e
             #test -d ./.exercism; or exercism refresh
             #and exercism sync --update

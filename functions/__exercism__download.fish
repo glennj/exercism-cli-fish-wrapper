@@ -63,6 +63,8 @@ function __exercism__download
                 npm install
             case '*/d/*'
                 echo "$(basename $PWD)-test-library" > .gitignore
+            case '*/gdscript/*'
+				test -f ./run_tests; and chmod u+x ./run_tests
             case '*/dart/*'
                 dart pub add --dev lints > /dev/null
                 if ! grep -q 'include: package:lints/recommended.yaml' analysis_options.yaml

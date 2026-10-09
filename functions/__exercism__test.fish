@@ -216,8 +216,9 @@ Options
         case rescript
             __exercism__test__validate_runner $track npm; or return 1
             test -d ./node_modules; or __echo_and_execute npm install
-            # I don't know what all of those warning codes are
-            __echo_and_execute npx rescript --warn-error "+3+8+11+12+26+27+31+32+33+34+35+39+44+45+110"; or return $status
+            # https://rescript-lang.org/docs/manual/warning-numbers
+            # exclude 32: unused value warning
+            __echo_and_execute npx rescript --warn-error "+3+8+11+12+20+26+27+33+34+35+39+44+45"; or return $status
             __echo_and_execute npx retest tests/*.res.js
             return $status
         case scheme
