@@ -59,8 +59,8 @@ function __exercism__dev__difficulties
 
     jq -r '.exercises.practice[] | [.slug, .difficulty] | @csv' config.json \
     | if set -q _flag_sort; sort -t, -n -k2; else; cat; end \
-    | mlr --c2p --implicit-csv-header --barred \
-        label exercise,difficulty \
+    | mlr --c2p --implicit-csv-header --barred --right-align-numeric \
+        label exercise,diff \
         then cat -n \
     | less
 end

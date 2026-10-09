@@ -7,6 +7,7 @@ Exercism github subcommands.
   issues                  List my open exercism issues
   maintainer-status <R>   Display the ruleset and topics for repo R
   prs                     List my open exercism PRs
+  review <R> <N>          Review PR N in repo R
   team <T>                List the members of exercism team T
   teams                   List my exercism teams
   teams -u userid         List exercism teams for the user
@@ -31,6 +32,13 @@ Exercism github subcommands.
                 return 1
             end
             __exercism__github_audit $argv[2..]
+
+        case review
+            if test (count $argv) -lt 3
+                echo $help
+                return 1
+            end
+            __exercism__github__review $argv[2..]
 
         case tracks
             __exercism__github_tracks $argv[2..]
@@ -366,4 +374,42 @@ community-contributions -- check the workflow vs the topics for repos'
             echo $help
             return 1
     end
+end
+
+function __exercism__github__review -a repo num
+    if not command -v gum >/dev/null
+        echo "Install gum (https://github.com/charmbracelet/gum)" >&2
+        return 2
+    end
+
+    set pr https://github.com/exercism/{$repo}/pull/{$num}
+    gh pr view $pr; or return 1
+    gh pr checks $pr
+    gh pr diff $pr
+    gum confirm "Continue?"; or return
+    
+    set author (gh api repos/exercism/{$repo}/pulls/{$num} --jq '.user.login')
+    if not string match '*dependabot*' $author
+        echo "Select labels to add:"
+        set labels (
+            gum choose --no-limit \
+                x:rep/tiny x:rep/small x:rep/medium x:rep/large \
+                x:type/ci x:type/docs x:type/coding x:type/docker x:type/content \
+                ready-to-translate
+        ); or return
+        if test (count $labels) -gt 0
+            set edit_cmd gh pr edit $pr
+            for label in $labels
+                set edit_cmd $edit_cmd --add-label $label
+            end
+            echo $edit_cmd
+            $edit_cmd
+        end
+    end
+
+    echo
+    gum confirm "Approve it?"; or return
+    gh pr review $pr --approve
+    gum confirm "Merge?"; or return
+    gh pr merge $pr --squash
 end

@@ -53,6 +53,7 @@ Github queries for maintenance
   github issues         Open issues assigned to me
   github audit          Perform some audits of Exercism repos
   github tracks         Info about exercism tracks
+  github review         Review a Github PR
 
 Track development (WIP)
   stats                 Gather some statistics for all exercises for all tracks.

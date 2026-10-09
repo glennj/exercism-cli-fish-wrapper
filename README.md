@@ -152,6 +152,8 @@ This subcommand is itself subdivided.
     - audits some aspects of Exercism repos.
 * `github tracks`
     - info about Exercism tracks.
+* `github review`
+    - review a Github PR
 
 ## "Offline" operation
 
@@ -193,10 +195,11 @@ set -e exercism_wrapper_home
     - [colorize][colorize] gem
     - [@html-to/text-cli][html-to-text] npm package
 - [gh][gh] for the Github queries
+- [gum][gum] for github review confirmations
 
 Assuming [fish][fish] and [Homebrew][brew] are already installed:
 ```sh
-brew install exercism curl jq miller node gh
+brew install exercism curl jq miller node gh gum
 gem install colorize
 npm install --global '@html-to/text-cli'
 go install 'github.com/ericchiang/pup@latest'
@@ -213,3 +216,4 @@ go install 'github.com/ericchiang/pup@latest'
 [brew]: https://brew.sh
 [pup]: https://github.com/ericchiang/pup
 [gh]: https://cli.github.com
+[gum]: https://github.com/charmbracelet/gum#readme
