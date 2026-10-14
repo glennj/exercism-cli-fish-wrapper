@@ -6,6 +6,7 @@ Exercism github subcommands.
   audit <cmd>             Audit state of exercism repos
   issues                  List my open exercism issues
   maintainer-status <R>   Display the ruleset and topics for repo R
+  notifications           Show your Github notifications
   prs                     List my open exercism PRs
   review <R> <N>          Review PR N in repo R
   team <T>                List the members of exercism team T
@@ -39,6 +40,9 @@ Exercism github subcommands.
                 return 1
             end
             __exercism__github__review $argv[2..]
+
+        case notifications
+            __exercism__github__inbox $argv[2..]
 
         case tracks
             __exercism__github_tracks $argv[2..]
@@ -420,4 +424,63 @@ function __exercism__github__review -a repo num
     echo
     gum confirm "Approve it?"; and gh pr review $pr --approve
     gum confirm "Merge?";      and gh pr merge $pr --squash
+end
+
+function __exercism__github__inbox
+    # Note, the Github REST API cannot determine if a notification
+    # is in the "Inbox" or "Done" lists -- those are UI-only features.
+    # Also, finding the current PR state requires a separate query for each.
+
+    argparse --name="exercism github notifications" 'h/help' 'a/all' -- $argv
+
+    if set -q _flag_help
+        echo "exercism github notifications [-a|--all]"
+        return
+    end
+
+    set -q _flag_all; and set all true; or set all false
+
+    function _get_notifications -a out all
+        gh api '/notifications?all='{$all} --paginate --jq '
+            .[]
+            | [ (.subject.type | sub("(Request|Suite)"; ""))
+                , .repository.name
+                , (.subject.url // ""| sub(".*/"; ""))
+                , .reason
+                , .unread
+                , .updated_at
+                , (.subject.title // "")[:30]
+            ]
+            | @sh
+        ' \
+        | while read -t -a fields
+            set state ''
+            if $fields[5]
+                switch $fields[1]
+                    case Pull
+                        set state (gh api repos/exercism/{$fields[2]}/pulls/{$fields[3]} --jq '
+                            if .merged_at then "merged" else .state end
+                        ')
+                    case Issue
+                        set state (gh api repos/exercism/{$fields[2]}/issues/{$fields[3]} --jq '.state')
+                end
+            end
+            string join \t $fields[1] $state $fields[2..]
+        end > $out
+    end
+
+    set out (mktemp)
+    set func (mktemp)
+    functions _get_notifications > $func
+    functions -e _get_notifications
+
+    gum spin --title "Reading notifications and statuses ..." -- fish -c "source $func; _get_notifications $out $all"
+
+    rm $func
+
+    cat $out \
+    | mlr --t2p --implicit-csv-header \
+        label Type,State,Repo,Num,Reason,Unread,Updated,Title \
+        then cat -n
+    rm $out
 end

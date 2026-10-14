@@ -152,8 +152,13 @@ This subcommand is itself subdivided.
     - audits some aspects of Exercism repos.
 * `github tracks`
     - info about Exercism tracks.
+* `github track-prs`
+    - list PRs for a track.
 * `github review`
     - review a Github PR
+* `github notifications`
+    - attempt to replicate the inbox
+    - "inbox" and "done" are UI-only features though.
 
 ## "Offline" operation
 
